@@ -18,19 +18,21 @@ export default function Home() {
     const scaleAnim = React.useRef(new Animated.Value(0)).current
 
     useEffect(() => {       // animations on first render
-      Animated.spring(yAnim, {
-        toValue: 0,
-        friction: 4,
-        tension: 5,
-        useNativeDriver: false
-      }).start()
-
-      Animated.spring(scaleAnim, {
-        toValue: 1,
-        friction: 5,
-        tension: 5,
-        useNativeDriver: false
-      }).start()
+      setTimeout(() => {
+        Animated.spring(yAnim, {
+          toValue: 0,
+          friction: 4,
+          tension: 5,
+          useNativeDriver: false
+        }).start()
+  
+        Animated.spring(scaleAnim, {
+          toValue: 1,
+          friction: 5,
+          tension: 5,
+          useNativeDriver: false
+        }).start()
+      },1000)
     }, [])
 
     useEffect(() => {           // change color of text depending on time difference. its done to show if user is doing okay
