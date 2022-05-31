@@ -1,10 +1,13 @@
 import { View, Text, Button, StyleSheet, TouchableOpacity, Animated } from 'react-native'
 import React, { useState, useEffect} from 'react'
 import { Icon } from 'react-native-elements'
+import { ScreenStackHeaderBackButtonImage } from 'react-native-screens'
 
 export default function Home() {
 
   //TODO: change component name related to metronome
+
+    const COLOR_PALETTE_1 = ["FEF9A7","FAC213", "F77E21", "D61C4E", "990000", "FF5B00", "D4D925", "FFEE63"]
 
     const [time, setTime] = useState(0)
     const [isOn, setisOn] = useState(false)
@@ -13,11 +16,13 @@ export default function Home() {
     const [currentTime, setCurrentTime] = useState(0)
     const [msColor, setMsColor] = useState('black')
     const [prevTimeForColoring, setPrevTimeForColoring] = useState(0)
+    const [hitMeColor, setHitMeColor] = useState('white')
+    const [resetColor, setResetColor] = useState('white')
 
     const yAnim = React.useRef(new Animated.Value(500)).current
     const scaleAnim = React.useRef(new Animated.Value(0)).current
 
-    useEffect(() => {       // animations on first render
+    useEffect(() => {           // animations on first render
       setTimeout(() => {
         Animated.spring(yAnim, {
           toValue: 0,
@@ -48,6 +53,12 @@ export default function Home() {
         setTimeArray(timeArray.slice(45,50))
       }
     },[timeArray])
+
+    useEffect(() => {         // choose random color for buttons on first render
+      setHitMeColor(COLOR_PALETTE_1[Math.floor(Math.random() * COLOR_PALETTE_1.length)])
+      setResetColor(COLOR_PALETTE_1[Math.floor(Math.random() * COLOR_PALETTE_1.length)])
+    },[])
+
 
     function createTime(){      // create current time in milliseconds
       let now = new Date().getTime()
@@ -97,17 +108,25 @@ export default function Home() {
 
   return (
     <View style={styles.container}>
-      <Text style={{fontSize:75, textAlign:'center', color: msColor, position:'absolute', top:100}}>{time}{"\n"}
+      <View style={{top:25}}>
+        <Text style={{textAlign:'center', fontSize:12, fontWeight:'700'}}>
+          Bu uygulamanın amacı, butona her basışınızda,
+          bir önceki basışınız arasındaki farkı hesaplayıp milisaniye cinsinden
+          ekrana yazdırarak ritim duyusunu göstermek ve pratik yaparak
+          gelişmesine katkıda bulunmaktır.
+        </Text>
+      </View>
+      <Text style={{fontSize:75, fontWeight:"900", textAlign:'center', color: msColor, position:'absolute', top:150}}>{time}{"\n"}
         <Text style={{fontSize: 20}}>milliseconds{'\n'}</Text>
         <Text style={{fontSize: 14}}>between your taps</Text>
       </Text>
-      <Animated.View style={[styles.hitMeButton, {transform: [{scale: scaleAnim}]}]}>
+      <Animated.View style={[styles.hitMeButton,{backgroundColor:`#${hitMeColor}`}, {transform: [{scale: scaleAnim}]}]}>
         <TouchableOpacity style={{width:'100%', height:'100%', justifyContent:'center', alignItems:'center'}} onPress={()=> calc()}>
           <Text style={{ fontSize: 40 }}>hit me</Text>
         </TouchableOpacity>
       </Animated.View> 
 
-      <Animated.View style={[styles.resetButton, {transform: [{translateY: yAnim}]}]}>
+      <Animated.View style={[styles.resetButton, {backgroundColor: `#${resetColor}`}, {transform: [{translateY: yAnim}]}]}>
         <TouchableOpacity style={{width:"100%", justifyContent:'center', alignItems:'center'}} onPress={()=>reset()}>
           <Text style={{ fontSize: 40 }}>reset</Text>
         </TouchableOpacity>
@@ -131,23 +150,26 @@ const styles = StyleSheet.create({
     borderColor:'black',
     backgroundColor: 'rgba(230,230,230,1)',
     width: "100%",
-    height: "10%",
+    height: 100,
     alignItems: 'center',
     justifyContent: 'center',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20
   },
   hitMeButton: {
-    width: 150,
-    height: 150,
-    borderRadius: 150/2,
-    backgroundColor: 'rgba(230,230,230,1)',
+    width: 300,
+    height: 100,
+    borderRadius: 30,
     position: 'absolute',
     bottom: 250,
     borderWidth: 2,
     borderColor:'black',
     alignItems: 'center',
     justifyContent: 'center',
+    shadowColor: '#171717',
+    shadowOffset: {width: -1, height: 3},
+    shadowOpacity: 0.4,
+    shadowRadius: 5,
 
   }
 })

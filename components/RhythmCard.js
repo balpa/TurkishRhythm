@@ -1,12 +1,34 @@
-import { View, Text, StyleSheet, Animated, Image } from 'react-native'
-import React, {useState, useEFfect} from 'react'
-import { ForceTouchGestureHandler, ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
+import { View, Text, StyleSheet, Animated, Image, TouchableOpacity, Platform } from 'react-native'
+import React, {useState, useEffect} from 'react'
+import { ForceTouchGestureHandler, ScrollView } from 'react-native-gesture-handler'
 
 const RhythmCard = ({ rhythmName, rhythmTime, color, imageURI, infoText }) => {
 
   // TODO: name and time styling
 
   const [isOpen, setIsOpen] = useState(false)
+  const [platform, setPlatform] = useState("")
+  const [shadowOptions, setShadowOptions] = useState({})
+
+   useEffect(() => {          // platform based shadow options
+    if (Platform.OS === "android") {
+      setPlatform("android")
+      setShadowOptions({
+        elevation: 20
+      })
+  }
+    else if (Platform.OS === "ios") {
+      setPlatform("ios")
+      setShadowOptions({
+        shadowColor: '#171717',
+        shadowOffset: {width: -1, height: 3},
+        shadowOpacity: 0.4,
+        shadowRadius: 5, 
+      })
+    }
+
+  }, [])
+
 
   const yAnim = React.useRef(new Animated.Value(0)).current
   const borderRadiusAnim = React.useRef(new Animated.Value(0)).current
@@ -74,7 +96,7 @@ const RhythmCard = ({ rhythmName, rhythmTime, color, imageURI, infoText }) => {
 
 
   return (
-    <View style={[styles.rhythmCardContainer, styles.shadow, {backgroundColor: `#${color}`}]}>
+    <View style={[styles.rhythmCardContainer, shadowOptions ,{backgroundColor: `#${color}`}]}>
       <TouchableOpacity style={{width:'100%'}} onPress={()=>showInfoPanel()}>
         <View style={{width:'100%', flexDirection:'row'}}>
             <Text style={{fontSize:25, fontWeight: "900", width:'30%'}}>{rhythmTime}</Text>
@@ -88,7 +110,7 @@ const RhythmCard = ({ rhythmName, rhythmTime, color, imageURI, infoText }) => {
           <Image source={imageURI} style={{height:undefined, width:'90%', alignSelf:'center', aspectRatio:2.7}}/>
         </Animated.View>
 
-        <Animated.View style={[styles.infoScrollConrainer, {opacity: opacityAnim}]}>
+        <Animated.View style={[styles.infoScrollContainer, {opacity: opacityAnim}]}>
           <ScrollView>
             <Text>
               {infoText}
@@ -117,7 +139,7 @@ const styles = StyleSheet.create({
     flexDirection:'column',
     justifyContent:'center',
     alignItems:'center',
-    alignSelf:'center'
+    alignSelf:'center',
 
   },
   shadow: {
@@ -140,7 +162,8 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '40%',
   },
-  infoScrollConrainer: {
+  infoScrollContainer: {
     width: '100%',
+    height: '60%',
   }
 })

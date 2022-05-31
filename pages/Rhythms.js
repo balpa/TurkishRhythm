@@ -1,10 +1,10 @@
-import { View, Text, ScrollView, ColorPropType } from 'react-native'
+import { View, Text, ScrollView, ColorPropType, Platform } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import RhythmCard from '../components/RhythmCard'
 
 export default function Rhythms() {
 
-  const COLOR_PALETTE_1 = ["FEF9A7","FAC213", "F77E21", "D61C4E"]
+  const COLOR_PALETTE_1 = ["FEF9A7","FAC213", "F77E21", "D61C4E", "990000", "FF5B00", "D4D925", "FFEE63"]
   const COLOR_PALETTE_2 = ["7C3E66", "F2EBE9", "A5BECC", "243A73"]
 
   const INFO_TEXTS = {
