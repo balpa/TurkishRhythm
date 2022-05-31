@@ -1,8 +1,8 @@
-import { View, Text, StyleSheet, Animated } from 'react-native'
+import { View, Text, StyleSheet, Animated, Image } from 'react-native'
 import React, {useState, useEFfect} from 'react'
-import { ForceTouchGestureHandler, TouchableOpacity } from 'react-native-gesture-handler'
+import { ForceTouchGestureHandler, ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 
-const RhythmCard = ({ rhythmName, rhythmTime, color }) => {
+const RhythmCard = ({ rhythmName, rhythmTime, color, imageURI, infoText }) => {
 
   // TODO: name and time styling
 
@@ -11,6 +11,7 @@ const RhythmCard = ({ rhythmName, rhythmTime, color }) => {
   const yAnim = React.useRef(new Animated.Value(0)).current
   const borderRadiusAnim = React.useRef(new Animated.Value(0)).current
   const marginAnim = React.useRef(new Animated.Value(0)).current
+  const opacityAnim = React.useRef(new Animated.Value(0)).current
 
 
   function showInfoPanel(){
@@ -32,11 +33,22 @@ const RhythmCard = ({ rhythmName, rhythmTime, color }) => {
               toValue: 20,
               duration: 300,
               useNativeDriver: false
-            }).start()
+            }).start(()=>{
+              Animated.timing(opacityAnim, {
+                toValue: 1,
+                duration: 200,
+                useNativeDriver: false
+              }).start()
+            })
           })
       })
     } else {
     
+      Animated.timing(opacityAnim, {
+        toValue: 0,
+        duration: 200,
+        useNativeDriver: false
+      }).start(()=>{
       Animated.timing(marginAnim, {
         toValue: 0,
         duration: 300,
@@ -52,10 +64,10 @@ const RhythmCard = ({ rhythmName, rhythmTime, color }) => {
             duration: 500,
             useNativeDriver: false
           }).start()
-    })})
+    })})})
       setTimeout(() => {          // timeout for waiting the closing animation to finish
         setIsOpen(false)
-      },1100)
+      },1300)
     }
 
   }
@@ -70,13 +82,21 @@ const RhythmCard = ({ rhythmName, rhythmTime, color }) => {
         </View>
       </TouchableOpacity>
       {isOpen && 
-      <Animated.View style={[styles.rhythmInfoContainer, {height: yAnim, borderRadius: borderRadiusAnim, margin: marginAnim}]}>
-        <View style={{width:'100%',backgroundColor:'red'}}>
-          <Text>image yeri</Text>
-        </View>
-        <View style={{width:'100%', backgroundColor:'green'}}>
-          <Text>info yeri</Text>
-        </View>
+      <Animated.View style={[styles.rhythmInfoContainer, {height: yAnim, borderRadius: borderRadiusAnim, margin: marginAnim }]}>
+
+        <Animated.View style={[styles.imageContainer, {opacity: opacityAnim}]}>
+          <Image source={imageURI} style={{height:undefined, width:'90%', alignSelf:'center', aspectRatio:2.7}}/>
+        </Animated.View>
+
+        <Animated.View style={[styles.infoScrollConrainer, {opacity: opacityAnim}]}>
+          <ScrollView>
+            <Text>
+              {infoText}
+            </Text>
+            <Text>DİNLE BUTONU:TODO</Text>
+          </ScrollView>
+        </Animated.View>
+
       </Animated.View>
       }
     </View>
@@ -115,5 +135,12 @@ const styles = StyleSheet.create({
     flexDirection:'column',
     justifyContent:'space-evenly',
 
+  },
+  imageContainer: {
+    width: '100%',
+    height: '40%',
+  },
+  infoScrollConrainer: {
+    width: '100%',
   }
 })
