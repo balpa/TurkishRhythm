@@ -1,4 +1,4 @@
-import { View, Text, Button, StyleSheet, TouchableOpacity, Animated } from 'react-native'
+import { View, Text, Button, StyleSheet, TouchableOpacity, Animated, Platform } from 'react-native'
 import React, { useState, useEffect} from 'react'
 import { Icon } from 'react-native-elements'
 import { ScreenStackHeaderBackButtonImage } from 'react-native-screens'
@@ -18,9 +18,30 @@ export default function Home() {
     const [prevTimeForColoring, setPrevTimeForColoring] = useState(0)
     const [hitMeColor, setHitMeColor] = useState('white')
     const [resetColor, setResetColor] = useState('white')
+    const [platform, setPlatform] = useState("")
+    const [shadowOptions, setShadowOptions] = useState({})
 
     const yAnim = React.useRef(new Animated.Value(500)).current
     const scaleAnim = React.useRef(new Animated.Value(0)).current
+
+    useEffect(() => {          // platform based shadow options
+      if (Platform.OS === "android") {
+        setPlatform("android")
+        setShadowOptions({
+          elevation: 20
+        })
+    }
+      else if (Platform.OS === "ios") {
+        setPlatform("ios")
+        setShadowOptions({
+          shadowColor: '#171717',
+          shadowOffset: {width: -1, height: 3},
+          shadowOpacity: 0.4,
+          shadowRadius: 5, 
+        })
+      }
+  
+    }, [])
 
     useEffect(() => {           // animations on first render
       setTimeout(() => {
@@ -120,7 +141,7 @@ export default function Home() {
         <Text style={{fontSize: 20}}>milliseconds{'\n'}</Text>
         <Text style={{fontSize: 14}}>between your taps</Text>
       </Text>
-      <Animated.View style={[styles.hitMeButton,{backgroundColor:`#${hitMeColor}`}, {transform: [{scale: scaleAnim}]}]}>
+      <Animated.View style={[styles.hitMeButton, shadowOptions, {backgroundColor:`#${hitMeColor}`}, {transform: [{scale: scaleAnim}]}]}>
         <TouchableOpacity style={{width:'100%', height:'100%', justifyContent:'center', alignItems:'center'}} onPress={()=> calc()}>
           <Text style={{ fontSize: 40 }}>hit me</Text>
         </TouchableOpacity>
@@ -166,10 +187,10 @@ const styles = StyleSheet.create({
     borderColor:'black',
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#171717',
-    shadowOffset: {width: -1, height: 3},
-    shadowOpacity: 0.4,
-    shadowRadius: 5,
+    // shadowColor: '#171717',
+    // shadowOffset: {width: -1, height: 3},
+    // shadowOpacity: 0.4,
+    // shadowRadius: 5,
 
   }
 })

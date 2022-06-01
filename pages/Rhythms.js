@@ -10,99 +10,99 @@ export default function Rhythms() {
   const INFO_TEXTS = {
     nimsofyan: `
       İki zamanlıdır.
-      2/4 lük ve 2/8 lik değerlerde vurulur.
-      DÜM 1 zamanlı – kuvvetli
-      TEK 1 zamanlı – yarı (orta) kuvvetlidir.
+      2/4'lük ve 2/8'lik değerlerde vurulur.
+      Düm 1 zamanlı, kuvvetli
+      Tek 1 zamanlı, yarı (orta) kuvvetlidir.
     `,
     semai: `
       Üç zamanlıdır.
-      3/4 lük ve 3/8 lik değerlerde vurulur.
-      DÜM 1 zamanlı – kuvvetli
-      TEK 1 zamanlı – yarı kuvvetli
-      TEK 1 zamanlı – zayıftır.
+      3/4'lük ve 3/8'lik değerlerde vurulur.
+      Düm 1 zamanlı, kuvvetli
+      Tek 1 zamanlı, yarı kuvvetli
+      Tek 1 zamanlı, zayıftır.
     `,
     sofyan: `
       Dört zamanlıdır.
       İki Nim Sofyan’ın birleşmesinden meydana gelir.
-      DÜ-ÜM 2 zamanlı – kuvvetli
-      TE 1 zamanlı – yarı kuvvetli
-      KE 1 zamanlı – zayıftır.
-      4/8, 4/4,4/2 lik değerlerde vurulur.
+      Dü-üm 2 zamanlı, kuvvetli
+      Te 1 zamanlı, yarı kuvvetli
+      Ke 1 zamanlı, zayıftır.
+      4/8, 4/4, 4/2'lik değerlerde vurulur.
     `,
     turkaksagi: `
       Beş zamanlıdır.
       Bir Nim Sofyan ve bir Semai’nin birleşmesiyle meydana gelir.
-      DÜ- ÜM 2 zamanlı – kuvvetli
-      TE- EK 2 zamanlı – yarı kuvvetli
-      TEK 1 zamanlı – zayıftır.
-      5/8 ve 5/4 lük değerlerde vurulur.
+      Dü-üm 2 zamanlı, kuvvetli
+      Te-ek 2 zamanlı, yarı kuvvetli
+      Tek 1 zamanlı, zayıftır.
+      5/8 ve 5/4'lük değerlerde vurulur.
     `,
     yuruksemai:`
       Altı zamanlıdır.
       İki Semai veya üç Nim Sofyan’dan meydana gelmiştir.
-      DÜM l zamanlı – kuvvetli
-      TEK l zamanlı – yarı kuvvetli
-      TEK l zamanlı – zayıf
-      DÜM l zamanlı – zayıf
-      TE-EK 2 zamanlı – yan kuvvetlidir
-      6/8, 6/4 ve 6/2 lik değerlerde vurulur.
+      Düm 1 zamanlı, kuvvetli
+      Tek 1 zamanlı, yarı kuvvetli
+      Tek 1 zamanlı, zayıf
+      Düm 1 zamanlı, zayıf
+      Te-ek 2 zamanlı, yarı kuvvetlidir
+      6/8, 6/4 ve 6/2'lik değerlerde vurulur.
       6/4 Sengin Semai, 6/2 Ağır Sengin Semai olur.
     `,
     devrihindi:`
       Yedi zamanlıdır.
-      Bir Semai ve bir Sofyan’dan meydana gelir. (Bazen bir Semai ve iki Nim Sofyan vurulur.)
-      DÜM 2 zamanlı – kuvvetli
-      TEK l zamanlı – yarı kuvvetli
-      TEK l zamanlı – zayıf
-      DÜ-ÜM 2 zamanlı – kuvvetli
-      TE – EK 2 zamanlı – zayıftır.
-      7/8 ve 7/4 lük değerlerde vurulur.
+      Bir Semai ve bir Sofyan’dan meydana gelir. (Bazen bir Semai ve iki Nim Sofyan vurulur)
+      Düm 2 zamanlı, kuvvetli
+      Tek 1 zamanlı, yarı kuvvetli
+      Tek 1 zamanlı, zayıf
+      Dü-üm 2 zamanlı, kuvvetli
+      Te-ek 2 zamanlı, zayıftır.
+      7/8 ve 7/4'lük değerlerde vurulur.
     `,
     duyek:`
-      Sekiz zamanlıdır. îki Sofyan’dan meydana gelir.
-      DÜM l zamanlı – yarı kuvvetli
-      TE-EK 2 zamanlı – kuvvetli
-      TEK l zamanlı – yarı kuvvetli
-      DÜ-ÜM 2 zamanlı – kuvvetli
-      TE-EK 2 zamanlı – zayıftır.
-      8/8 ve 8/4 lük vurulur. 8/4 Ağır Düyek adını alır.
+      Sekiz zamanlıdır. İki Sofyan’dan meydana gelir.
+      Düm 1 zamanlı, yarı kuvvetli
+      Te-ek 2 zamanlı, kuvvetli
+      Tek l zamanlı, yarı kuvvetli
+      Dü-üm 2 zamanlı, kuvvetli
+      Te-ek 2 zamanlı, zayıftır.
+      8/8 ve 8/4'lük vurulur. 8/4 Ağır Düyek adını alır.
     `,
     musemmen:`
       Sekiz zamanlıdır.
       Eskiden bu usüle Katikofti de denilmiştir.
       Bir Semai, bir Nim Sofyan ve yine bir Semai’den meydana gelir.
-      DÜ-Ü-ÜM 3 zamanlı – kuvvetli
-      TE-EK 2 zamanlı – zayıf
-      TE-E-EK 3 zamanlı – yarı kuvvetlidir.
-      8/8 lik değerde vurulur.
+      Dü-ü-üm 3 zamanlı, kuvvetli
+      Te-ek 2 zamanlı, zayıf
+      Te-e-ek 3 zamanlı, yarı kuvvetlidir.
+      8/8'lik değerde vurulur.
     `,
     aksak:`
       Dokuz zamanlıdır. Bir Sofyan ve bir Türk Aksağından oluşur.
-      DÜ-ÜM 2 zamanlı – kuvvetli
-      TE 1 zamanlı – yarı kuvvetli
-      KE 1 zamanlı – zayıf
-      DÜ-ÜM 2 zamanlı – kuvvetli
-      TE-EK 2 zamanlı – yarı kuvvetli
-      TEK 1 zamanlı – zayıftır.
+      Dü-üm 2 zamanlı, kuvvetli
+      Te 1 zamanlı, yarı kuvvetli
+      Ke 1 zamanlı, zayıf
+      Dü-üm 2 zamanlı, kuvvetli
+      Te-ek 2 zamanlı, yarı kuvvetli
+      Tek 1 zamanlı, zayıftır.
     `,
     raksaksagi: `
       Dokuz zamanlıdır.
       Bir Türk Aksağı ve bir Sofyan’dan 
       meydana gelir.
-      DÜ-ÜM 2 zamanlı – kuvvetli
-      TE-E-EK 3 zamanlı – yarı kuvvetli
-      DÜ-ÜM 2 zamanlı – kuvvetli
-      TE-EK 2 zamanlı – zayıftır.
-      9/8 lik değerde vurulur.
+      Dü-üm 2 zamanlı, kuvvetli
+      Te-e-ek 3 zamanlı, yarı kuvvetli
+      Dü-üm 2 zamanlı, kuvvetli
+      Te-ek 2 zamanlı, zayıftır.
+      9/8'lik değerde vurulur.
     `,
     curcuna: `
       On zamanlıdır. İki Türk Aksağından meydana gelir.
-      DÜ-ÜM 2 zamanlı – kuvvetli
-      TE 1 zamanlı -zayıf
-      KA-A 2 zamanlı – yarı kuvvetli
-      DÜ-ÜM 2 zamanlı – kuvvetli
-      TE-EK 2 zamanlı – yarı kuvvetli
-      TEK 1 zamanlı – zayıftır.
+      Dü-üm 2 zamanlı, kuvvetli
+      Te 1 zamanlı, zayıf
+      Ka-a 2 zamanlı, yarı kuvvetli
+      Dü-üm 2 zamanlı, kuvvetli
+      Te-ek 2 zamanlı, yarı kuvvetli
+      Tek 1 zamanlı, zayıftır.
     `  
 
 
