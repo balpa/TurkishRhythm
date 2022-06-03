@@ -137,7 +137,7 @@ export default function Home() {
           gelişmesine katkıda bulunmaktır.
         </Text>
       </View>
-      <Text style={{fontSize:75, fontWeight:"900", textAlign:'center', color: msColor, position:'absolute', top:150}}>{time}{"\n"}
+      <Text style={{fontSize:100, fontWeight:"900", textAlign:'center', color: msColor, position:'absolute', top:150}}>{time}{"\n"}
         <Text style={{fontSize: 20}}>milliseconds{'\n'}</Text>
         <Text style={{fontSize: 14}}>between your taps</Text>
       </Text>
