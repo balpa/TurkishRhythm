@@ -14,8 +14,10 @@ const Tab = createMaterialTopTabNavigator();
 
 export default function App() {
 
-  const [tabBarIndicatorColor, setTabBarIndicatorColor] = useState('white')
   const COLOR_PALETTE_1 = ["FEF9A7","FAC213", "F77E21", "D61C4E", "990000", "FF5B00", "D4D925", "FFEE63"]
+
+  const [tabBarIndicatorColor, setTabBarIndicatorColor] = useState('white')
+
   useEffect(() => {     // set random tab bar indicator color at first render
     setTabBarIndicatorColor(COLOR_PALETTE_1[Math.floor(Math.random() * COLOR_PALETTE_1.length)])
   }, [])
@@ -25,27 +27,29 @@ export default function App() {
     <NavigationContainer>
 
       <Tab.Navigator 
-      screenOptions={({ route }) => ({
-        tabBarShowLabel: false,
-        tabBarStyle: {
-          backgroundColor: 'white',
-          marginTop: 40
-        },
-        tabBarIndicatorStyle: {
-          backgroundColor: `#${tabBarIndicatorColor}`,
-          height: 5
-        }
-
+        screenOptions={({ route }) => ({
+          tabBarShowLabel: false,
+          tabBarStyle: {
+            backgroundColor: 'white',
+            marginTop: 40
+          },
+          tabBarIndicatorStyle: {
+            backgroundColor: `#${tabBarIndicatorColor}`,
+            height: 5
+          }
       })}>
-        <Tab.Screen name="Home" component={Home} options={{
-          tabBarIcon: () => <Icon name="touch-app" color='black' />,
-        }} />
-        <Tab.Screen name="Rhythms" component={Rhythms} options={{
-          tabBarIcon: () => <Icon name="album" color='black' />,
-        }} />
-        <Tab.Screen name="Tuner" component={Tuner} options={{
-          tabBarIcon: () => <Icon name="music-note" color='black' />,
-        }} />
+        <Tab.Screen 
+          name="Home" 
+          component={Home} 
+          options={{tabBarIcon: () => <Icon name="touch-app" color='black' />}} />
+        <Tab.Screen 
+          name="Rhythms" 
+          component={Rhythms} 
+          options={{tabBarIcon: () => <Icon name="album" color='black' />}} />
+        <Tab.Screen 
+          name="Tuner" 
+          component={Tuner} 
+          options={{tabBarIcon: () => <Icon name="music-note" color='black' />}} />
       </Tab.Navigator>
 
     </NavigationContainer>

@@ -6,7 +6,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 function Tuner() {
 
-  // TODO: implement tuner
+  // TODO: This just records audio. i dont need saving the file
 
   const [recording, setRecording] = React.useState();
 
@@ -40,7 +40,8 @@ function Tuner() {
   return (
     <View>
       <Text>Tuner</Text>
-      <Button onPress={()=>stopRecording()} title='start'/>
+      <Button onPress={()=>startRecording()} title='start'/>
+      <Button onPress={()=>stopRecording()} title='stop'/>
     </View>
   )
 }
