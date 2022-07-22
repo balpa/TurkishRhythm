@@ -4,6 +4,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import Home from './pages/Home';
 import Rhythms from './pages/Rhythms';
 import Tuner from './pages/Tuner';
+import Settings from './pages/Settings';
 import { Icon } from 'react-native-elements'
 import { NavigationContainer } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
@@ -50,6 +51,10 @@ export default function App() {
           name="Tuner" 
           component={Tuner} 
           options={{tabBarIcon: () => <Icon name="music-note" color='black' />}} />
+        <Tab.Screen 
+          name="Settings" 
+          component={Settings} 
+          options={{tabBarIcon: () => <Icon name="settings" color='black' />}} />
       </Tab.Navigator>
 
     </NavigationContainer>

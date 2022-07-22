@@ -131,7 +131,7 @@ export default function Home() {
     <View style={styles.container}>
       <View style={{top:25}}>
         <Text style={{textAlign:'center', fontSize:12, fontWeight:'700'}}>
-          Bu uygulamanın amacı, butona her basışınızda,
+          Bu uygulamanın amacı; butona her basışınızda,
           bir önceki basışınız arasındaki farkı hesaplayıp milisaniye cinsinden
           ekrana yazdırarak ritim duyusunu göstermek ve pratik yaparak
           gelişmesine katkıda bulunmaktır.
