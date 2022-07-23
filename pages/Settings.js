@@ -15,14 +15,19 @@ function Settings(){
     )
   }
 
+  function expandPanel(optionName){
+    if (optionName == 'language') {
+      setIsLanguageLabelClicked(!isLanguageLabelClicked)
+    }
+  }
 
-  //TODO: add animations
+  //TODO: create a setting component for each
 
   return (
     <View style={styles.container}>
       <Animated.View style={styles.optionLabel}>
         <TouchableOpacity 
-          onPress={()=>setIsLanguageLabelClicked(!isLanguageLabelClicked)} 
+          onPress={()=>expandPanel('language')} 
           style={{width:'100%', height:'100%', justifyContent:'center', alignItems:'center'}}>
           <Text>Language</Text>
           {isLanguageLabelClicked && <LanguageExpanded />}
