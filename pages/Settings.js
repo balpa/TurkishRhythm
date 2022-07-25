@@ -29,17 +29,27 @@ function Settings(){
         <TouchableOpacity 
           onPress={()=>expandPanel('language')} 
           style={{width:'100%', height:'100%', justifyContent:'center', alignItems:'center'}}>
-          <Text>Language</Text>
-          {isLanguageLabelClicked && <LanguageExpanded />}
+            <Text>Language</Text>
+            {isLanguageLabelClicked && <LanguageExpanded />}
         </TouchableOpacity>
       </Animated.View>
       <Animated.View style={styles.optionLabel}>
-        <TouchableOpacity style={{width:'100%', height:'100%', justifyContent:'center', alignItems:'center'}}>
+        <TouchableOpacity 
+          style={{
+            width:'100%', 
+            height:'100%', 
+            justifyContent:'center', 
+            alignItems:'center'}}>
           <Text>Language</Text>
         </TouchableOpacity>
       </Animated.View>
       <Animated.View style={styles.optionLabel}>
-        <TouchableOpacity style={{width:'100%', height:'100%', justifyContent:'center', alignItems:'center'}}>
+        <TouchableOpacity 
+          style={{
+            width:'100%', 
+            height:'100%', 
+            justifyContent:'center', 
+            alignItems:'center'}}>
           <Text>Language</Text>
         </TouchableOpacity>
       </Animated.View>
