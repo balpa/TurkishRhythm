@@ -1,58 +1,16 @@
 import { View, Text, Animated, TouchableOpacity, StyleSheet } from 'react-native'
 import React from 'react'
+import LanguageSettings from '../components/SettingsComponents/LanguageSettings'
 
 function Settings(){
 
-  const [isLanguageLabelClicked, setIsLanguageLabelClicked] = React.useState(false)
-
-  const LanguageExpanded = () => {
-    return (
-      <>
-      <View>
-        <Text>EXPANDED</Text>
-      </View>
-      </>
-    )
-  }
-
-  function expandPanel(optionName){
-    if (optionName == 'language') {
-      setIsLanguageLabelClicked(!isLanguageLabelClicked)
-    }
-  }
 
   //TODO: create a setting component for each
 
   return (
     <View style={styles.container}>
-      <Animated.View style={styles.optionLabel}>
-        <TouchableOpacity 
-          onPress={()=>expandPanel('language')} 
-          style={{width:'100%', height:'100%', justifyContent:'center', alignItems:'center'}}>
-            <Text>Language</Text>
-            {isLanguageLabelClicked && <LanguageExpanded />}
-        </TouchableOpacity>
-      </Animated.View>
-      <Animated.View style={styles.optionLabel}>
-        <TouchableOpacity 
-          style={{
-            width:'100%', 
-            height:'100%', 
-            justifyContent:'center', 
-            alignItems:'center'}}>
-          <Text>Language</Text>
-        </TouchableOpacity>
-      </Animated.View>
-      <Animated.View style={styles.optionLabel}>
-        <TouchableOpacity 
-          style={{
-            width:'100%', 
-            height:'100%', 
-            justifyContent:'center', 
-            alignItems:'center'}}>
-          <Text>Language</Text>
-        </TouchableOpacity>
-      </Animated.View>
+      <LanguageSettings />
+      
     </View>
   )
 }
