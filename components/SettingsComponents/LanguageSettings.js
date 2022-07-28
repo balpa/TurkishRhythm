@@ -5,19 +5,19 @@ const LanguageSettings = () => {
 
   const [isExpanded, setIsExpanded] = React.useState(false)
 
-  const expandAnimation = React.useRef(new Animated.Value(60)).current
+  const expandAnimation = React.useRef(new Animated.Value(40)).current
 
   function expandLabel(){
     setIsExpanded(!isExpanded)
     if (!isExpanded){
       Animated.timing(expandAnimation,{
-        toValue: 150,
+        toValue: 200,
         duration: 400,
         useNativeDriver: false
       }).start()
     } else {
       Animated.timing(expandAnimation,{
-        toValue: 60,
+        toValue: 40,
         duration: 400,
         useNativeDriver: false
       }).start() 
@@ -44,11 +44,10 @@ const styles = StyleSheet.create({
     width:'100%',
     minHeight: 60,
     alignItems:'center',
-    padding:10
   },
   optionLabel: {
     width:'100%',
-    height: 40,
+    height: 30,
     backgroundColor:'crimson',
     borderRadius: 10,
     marginBottom: 5,

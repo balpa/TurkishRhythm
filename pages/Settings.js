@@ -10,7 +10,7 @@ function Settings(){
   return (
     <View style={styles.container}>
       <LanguageSettings />
-      
+      <LanguageSettings />
     </View>
   )
 }
