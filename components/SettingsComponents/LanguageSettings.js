@@ -26,7 +26,7 @@ const LanguageSettings = () => {
 
   function LanguageInside(){
     return (
-      <View>
+      <View style={styles.languageInsideContainer}>
         <Text>language inside</Text>
       </View>
     )
@@ -62,6 +62,11 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 5,
     marginTop: 5
+  },
+  languageInsideContainer: {
+    width:'80%',
+    height:'50%',
+    backgroundColor:'white'
   }
 
 })
