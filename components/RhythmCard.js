@@ -131,8 +131,6 @@ export default RhythmCard
 const styles = StyleSheet.create({
   rhythmCardContainer: {
     width: "90%",
-    minHeight: 100,
-    height: "auto",
     margin: 5,
     borderRadius: 20,
     padding: 10,
