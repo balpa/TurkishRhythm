@@ -24,6 +24,15 @@ const LanguageSettings = () => {
     }
   }
 
+  function LanguageInside(){
+    return (
+      <View>
+        <Text>language inside</Text>
+      </View>
+    )
+  }
+
+  // todo: expanded panel inside
   return (
     <Animated.View style={styles.container}>
       <Animated.View style={[styles.optionLabel, {height: expandAnimation}]}>
@@ -31,6 +40,7 @@ const LanguageSettings = () => {
           onPress={()=>expandLabel()}  
           style={{width:'100%', height:'100%', justifyContent:'center', alignItems:'center'}}>
             <Text>Language</Text>
+          {isExpanded && <LanguageInside />}
         </TouchableOpacity>
       </Animated.View>
     </Animated.View>
