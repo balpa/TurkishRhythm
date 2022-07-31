@@ -6,29 +6,46 @@ const LanguageSettings = () => {
   const [isExpanded, setIsExpanded] = React.useState(false)
 
   const expandAnimation = React.useRef(new Animated.Value(40)).current
+  const insideOpacity = React.useRef(new Animated.Value(0)).current
 
   function expandLabel(){
-    setIsExpanded(!isExpanded)
     if (!isExpanded){
+      setIsExpanded(true)
+
       Animated.timing(expandAnimation,{
         toValue: 200,
-        duration: 400,
+        duration: 500,
         useNativeDriver: false
-      }).start()
+      }).start(()=>{
+        Animated.timing(insideOpacity,{
+          toValue: 1,
+          duration: 200,
+          useNativeDriver: false
+        }).start()
+      })
     } else {
-      Animated.timing(expandAnimation,{
-        toValue: 40,
-        duration: 400,
+      Animated.timing(insideOpacity,{
+        toValue: 0,
+        duration: 200,
         useNativeDriver: false
-      }).start() 
+      }).start(()=>{
+        Animated.timing(expandAnimation,{
+          toValue: 40,
+          duration: 400,
+          useNativeDriver: false
+        }).start() 
+    })
+    setTimeout(()=>{
+      setIsExpanded(false)
+    },500)
     }
   }
 
   function LanguageInside(){
     return (
-      <View style={styles.languageInsideContainer}>
+      <Animated.View style={[styles.languageInsideContainer, {opacity: insideOpacity}]}>
         <Text>language inside</Text>
-      </View>
+      </Animated.View>
     )
   }
 
