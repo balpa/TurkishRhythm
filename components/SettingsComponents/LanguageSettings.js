@@ -26,7 +26,7 @@ const LanguageSettings = () => {
     } else {
       Animated.timing(insideOpacity,{
         toValue: 0,
-        duration: 200,
+        duration: 300,
         useNativeDriver: false
       }).start(()=>{
         Animated.timing(expandAnimation,{
@@ -37,7 +37,7 @@ const LanguageSettings = () => {
     })
     setTimeout(()=>{
       setIsExpanded(false)
-    },500)
+    },700)
     }
   }
 
@@ -54,6 +54,7 @@ const LanguageSettings = () => {
     <Animated.View style={styles.container}>
       <Animated.View style={[styles.optionLabel, {height: expandAnimation}]}>
         <TouchableOpacity
+          activeOpacity={1}
           onPress={()=>expandLabel()}  
           style={{width:'100%', height:'100%', justifyContent:'center', alignItems:'center'}}>
             <Text>Language</Text>
