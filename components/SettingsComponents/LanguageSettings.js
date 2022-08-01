@@ -42,6 +42,7 @@ const LanguageSettings = () => {
     }
   }
 
+  //todo: radio1 and 2 is gonna be a circle, turkish-english touchable maybe etc.
   function LanguageInside(){
     return (
       <Animated.View style={[styles.languageInsideContainer, {opacity: insideOpacity}]}>
