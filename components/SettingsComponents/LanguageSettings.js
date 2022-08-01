@@ -4,6 +4,8 @@ import React from 'react'
 const LanguageSettings = () => {
 
   const [isExpanded, setIsExpanded] = React.useState(false)
+  const [checked, setChecked] = React.useState('Turkish')
+  //todo: write and get language info from AsyncStorage
 
   const expandAnimation = React.useRef(new Animated.Value(40)).current
   const insideOpacity = React.useRef(new Animated.Value(0)).current
@@ -11,7 +13,6 @@ const LanguageSettings = () => {
   function expandLabel(){
     if (!isExpanded){
       setIsExpanded(true)
-
       Animated.timing(expandAnimation,{
         toValue: 200,
         duration: 500,
@@ -44,7 +45,16 @@ const LanguageSettings = () => {
   function LanguageInside(){
     return (
       <Animated.View style={[styles.languageInsideContainer, {opacity: insideOpacity}]}>
-        <Text>language inside</Text>
+        <View style={{backgroundColor:'blue', width:'100%', height:'100%',flexDirection:'row', alignItems:'center', justifyContent:'space-evenly'}}>
+          <View style={{flex: 1, backgroundColor:'yellow'}}>
+            <Text>radio1</Text>
+            <Text>radio2</Text>
+          </View>
+          <View style={{flex: 3, backgroundColor:'green', alignItems:'center', justifyContent:'center'}}>
+            <Text>Turkish</Text>
+            <Text>English</Text>
+          </View>
+        </View>
       </Animated.View>
     )
   }
@@ -84,7 +94,9 @@ const styles = StyleSheet.create({
   languageInsideContainer: {
     width:'80%',
     height:'50%',
-    backgroundColor:'white'
+    backgroundColor:'white',
+    borderRadius: 10,
+
   }
 
 })
