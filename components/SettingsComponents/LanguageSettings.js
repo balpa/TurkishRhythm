@@ -1,10 +1,11 @@
 import { View, Text, Animated, StyleSheet, TouchableOpacity } from 'react-native'
 import React from 'react'
+import { Icon } from 'react-native-elements'
 
 const LanguageSettings = () => {
 
   const [isExpanded, setIsExpanded] = React.useState(false)
-  const [checked, setChecked] = React.useState('Turkish')
+  const [checkedLanguage, setCheckedLanguage] = React.useState('Turkish')
   //todo: write and get language info from AsyncStorage
 
   const expandAnimation = React.useRef(new Animated.Value(40)).current
@@ -46,10 +47,22 @@ const LanguageSettings = () => {
   function LanguageInside(){
     return (
       <Animated.View style={[styles.languageInsideContainer, {opacity: insideOpacity}]}>
-        <View style={{backgroundColor:'blue', width:'100%', height:'100%',flexDirection:'row', alignItems:'center', justifyContent:'space-evenly'}}>
+        <View style={{width:'100%', height:'100%',flexDirection:'row', alignItems:'center', justifyContent:'space-evenly'}}>
           <View style={{flex: 1, backgroundColor:'yellow'}}>
-            <Text>radio1</Text>
-            <Text>radio2</Text>
+            <TouchableOpacity onPress={()=>setCheckedLanguage('Turkish')}>
+              <View>
+                <Icon 
+                  name={checkedLanguage == 'Turkish' ? 'radio-button-checked' : 'radio-button-unchecked'} 
+                  color={checkedLanguage == 'Turkish' ? 'crimson' : 'black'}/>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={()=>setCheckedLanguage('English')}>
+              <View>
+                <Icon 
+                  name={checkedLanguage == 'English' ? 'radio-button-checked' : 'radio-button-unchecked'} 
+                  color={checkedLanguage == 'English' ? 'crimson' : 'black'} />
+              </View>
+            </TouchableOpacity> 
           </View>
           <View style={{flex: 3, backgroundColor:'green', alignItems:'center', justifyContent:'center'}}>
             <Text>Turkish</Text>
