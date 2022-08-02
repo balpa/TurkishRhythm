@@ -43,12 +43,12 @@ const LanguageSettings = () => {
     }
   }
 
-  //todo: radio1 and 2 is gonna be a circle, turkish-english touchable maybe etc.
+  //todo: checked language function (change lang actually)
   function LanguageInside(){
     return (
       <Animated.View style={[styles.languageInsideContainer, {opacity: insideOpacity}]}>
         <View style={{width:'100%', height:'100%',flexDirection:'row', alignItems:'center', justifyContent:'space-evenly'}}>
-          <View style={{flex: 1, backgroundColor:'yellow'}}>
+          <View style={{flex: 1}}>
             <TouchableOpacity onPress={()=>setCheckedLanguage('Turkish')}>
               <View>
                 <Icon 
@@ -64,9 +64,39 @@ const LanguageSettings = () => {
               </View>
             </TouchableOpacity> 
           </View>
-          <View style={{flex: 3, backgroundColor:'green', alignItems:'center', justifyContent:'center'}}>
-            <Text>Turkish</Text>
-            <Text>English</Text>
+          <View style={{flex: 1, alignItems:'flex-start', justifyContent: 'center'}}>
+            <Text 
+              style={checkedLanguage == 'Turkish' 
+              ? {
+                  textDecorationLine:'underline',
+                  marginBottom:5,
+                  fontSize:15,
+                  fontWeight:'800'
+                }
+              :
+                {
+                  textDecorationLine:'none',
+                  marginBottom:5,
+                  fontSize: 15,
+                  fontWeight:'800'
+                }
+              }>Turkish</Text>
+            <Text 
+              style={checkedLanguage == 'English'
+              ? {
+                  textDecorationLine:'underline',
+                  marginTop:5,
+                  fontSize: 15,
+                  fontWeight: '800'
+                }
+              : 
+                {
+                  textDecorationLine:'none',
+                  marginTop:5,
+                  fontSize: 15,
+                  fontWeight:'800'
+                }
+              }>English</Text>
           </View>
         </View>
       </Animated.View>
@@ -110,7 +140,17 @@ const styles = StyleSheet.create({
     height:'50%',
     backgroundColor:'white',
     borderRadius: 10,
-
+  },
+  fontTurkish:{
+    marginBottom: 5,
+    fontSize: 15,
+    fontWeight:'800'
+  },
+  fontEnglish: {
+    marginTop: 5,
+    fontSize: 15,
+    fontWeight:'800'
   }
+
 
 })
