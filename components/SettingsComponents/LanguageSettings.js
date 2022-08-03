@@ -10,6 +10,8 @@ const LanguageSettings = () => {
 
   const expandAnimation = React.useRef(new Animated.Value(40)).current
   const insideOpacity = React.useRef(new Animated.Value(0)).current
+  const letterSpacingAnim = React.useRef(new Animated.Value(0)).current
+
 
   function expandLabel(){
     if (!isExpanded){
@@ -23,7 +25,13 @@ const LanguageSettings = () => {
           toValue: 1,
           duration: 200,
           useNativeDriver: false
-        }).start()
+        }).start(()=>{
+          Animated.timing(letterSpacingAnim,{
+            toValue:3,
+            duration:700,
+            useNativeDriver:false
+          }).start()
+        })
       })
     } else {
       Animated.timing(insideOpacity,{
@@ -35,7 +43,13 @@ const LanguageSettings = () => {
           toValue: 40,
           duration: 400,
           useNativeDriver: false
-        }).start() 
+        }).start(()=>{
+          Animated.timing(letterSpacingAnim,{
+            toValue:0,
+            duration:700,
+            useNativeDriver:false
+          }).start() 
+        }) 
     })
     setTimeout(()=>{
       setIsExpanded(false)
@@ -111,7 +125,7 @@ const LanguageSettings = () => {
           activeOpacity={1}
           onPress={()=>expandLabel()}  
           style={{width:'100%', height:'100%', justifyContent:'center', alignItems:'center'}}>
-            <Text>Language</Text>
+          <Animated.Text style={[styles.languageFont, {letterSpacing: letterSpacingAnim}]}>Language</Animated.Text>
           {isExpanded && <LanguageInside />}
         </TouchableOpacity>
       </Animated.View>
@@ -126,6 +140,11 @@ const styles = StyleSheet.create({
     width:'100%',
     minHeight: 60,
     alignItems:'center',
+  },
+  languageFont: {
+    position:'absolute',
+    top:10,
+    fontSize:15
   },
   optionLabel: {
     width:'100%',
