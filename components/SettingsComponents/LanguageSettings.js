@@ -1,9 +1,11 @@
 import { View, Text, Animated, StyleSheet, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { Icon } from 'react-native-elements'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LanguageSettings = () => {
 
+  const [languageFromCache, setLanguageFromCache] = React.useState('')
   const [isExpanded, setIsExpanded] = React.useState(false)
   const [checkedLanguage, setCheckedLanguage] = React.useState('Turkish')
   //todo: write and get language info from AsyncStorage
@@ -11,6 +13,22 @@ const LanguageSettings = () => {
   const expandAnimation = React.useRef(new Animated.Value(40)).current
   const insideOpacity = React.useRef(new Animated.Value(0)).current
   const letterSpacingAnim = React.useRef(new Animated.Value(0)).current
+
+
+  async function setLanguageToAsyncStorage(){
+    try {await AsyncStorage.setItem('LANGUAGE', checkedLanguage)} // set color data to cache storage
+    catch (e) {console.log(e)}
+  }
+
+
+
+  React.useEffect(async()=>{      // get language data from local storage (cache) ***HARDCODED***
+    try {
+      const value = await AsyncStorage.getItem('LANGUAGE')
+      if(value !== null) setLanguageFromCache(value)
+    } catch(e) {console.log(e)}
+
+},[])
 
 
   function expandLabel(){
