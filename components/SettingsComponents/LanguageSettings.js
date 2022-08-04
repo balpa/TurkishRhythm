@@ -1,4 +1,4 @@
-import { View, Text, Animated, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, Animated, StyleSheet, TouchableOpacity, Button } from 'react-native'
 import React from 'react'
 import { Icon } from 'react-native-elements'
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -13,18 +13,23 @@ const LanguageSettings = () => {
   const expandAnimation = React.useRef(new Animated.Value(40)).current
   const insideOpacity = React.useRef(new Animated.Value(0)).current
   const letterSpacingAnim = React.useRef(new Animated.Value(0)).current
+  const applyButtonAnim = React.useRef(new Animated.Value(0)).current
 
 
   async function setLanguageToAsyncStorage(){
-    try {await AsyncStorage.setItem('LANGUAGE', checkedLanguage)} // set color data to cache storage
+    try {await AsyncStorage.setItem('@language', checkedLanguage)} // set lang data to cache storage
     catch (e) {console.log(e)}
   }
+  
+  function submitLanguage(){
+    setLanguageToAsyncStorage()
+  }
 
+  console.log(checkedLanguage)
 
-
-  React.useEffect(async()=>{      // get language data from local storage (cache) ***HARDCODED***
+  React.useEffect(async()=>{      // get language data from local storage (cache)
     try {
-      const value = await AsyncStorage.getItem('LANGUAGE')
+      const value = await AsyncStorage.getItem('@language')
       if(value !== null) setLanguageFromCache(value)
     } catch(e) {console.log(e)}
 
@@ -48,27 +53,39 @@ const LanguageSettings = () => {
             toValue:3,
             duration:700,
             useNativeDriver:false
-          }).start()
+          }).start(()=>{
+            Animated.timing(applyButtonAnim,{
+              toValue: 30,
+              duration: 500,
+              useNativeDriver:false
+            }).start()
+          })
         })
       })
     } else {
-      Animated.timing(insideOpacity,{
+      Animated.timing(applyButtonAnim,{
         toValue: 0,
         duration: 300,
         useNativeDriver: false
       }).start(()=>{
-        Animated.timing(expandAnimation,{
-          toValue: 40,
-          duration: 400,
+        Animated.timing(insideOpacity,{
+          toValue: 0,
+          duration: 300,
           useNativeDriver: false
         }).start(()=>{
-          Animated.timing(letterSpacingAnim,{
-            toValue:0,
-            duration:700,
-            useNativeDriver:false
-          }).start() 
-        }) 
-    })
+          Animated.timing(expandAnimation,{
+            toValue: 40,
+            duration: 400,
+            useNativeDriver: false
+          }).start(()=>{
+            Animated.timing(letterSpacingAnim,{
+              toValue:0,
+              duration:700,
+              useNativeDriver:false
+            }).start() 
+          }) 
+      })
+      })
     setTimeout(()=>{
       setIsExpanded(false)
     },700)
@@ -131,6 +148,12 @@ const LanguageSettings = () => {
               }>English</Text>
           </View>
         </View>
+        <TouchableOpacity activeOpacity={0.9} style={{width:'100%', height:'100%'}}>
+        <Animated.View 
+          style={[styles.applyButton, {height:applyButtonAnim}]}>
+          <Text style={{color:'crimson'}}>Apply</Text>
+        </Animated.View>
+        </TouchableOpacity>
       </Animated.View>
     )
   }
@@ -158,6 +181,16 @@ const styles = StyleSheet.create({
     width:'100%',
     minHeight: 60,
     alignItems:'center',
+  },
+  applyButton: {
+    width:'40%',
+    height: 30,
+    backgroundColor:'white',
+    alignSelf:'center',
+    justifyContent:'center',
+    alignItems:'center',
+    borderBottomLeftRadius:20,
+    borderBottomRightRadius:20,
   },
   languageFont: {
     position:'absolute',
