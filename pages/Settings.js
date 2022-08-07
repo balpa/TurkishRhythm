@@ -1,6 +1,7 @@
 import { View, Text, Animated, TouchableOpacity, StyleSheet } from 'react-native'
 import React from 'react'
 import LanguageSettings from '../components/SettingsComponents/LanguageSettings'
+import About from '../components/SettingsComponents/About'
 
 function Settings(){
 
@@ -10,7 +11,7 @@ function Settings(){
   return (
     <View style={styles.container}>
       <LanguageSettings />
-      <LanguageSettings />
+      <About />
     </View>
   )
 }

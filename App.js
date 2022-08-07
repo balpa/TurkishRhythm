@@ -23,6 +23,7 @@ export default function App() {
     setTabBarIndicatorColor(COLOR_PALETTE_1[Math.floor(Math.random() * COLOR_PALETTE_1.length)])
   }, [])
   
+  //todo: makam page
   return (
 
     <NavigationContainer>
@@ -47,10 +48,6 @@ export default function App() {
           name="Rhythms" 
           component={Rhythms} 
           options={{tabBarIcon: () => <Icon name="album" color='black' />}} />
-        <Tab.Screen 
-          name="Tuner" 
-          component={Tuner} 
-          options={{tabBarIcon: () => <Icon name="music-note" color='black' />}} />
         <Tab.Screen 
           name="Settings" 
           component={Settings} 
