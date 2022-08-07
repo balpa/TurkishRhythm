@@ -25,8 +25,6 @@ const LanguageSettings = () => {
     setLanguageToAsyncStorage()
   }
 
-  console.log(checkedLanguage)
-
   React.useEffect(async()=>{      // get language data from local storage (cache)
     try {
       const value = await AsyncStorage.getItem('@language')
@@ -41,7 +39,7 @@ const LanguageSettings = () => {
       setIsExpanded(true)
       Animated.timing(expandAnimation,{
         toValue: 200,
-        duration: 500,
+        duration: 200,
         useNativeDriver: false
       }).start(()=>{
         Animated.timing(insideOpacity,{
@@ -51,7 +49,7 @@ const LanguageSettings = () => {
         }).start(()=>{
           Animated.timing(letterSpacingAnim,{
             toValue:3,
-            duration:700,
+            duration:200,
             useNativeDriver:false
           }).start(()=>{
             Animated.timing(applyButtonAnim,{
@@ -65,22 +63,22 @@ const LanguageSettings = () => {
     } else {
       Animated.timing(applyButtonAnim,{
         toValue: 0,
-        duration: 300,
+        duration: 200,
         useNativeDriver: false
       }).start(()=>{
         Animated.timing(insideOpacity,{
           toValue: 0,
-          duration: 300,
+          duration: 200,
           useNativeDriver: false
         }).start(()=>{
           Animated.timing(expandAnimation,{
             toValue: 40,
-            duration: 400,
+            duration: 200,
             useNativeDriver: false
           }).start(()=>{
             Animated.timing(letterSpacingAnim,{
               toValue:0,
-              duration:700,
+              duration:200,
               useNativeDriver:false
             }).start() 
           }) 
@@ -189,8 +187,8 @@ const styles = StyleSheet.create({
     alignSelf:'center',
     justifyContent:'center',
     alignItems:'center',
-    borderBottomLeftRadius:20,
-    borderBottomRightRadius:20,
+    borderBottomLeftRadius:10,
+    borderBottomRightRadius:10,
   },
   languageFont: {
     position:'absolute',
