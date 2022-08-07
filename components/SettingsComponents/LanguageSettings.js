@@ -23,6 +23,7 @@ const LanguageSettings = () => {
   
   function submitLanguage(){
     setLanguageToAsyncStorage()
+    setTimeout(()=>{expandLabel()},400)
   }
 
   React.useEffect(async()=>{      // get language data from local storage (cache)
@@ -149,7 +150,9 @@ const LanguageSettings = () => {
         <TouchableOpacity activeOpacity={0.9} style={{width:'100%', height:'100%'}}>
         <Animated.View 
           style={[styles.applyButton, {height:applyButtonAnim}]}>
-          <Text style={{color:'crimson'}}>Apply</Text>
+          <TouchableOpacity onPress={()=>{submitLanguage()}} style={{width:'100%', height: '100%', justifyContent:'center', alignItems:'center'}}>
+            <Text style={{color:'crimson'}}>Apply</Text>
+          </TouchableOpacity>
         </Animated.View>
         </TouchableOpacity>
       </Animated.View>
