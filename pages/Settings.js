@@ -3,7 +3,7 @@ import React from 'react'
 import LanguageSettings from '../components/SettingsComponents/LanguageSettings'
 import About from '../components/SettingsComponents/About'
 
-function Settings(){
+function Settings({language}){
 
 
   //TODO: create a setting component for each

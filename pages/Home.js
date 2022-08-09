@@ -3,11 +3,17 @@ import React, { useState, useEffect} from 'react'
 import { Icon } from 'react-native-elements'
 import { ScreenStackHeaderBackButtonImage } from 'react-native-screens'
 
-export default function Home() {
+export default function Home({language}) {
 
   //TODO: change component name related to metronome
 
     const COLOR_PALETTE_1 = ["FEF9A7","FAC213", "F77E21", "D61C4E", "990000", "FF5B00", "D4D925", "FFEE63"]
+
+    const MILLISECONDS_TEXT = language == 'Turkish' ? 'milisaniye' : 'milliseconds'
+    const BETWEEN_TAPS_TEXT = language == 'Turkish' ? 'vuruşlar arası' : 'between taps'
+    const HIT_BUTTON_TEXT = language == 'Turkish' ? 'dokun' : 'hit'
+    const RESET_BUTTON_TEXT = language == 'Turkish' ? 'sıfırla' : 'reset'
+
 
     const [time, setTime] = useState(0)
     const [isOn, setisOn] = useState(false)
@@ -143,24 +149,24 @@ export default function Home() {
           fontSize:100,
           textShadowColor:'black',
           textShadowRadius:2,
-          textShadowOffset:{width:0.5,height:0.5}, 
+          textShadowOffset:{width:0.2,height:0.2}, 
           fontWeight:"900", 
           textAlign:'center', 
           color: msColor, 
           position:'absolute', 
           top:150}}>{time}{"\n"}
-        <Text style={{fontSize: 20}}>milisaniye{'\n'}</Text>
-        <Text style={{fontSize: 14}}>vuruşlar arası</Text>
+        <Text style={{fontSize: 20}}>{MILLISECONDS_TEXT}{'\n'}</Text>
+        <Text style={{fontSize: 14}}>{BETWEEN_TAPS_TEXT}</Text>
       </Text>
       <Animated.View style={[styles.hitMeButton, shadowOptions, {backgroundColor:`#${hitMeColor}`}, {transform: [{scale: scaleAnim}]}]}>
         <TouchableOpacity style={{width:'100%', height:'100%', justifyContent:'center', alignItems:'center'}} onPress={()=> calc()}>
-          <Text style={{ fontSize: 40 }}>dokun</Text>
+          <Text style={{ fontSize: 40 }}>{HIT_BUTTON_TEXT}</Text>
         </TouchableOpacity>
       </Animated.View> 
 
       <Animated.View style={[styles.resetButton, {backgroundColor: `#${resetColor}`}, {transform: [{translateY: yAnim}]}]}>
         <TouchableOpacity style={{width:"100%", justifyContent:'center', alignItems:'center'}} onPress={()=>reset()}>
-          <Text style={{ fontSize: 40 }}>sıfırla</Text>
+          <Text style={{ fontSize: 40 }}>{RESET_BUTTON_TEXT}</Text>
         </TouchableOpacity>
       </Animated.View>
     </View>

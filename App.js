@@ -50,15 +50,15 @@ export default function App() {
       })}>
         <Tab.Screen 
           name="Home" 
-          component={Home} 
+          children={()=> <Home language={languageFromCache} />} 
           options={{tabBarIcon: () => <Icon name="touch-app" color='black' />}} />
         <Tab.Screen 
           name="Rhythms" 
-          component={Rhythms} 
+          children={()=> <Rhythms language={languageFromCache}/>}
           options={{tabBarIcon: () => <Icon name="album" color='black' />}} />
         <Tab.Screen 
           name="Settings" 
-          component={Settings} 
+          children={()=> <Settings language={languageFromCache}/>}
           options={{tabBarIcon: () => <Icon name="settings" color='black' />}} />
       </Tab.Navigator>
 
