@@ -12,7 +12,7 @@ const About = () => {
     if (!isExpanded){
       setIsExpanded(true)
       Animated.timing(expandAnimation,{
-        toValue: 200,
+        toValue: 100,
         duration: 200,
         useNativeDriver: false
       }).start()
@@ -26,11 +26,30 @@ const About = () => {
     }
   }
 
+  const InsideAbout = () => {
+    return (
+      <View>
+        <Text>baLpa</Text>
+      </View>
+    )
+  }
+
   //todo: expand
   return (
     <Animated.View style={styles.container}>
       <Animated.View style={[styles.optionLabel, {height: expandAnimation}]}>
-        <Text>baLpa</Text>
+        <TouchableOpacity 
+          onPress={()=>{expandLabel()}}
+          activeOpacity={0.9}
+          style={{
+            justifyContent:'center',
+            alignItems:'center',
+            width:'100%',
+            height:'100%'
+          }}>
+          <Text>About</Text>
+          {isExpanded && <InsideAbout />}
+        </TouchableOpacity>
       </Animated.View>
     </Animated.View>
   )

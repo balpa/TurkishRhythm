@@ -139,6 +139,7 @@ export default function Home() {
       </View>
       <Text 
         style={{
+          padding:1,
           fontSize:100,
           textShadowColor:'black',
           textShadowRadius:2,

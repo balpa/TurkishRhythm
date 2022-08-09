@@ -29,10 +29,9 @@ const LanguageSettings = () => {
   React.useEffect(async()=>{      // get language data from local storage (cache)
     try {
       const value = await AsyncStorage.getItem('@language')
-      if(value !== null) setLanguageFromCache(value)
+      if(value !== null) setLanguageFromCache(value);console.log('LANGUAGE: ', value);setCheckedLanguage(value)
     } catch(e) {console.log(e)}
-
-},[])
+  },[])
 
 
   function expandLabel(){
