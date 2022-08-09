@@ -13,14 +13,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Tab = createMaterialTopTabNavigator();
 
-export default function App() {
+const App = () => {
 
   const COLOR_PALETTE_1 = ["FEF9A7","FAC213", "F77E21", "D61C4E", "990000", "FF5B00", "D4D925", "FFEE63"]
 
   const [tabBarIndicatorColor, setTabBarIndicatorColor] = useState('white')
   const [languageFromCache, setLanguageFromCache] = useState('')
 
-  React.useEffect(async()=>{      // get language data from local storage (cache)
+  useEffect(async()=>{      // get language data from local storage (cache)
     try {
       const value = await AsyncStorage.getItem('@language')
       if(value !== null) setLanguageFromCache(value);console.log('LANGUAGE: ', value)
@@ -66,6 +66,8 @@ export default function App() {
 
   )
 }
+
+export default App
 
 const styles = StyleSheet.create({
   container: {

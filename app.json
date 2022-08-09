@@ -2,9 +2,8 @@
   "expo": {
     "name": "turkishrhythm",
     "slug": "turkishrhythm",
-    "version": "1.0.0",
+    "version": "0.9",
     "orientation": "portrait",
-   
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -12,12 +11,14 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.balpa.turkishmusic",
+      "buildNumber": "0.9"
     },
     "android": {
-      
+      "package": "com.balpa.turkishmusic",
+      "versionCode": 1
     },
-    "web": {
-    }
+    "web": {}
   }
 }

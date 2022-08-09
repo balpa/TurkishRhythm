@@ -1,13 +1,13 @@
 import { View, Text, Animated, StyleSheet, TouchableOpacity, Button } from 'react-native'
-import React from 'react'
+import React, {useState,useEffect} from 'react'
 import { Icon } from 'react-native-elements'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LanguageSettings = () => {
 
-  const [languageFromCache, setLanguageFromCache] = React.useState('')
-  const [isExpanded, setIsExpanded] = React.useState(false)
-  const [checkedLanguage, setCheckedLanguage] = React.useState('Turkish')
+  const [languageFromCache, setLanguageFromCache] = useState('')
+  const [isExpanded, setIsExpanded] = useState(false)
+  const [checkedLanguage, setCheckedLanguage] = useState('Turkish')
   //todo: write and get language info from AsyncStorage
 
   const expandAnimation = React.useRef(new Animated.Value(40)).current
@@ -16,17 +16,17 @@ const LanguageSettings = () => {
   const applyButtonAnim = React.useRef(new Animated.Value(0)).current
 
 
-  async function setLanguageToAsyncStorage(){
+  const setLanguageToAsyncStorage = async() => {
     try {await AsyncStorage.setItem('@language', checkedLanguage)} // set lang data to cache storage
     catch (e) {console.log(e)}
   }
   
-  function submitLanguage(){
+  const submitLanguage = () => {
     setLanguageToAsyncStorage()
     setTimeout(()=>{expandLabel()},400)
   }
 
-  React.useEffect(async()=>{      // get language data from local storage (cache)
+  useEffect(async()=>{      // get language data from local storage (cache)
     try {
       const value = await AsyncStorage.getItem('@language')
       if(value !== null) setLanguageFromCache(value);console.log('LANGUAGE: ', value);setCheckedLanguage(value)
@@ -34,7 +34,7 @@ const LanguageSettings = () => {
   },[])
 
 
-  function expandLabel(){
+  const expandLabel = () => {
     if (!isExpanded){
       setIsExpanded(true)
       Animated.timing(expandAnimation,{
@@ -91,7 +91,7 @@ const LanguageSettings = () => {
   }
 
   //todo: checked language function (change lang actually)
-  function LanguageInside(){
+  const LanguageInside = () => {
     return (
       <Animated.View style={[styles.languageInsideContainer, {opacity: insideOpacity}]}>
         <View style={{width:'100%', height:'100%',flexDirection:'row', alignItems:'center', justifyContent:'space-evenly'}}>

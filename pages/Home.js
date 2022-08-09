@@ -3,7 +3,7 @@ import React, { useState, useEffect} from 'react'
 import { Icon } from 'react-native-elements'
 import { ScreenStackHeaderBackButtonImage } from 'react-native-screens'
 
-export default function Home({language}) {
+const Home = ({language}) => {
 
   //TODO: change component name related to metronome
 
@@ -87,12 +87,12 @@ export default function Home({language}) {
     },[])
 
 
-    function createTime(){      // create current time in milliseconds
+    const createTime = () => {      // create current time in milliseconds
       let now = new Date().getTime()
       return now
     }
 
-    function calc(){            // calculate the time difference
+    const calc = () => {            // calculate the time difference
 
       // animations for hitting the button
       Animated.timing(scaleAnim, {
@@ -124,7 +124,7 @@ export default function Home({language}) {
       }
     
 
-    function reset(){           // reset all 
+    const reset = () => {           // reset all 
       setTime(0)
       setCurrentTime(0)
       setPreviousTime(0)
@@ -173,6 +173,7 @@ export default function Home({language}) {
   )
 }
 
+export default Home
 
 const styles = StyleSheet.create({
   container: {

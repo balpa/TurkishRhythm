@@ -8,7 +8,7 @@ const About = () => {
 
   const expandAnimation = React.useRef(new Animated.Value(40)).current
 
-  function expandLabel(){
+  const expandLabel = () => {
     if (!isExpanded){
       setIsExpanded(true)
       Animated.timing(expandAnimation,{
