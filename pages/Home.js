@@ -137,19 +137,29 @@ export default function Home() {
           gelişmesine katkıda bulunmaktır.
         </Text>
       </View>
-      <Text style={{fontSize:100, fontWeight:"900", textAlign:'center', color: msColor, position:'absolute', top:150}}>{time}{"\n"}
-        <Text style={{fontSize: 20}}>milliseconds{'\n'}</Text>
-        <Text style={{fontSize: 14}}>between your taps</Text>
+      <Text 
+        style={{
+          fontSize:100,
+          textShadowColor:'black',
+          textShadowRadius:2,
+          textShadowOffset:{width:0.5,height:0.5}, 
+          fontWeight:"900", 
+          textAlign:'center', 
+          color: msColor, 
+          position:'absolute', 
+          top:150}}>{time}{"\n"}
+        <Text style={{fontSize: 20}}>milisaniye{'\n'}</Text>
+        <Text style={{fontSize: 14}}>vuruşlar arası</Text>
       </Text>
       <Animated.View style={[styles.hitMeButton, shadowOptions, {backgroundColor:`#${hitMeColor}`}, {transform: [{scale: scaleAnim}]}]}>
         <TouchableOpacity style={{width:'100%', height:'100%', justifyContent:'center', alignItems:'center'}} onPress={()=> calc()}>
-          <Text style={{ fontSize: 40 }}>hit me</Text>
+          <Text style={{ fontSize: 40 }}>dokun</Text>
         </TouchableOpacity>
       </Animated.View> 
 
       <Animated.View style={[styles.resetButton, {backgroundColor: `#${resetColor}`}, {transform: [{translateY: yAnim}]}]}>
         <TouchableOpacity style={{width:"100%", justifyContent:'center', alignItems:'center'}} onPress={()=>reset()}>
-          <Text style={{ fontSize: 40 }}>reset</Text>
+          <Text style={{ fontSize: 40 }}>sıfırla</Text>
         </TouchableOpacity>
       </Animated.View>
     </View>
