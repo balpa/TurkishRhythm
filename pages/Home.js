@@ -26,9 +26,11 @@ const Home = ({language}) => {
     const [resetColor, setResetColor] = useState('white')
     const [platform, setPlatform] = useState("")
     const [shadowOptions, setShadowOptions] = useState({})
+    const [openInfoPanel, setOpenInfoPanel] = useState(false)
 
     const yAnim = React.useRef(new Animated.Value(500)).current
     const scaleAnim = React.useRef(new Animated.Value(0)).current
+    const infoPanelHeightAnim = React.useRef(new Animated.Value(0)).current
 
     useEffect(() => {          // platform based shadow options
       if (Platform.OS === "android") {
@@ -133,16 +135,56 @@ const Home = ({language}) => {
     }
 
 
-  return (
-    <View style={styles.container}>
-      <View style={{top:25}}>
+    const expandInfoPanel = () => {
+      if (openInfoPanel == false) {
+        setOpenInfoPanel(true)
+
+        Animated.timing(infoPanelHeightAnim,{
+          toValue: 200,
+          duration:400,
+          useNativeDriver:false
+        }).start()
+
+      } else {
+        setOpenInfoPanel(false)
+
+        Animated.timing(infoPanelHeightAnim,{
+          toValue: 0,
+          duration: 400,
+          useNativeDriver: false
+        }).start()
+      }
+
+
+    }
+
+
+    const InfoPanel = () => {
+      return (
+        <Animated.View style={[styles.infoPanelMargin, {height:infoPanelHeightAnim}]}>
         <Text style={{textAlign:'center', fontSize:12, fontWeight:'700'}}>
           Bu uygulamanın amacı; butona her basışınızda,
           bir önceki basışınız arasındaki farkı hesaplayıp milisaniye cinsinden
           ekrana yazdırarak ritim duyusunu göstermek ve pratik yaparak
           gelişmesine katkıda bulunmaktır.
         </Text>
-      </View>
+      </Animated.View>
+      )
+    }
+
+    //todo: info panel animation not working
+
+
+  return (
+    <View style={styles.container}>
+      <TouchableOpacity
+        onPress={()=>{expandInfoPanel()}}>
+        <View style={{top:25}}>
+          {openInfoPanel && 
+          <InfoPanel />}
+          <Text style={{textAlign:'center', fontSize:15, fontWeight:'700'}}>INFO</Text>
+        </View>
+      </TouchableOpacity>
       <Text 
         style={{
           padding:1,
@@ -210,5 +252,8 @@ const styles = StyleSheet.create({
     // shadowOpacity: 0.4,
     // shadowRadius: 5,
 
+  },
+  infoPanelMargin: {
+    marginBottom: 10
   }
 })
