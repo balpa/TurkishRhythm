@@ -30,7 +30,7 @@ const Home = ({language}) => {
 
     const yAnim = React.useRef(new Animated.Value(500)).current
     const scaleAnim = React.useRef(new Animated.Value(0)).current
-    const infoPanelHeightAnim = React.useRef(new Animated.Value(0)).current
+    const infoPanelHeightAnim = React.useRef(new Animated.Value(50)).current
 
     useEffect(() => {          // platform based shadow options
       if (Platform.OS === "android") {
@@ -149,7 +149,7 @@ const Home = ({language}) => {
         setOpenInfoPanel(false)
 
         Animated.timing(infoPanelHeightAnim,{
-          toValue: 0,
+          toValue: 50,
           duration: 400,
           useNativeDriver: false
         }).start()
@@ -161,7 +161,7 @@ const Home = ({language}) => {
 
     const InfoPanel = () => {
       return (
-        <Animated.View style={[styles.infoPanelMargin, {height:infoPanelHeightAnim}]}>
+        <Animated.View style={styles.infoPanelMargin}>
         <Text style={{textAlign:'center', fontSize:12, fontWeight:'700'}}>
           Bu uygulamanın amacı; butona her basışınızda,
           bir önceki basışınız arasındaki farkı hesaplayıp milisaniye cinsinden
@@ -172,19 +172,16 @@ const Home = ({language}) => {
       )
     }
 
-    //todo: info panel animation not working
-
-
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        onPress={()=>{expandInfoPanel()}}>
-        <View style={{top:25}}>
-          {openInfoPanel && 
-          <InfoPanel />}
-          <Text style={{textAlign:'center', fontSize:15, fontWeight:'700'}}>INFO</Text>
-        </View>
-      </TouchableOpacity>
+        <TouchableOpacity
+          onPress={()=>{expandInfoPanel()}}>
+          <View style={{top: 25}}>
+            {openInfoPanel && 
+            <InfoPanel />}
+            <Text style={{textAlign:'center', fontSize:15, fontWeight:'700'}}>INFO</Text>
+          </View>
+        </TouchableOpacity>
       <Text 
         style={{
           padding:1,
@@ -255,5 +252,8 @@ const styles = StyleSheet.create({
   },
   infoPanelMargin: {
     marginBottom: 10
+  },
+  infoPanel: {
+    top: 25,
   }
 })
