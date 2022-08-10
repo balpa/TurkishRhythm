@@ -3,7 +3,12 @@ import React, {useState,useEffect} from 'react'
 import { Icon } from 'react-native-elements'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const LanguageSettings = () => {
+const LanguageSettings = ({language}) => {
+
+  const LANGUAGE_TEXT = language == 'Turkish' ? 'Dil' : 'Language'
+  const TURKISH_TEXT = language == 'Turkish' ? 'Türkçe' : 'Turkish'
+  const ENGLISH_TEXT = language == 'Turkish' ? 'İngilizce' : 'English'
+  const APPLY_TEXT = language == 'Turkish' ? 'Uygula' : 'Apply'
 
   const [languageFromCache, setLanguageFromCache] = useState('')
   const [isExpanded, setIsExpanded] = useState(false)
@@ -127,7 +132,7 @@ const LanguageSettings = () => {
                   fontSize: 15,
                   fontWeight:'800'
                 }
-              }>Turkish</Text>
+              }>{TURKISH_TEXT}</Text>
             <Text 
               style={checkedLanguage == 'English'
               ? {
@@ -143,14 +148,14 @@ const LanguageSettings = () => {
                   fontSize: 15,
                   fontWeight:'800'
                 }
-              }>English</Text>
+              }>{ENGLISH_TEXT}</Text>
           </View>
         </View>
         <TouchableOpacity activeOpacity={0.9} style={{width:'100%', height:'100%'}}>
         <Animated.View 
           style={[styles.applyButton, {height:applyButtonAnim}]}>
           <TouchableOpacity onPress={()=>{submitLanguage()}} style={{width:'100%', height: '100%', justifyContent:'center', alignItems:'center'}}>
-            <Text style={{color:'crimson'}}>Apply</Text>
+            <Text style={{color:'crimson'}}>{APPLY_TEXT}</Text>
           </TouchableOpacity>
         </Animated.View>
         </TouchableOpacity>
@@ -166,7 +171,7 @@ const LanguageSettings = () => {
           activeOpacity={1}
           onPress={()=>expandLabel()}  
           style={{width:'100%', height:'100%', justifyContent:'center', alignItems:'center'}}>
-          <Animated.Text style={[styles.languageFont, {letterSpacing: letterSpacingAnim}]}>Language</Animated.Text>
+          <Animated.Text style={[styles.languageFont, {letterSpacing: letterSpacingAnim}]}>{LANGUAGE_TEXT}</Animated.Text>
           {isExpanded && <LanguageInside />}
         </TouchableOpacity>
       </Animated.View>

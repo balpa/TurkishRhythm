@@ -2,7 +2,9 @@ import { View, Text, Animated, StyleSheet, TouchableOpacity } from 'react-native
 import React from 'react'
 import { Icon } from 'react-native-elements'
 
-const About = () => {
+const About = ({language}) => {
+
+  const ABOUT_TEXT = language == 'Turkish' ? 'Hakkında' : 'About'
 
   const [isExpanded, setIsExpanded] = React.useState(false)
 
@@ -47,7 +49,7 @@ const About = () => {
             width:'100%',
             height:'100%'
           }}>
-          <Text>About</Text>
+          <Text>{ABOUT_TEXT}</Text>
           {isExpanded && <InsideAbout />}
         </TouchableOpacity>
       </Animated.View>

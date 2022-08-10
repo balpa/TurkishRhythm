@@ -13,6 +13,7 @@ const Home = ({language}) => {
     const BETWEEN_TAPS_TEXT = language == 'Turkish' ? 'vuruşlar arası' : 'between taps'
     const HIT_BUTTON_TEXT = language == 'Turkish' ? 'dokun' : 'hit'
     const RESET_BUTTON_TEXT = language == 'Turkish' ? 'sıfırla' : 'reset'
+    const INFO_TEXT = language == 'Turkish' ? 'BİLGİ' : 'INFO'
 
 
     const [time, setTime] = useState(0)
@@ -179,7 +180,9 @@ const Home = ({language}) => {
           <View style={{top: 25}}>
             {openInfoPanel && 
             <InfoPanel />}
-            <Text style={{textAlign:'center', fontSize:15, fontWeight:'700'}}>INFO</Text>
+            <Text style={{textAlign:'center', fontSize:15, fontWeight:'700'}}>
+              {INFO_TEXT}
+            </Text>
           </View>
         </TouchableOpacity>
       <Text 
@@ -187,8 +190,8 @@ const Home = ({language}) => {
           padding:1,
           fontSize:100,
           textShadowColor:'black',
-          textShadowRadius:2,
-          textShadowOffset:{width:0.2,height:0.2}, 
+          textShadowRadius:0.5,
+          textShadowOffset:{width:0.1,height:0.1}, 
           fontWeight:"900", 
           textAlign:'center', 
           color: msColor, 

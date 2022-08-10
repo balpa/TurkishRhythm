@@ -7,8 +7,8 @@ const Settings = ({language}) => {
 
   return (
     <View style={styles.container}>
-      <LanguageSettings />
-      <About />
+      <LanguageSettings language={language} />
+      <About language={language}/>
     </View>
   )
 }
