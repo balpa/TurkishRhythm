@@ -1,7 +1,7 @@
 import { View, Text, Button, StyleSheet, TouchableOpacity, Animated, Platform } from 'react-native'
 import React, { useState, useEffect} from 'react'
 import { Icon } from 'react-native-elements'
-import { ScreenStackHeaderBackButtonImage } from 'react-native-screens'
+
 
 const Home = ({language}) => {
 
@@ -32,6 +32,7 @@ const Home = ({language}) => {
     const yAnim = React.useRef(new Animated.Value(500)).current
     const scaleAnim = React.useRef(new Animated.Value(0)).current
     const infoPanelHeightAnim = React.useRef(new Animated.Value(50)).current
+
 
     useEffect(() => {          // platform based shadow options
       if (Platform.OS === "android") {
@@ -88,8 +89,7 @@ const Home = ({language}) => {
       setHitMeColor(COLOR_PALETTE_1[Math.floor(Math.random() * COLOR_PALETTE_1.length)])
       setResetColor(COLOR_PALETTE_1[Math.floor(Math.random() * COLOR_PALETTE_1.length)])
     },[])
-
-
+    
     const createTime = () => {      // create current time in milliseconds
       let now = new Date().getTime()
       return now
@@ -124,9 +124,8 @@ const Home = ({language}) => {
       setCurrentTime(now)
       setTimeArray(old => [...old, diff])
 
-      }
+    }
     
-
     const reset = () => {           // reset all 
       setTime(0)
       setCurrentTime(0)
@@ -134,7 +133,6 @@ const Home = ({language}) => {
       setisOn(false)
       setTimeArray([])
     }
-
 
     const expandInfoPanel = () => {
       if (openInfoPanel == false) {
@@ -185,21 +183,13 @@ const Home = ({language}) => {
             </Text>
           </View>
         </TouchableOpacity>
-      <Text 
-        style={{
-          padding:1,
-          fontSize:100,
-          textShadowColor:'black',
-          textShadowRadius:0.5,
-          textShadowOffset:{width:0.1,height:0.1}, 
-          fontWeight:"900", 
-          textAlign:'center', 
-          color: msColor, 
-          position:'absolute', 
-          top:150}}>{time}{"\n"}
-        <Text style={{fontSize: 20}}>{MILLISECONDS_TEXT}{'\n'}</Text>
-        <Text style={{fontSize: 14}}>{BETWEEN_TAPS_TEXT}</Text>
-      </Text>
+      <View style={styles.msInfoContainer}>
+        <Text 
+          style={[styles.msText,{color: msColor}]}>{time}{"\n"}
+          <Text style={{fontSize: 20}}>{MILLISECONDS_TEXT}{'\n'}</Text>
+          <Text style={{fontSize: 14}}>{BETWEEN_TAPS_TEXT}</Text>
+        </Text>
+      </View>
       <Animated.View style={[styles.hitMeButton, shadowOptions, {backgroundColor:`#${hitMeColor}`}, {transform: [{scale: scaleAnim}]}]}>
         <TouchableOpacity style={{width:'100%', height:'100%', justifyContent:'center', alignItems:'center'}} onPress={()=> calc()}>
           <Text style={{ fontSize: 40 }}>{HIT_BUTTON_TEXT}</Text>
@@ -226,21 +216,23 @@ const styles = StyleSheet.create({
   },
   resetButton: {
     position: 'absolute',
-    bottom: 0,
+    bottom: 20,
     borderWidth: 2,
     borderColor:'black',
     backgroundColor: 'rgba(230,230,230,1)',
-    width: "100%",
+    width: '90%',
     height: 100,
     alignItems: 'center',
     justifyContent: 'center',
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20
+    borderBottomRightRadius: 40,
+    borderBottomLeftRadius: 40,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10
   },
   hitMeButton: {
     width: 300,
     height: 100,
-    borderRadius: 30,
+    borderRadius: 25,
     position: 'absolute',
     bottom: 250,
     borderWidth: 2,
@@ -258,5 +250,26 @@ const styles = StyleSheet.create({
   },
   infoPanel: {
     top: 25,
+  },
+  msInfoContainer: {
+    position:'absolute',
+    width:'90%',
+    height:200,
+    justifyContent:'center',
+    alignItems:'center',
+    top: 150,
+    borderWidth: 2,
+    borderRadius:20,
+  },
+  msText: {
+    padding:1,
+    fontSize:100,
+    textShadowColor:'black',
+    textShadowRadius:0.5,
+    textShadowOffset:{width:0.1,height:0.1}, 
+    fontWeight:"900", 
+    textAlign:'center', 
+    position:'absolute', 
+    paddingBottom: 25 
   }
 })
