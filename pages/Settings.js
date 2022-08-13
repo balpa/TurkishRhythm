@@ -2,12 +2,14 @@ import { View, Text, Animated, TouchableOpacity, StyleSheet } from 'react-native
 import React from 'react'
 import LanguageSettings from '../components/SettingsComponents/LanguageSettings'
 import About from '../components/SettingsComponents/About'
+import Theme from '../components/SettingsComponents/Theme'
 
 const Settings = ({language}) => {
 
   return (
     <View style={styles.container}>
       <LanguageSettings language={language} />
+      <Theme language={language}/>
       <About language={language}/>
     </View>
   )
