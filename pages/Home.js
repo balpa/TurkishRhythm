@@ -73,8 +73,8 @@ const Home = ({language}) => {
 
     useEffect(() => {           // change color of text depending on time difference. its done to show if user is doing okay
 
-      if ( timeArray[timeArray.length-1]-timeArray[timeArray.length-2] < 75 ) setMsColor('green') 
-      else if (timeArray[timeArray.length-1]-timeArray[timeArray.length-2] < 100) setMsColor('#b7ec09')
+      if ( timeArray[timeArray.length-1]-timeArray[timeArray.length-2] < 50 ) setMsColor('green') 
+      else if (timeArray[timeArray.length-1]-timeArray[timeArray.length-2] < 75) setMsColor('#b7ec09')
       else setMsColor('red')
 
     },[currentTime])
