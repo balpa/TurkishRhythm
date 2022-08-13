@@ -13,7 +13,6 @@ const Theme = ({language}) => {
   const [themeFromCache, setThemeFromCache] = useState('')
   const [isExpanded, setIsExpanded] = useState(false)
   const [checkedTheme, setCheckedTheme] = useState('Dark')
-  //todo: write and get language info from AsyncStorage
 
   const expandAnimation = React.useRef(new Animated.Value(40)).current
   const insideOpacity = React.useRef(new Animated.Value(0)).current
@@ -22,7 +21,7 @@ const Theme = ({language}) => {
 
 
   const setThemeToAsyncStorage = async() => {
-    try {await AsyncStorage.setItem('@theme', checkedTheme)} // set lang data to cache storage
+    try {await AsyncStorage.setItem('@theme', checkedTheme)} // set theme data to cache storage
     catch (e) {console.log(e)}
   }
   

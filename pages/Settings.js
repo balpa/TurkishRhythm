@@ -4,7 +4,9 @@ import LanguageSettings from '../components/SettingsComponents/LanguageSettings'
 import About from '../components/SettingsComponents/About'
 import Theme from '../components/SettingsComponents/Theme'
 
-const Settings = ({language}) => {
+const Settings = ({language, theme}) => {
+
+  //todo: theme color changes
 
   return (
     <View style={styles.container}>
@@ -22,7 +24,7 @@ const styles = StyleSheet.create({
     width:'100%',
     height:'100%',
     alignItems:'center',
-    padding:10
+    padding:10,
   },
   optionLabel:{
     width:'90%',

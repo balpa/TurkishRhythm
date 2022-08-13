@@ -19,11 +19,14 @@ const App = () => {
 
   const [tabBarIndicatorColor, setTabBarIndicatorColor] = useState('white')
   const [languageFromCache, setLanguageFromCache] = useState('')
+  const [themeFromCache, setThemeFromCache] = useState('')
 
   useEffect(async()=>{      // get language data from local storage (cache)
     try {
       const value = await AsyncStorage.getItem('@language')
+      const themeVal = await AsyncStorage.getItem('@theme')
       if(value !== null) setLanguageFromCache(value);console.log('LANGUAGE: ', value)
+      if(themeVal !== null) setThemeFromCache(themeVal);console.log('THEME: ',themeVal)
     } catch(e) {console.log(e)}
   },[])
 
@@ -58,7 +61,7 @@ const App = () => {
           options={{tabBarIcon: () => <Icon name="album" color='black' />}} />
         <Tab.Screen 
           name="Settings" 
-          children={()=> <Settings language={languageFromCache}/>}
+          children={()=> <Settings language={languageFromCache} theme={themeFromCache}/>}
           options={{tabBarIcon: () => <Icon name="settings" color='black' />}} />
       </Tab.Navigator>
 
