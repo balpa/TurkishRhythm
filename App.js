@@ -17,6 +17,8 @@ const App = () => {
 
   const COLOR_PALETTE_1 = ["FEF9A7","FAC213", "F77E21", "D61C4E", "990000", "FF5B00", "D4D925", "FFEE63"]
 
+  const DARK_MODE_PALETTE = ['#4c3a51', '#774360', '#b25068', '#e7ab79']
+
   const [tabBarIndicatorColor, setTabBarIndicatorColor] = useState('white')
   const [languageFromCache, setLanguageFromCache] = useState('')
   const [themeFromCache, setThemeFromCache] = useState('')
@@ -43,8 +45,8 @@ const App = () => {
         screenOptions={({ route }) => ({
           tabBarShowLabel: false,
           tabBarStyle: {
-            backgroundColor: 'white',
-            marginTop: 40
+            backgroundColor: themeFromCache == 'Dark' ? '#4c3a51' : 'white',
+            marginTop: 40,
           },
           tabBarIndicatorStyle: {
             backgroundColor: `#${tabBarIndicatorColor}`,
@@ -54,15 +56,30 @@ const App = () => {
         <Tab.Screen 
           name="Home" 
           children={()=> <Home language={languageFromCache} />} 
-          options={{tabBarIcon: () => <Icon name="touch-app" color='black' />}} />
+          options={{
+            tabBarIcon: () => 
+              <Icon 
+                name="touch-app" 
+                color={themeFromCache == 'Dark' ? 'white' : 'black'} 
+              />}} />
         <Tab.Screen 
           name="Rhythms" 
           children={()=> <Rhythms language={languageFromCache}/>}
-          options={{tabBarIcon: () => <Icon name="album" color='black' />}} />
+          options={{
+            tabBarIcon: () => 
+              <Icon 
+                name="album" 
+                color={themeFromCache == 'Dark' ? 'white' : 'black'} 
+              />}} />
         <Tab.Screen 
           name="Settings" 
           children={()=> <Settings language={languageFromCache} theme={themeFromCache}/>}
-          options={{tabBarIcon: () => <Icon name="settings" color='black' />}} />
+          options={{
+            tabBarIcon: () => 
+              <Icon 
+                name="settings" 
+                color={themeFromCache == 'Dark' ? 'white' : 'black'} 
+              />}} />
       </Tab.Navigator>
 
     </NavigationContainer>
