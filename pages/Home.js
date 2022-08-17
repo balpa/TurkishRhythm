@@ -3,7 +3,7 @@ import React, { useState, useEffect} from 'react'
 import { Icon } from 'react-native-elements'
 
 
-const Home = ({language}) => {
+const Home = ({language, theme}) => {
 
   //TODO: change component name related to metronome
 
@@ -31,7 +31,7 @@ const Home = ({language}) => {
 
     const yAnim = React.useRef(new Animated.Value(500)).current
     const scaleAnim = React.useRef(new Animated.Value(0)).current
-    const infoPanelHeightAnim = React.useRef(new Animated.Value(50)).current
+    const infoPanelPositionAnim = React.useRef(new Animated.Value(-200)).current
 
 
     useEffect(() => {          // platform based shadow options
@@ -138,20 +138,20 @@ const Home = ({language}) => {
       if (openInfoPanel == false) {
         setOpenInfoPanel(true)
 
-        Animated.timing(infoPanelHeightAnim,{
-          toValue: 200,
+        Animated.timing(infoPanelPositionAnim,{
+          toValue: 0,
           duration:400,
           useNativeDriver:false
         }).start()
 
       } else {
-        setOpenInfoPanel(false)
-
-        Animated.timing(infoPanelHeightAnim,{
-          toValue: 50,
+        Animated.timing(infoPanelPositionAnim,{
+          toValue: -200,
           duration: 400,
           useNativeDriver: false
         }).start()
+
+        setTimeout(()=>{setOpenInfoPanel(false)},450)
       }
 
 
@@ -161,7 +161,20 @@ const Home = ({language}) => {
     const InfoPanel = () => {
       return (
         <Animated.View style={styles.infoPanelMargin}>
-        <Text style={{textAlign:'center', fontSize:12, fontWeight:'700'}}>
+        <Text style={
+          theme == 'Dark'
+          ?{
+            textAlign:'center', 
+            fontSize:12, 
+            fontWeight:'700',
+            color:'white'
+          }
+         :{
+            textAlign:'center', 
+            fontSize:12, 
+            fontWeight:'700',
+            color:'white'
+          }}>
           Bu uygulamanın amacı; butona her basışınızda,
           bir önceki basışınız arasındaki farkı hesaplayıp milisaniye cinsinden
           ekrana yazdırarak ritim duyusunu göstermek ve pratik yaparak
@@ -172,33 +185,60 @@ const Home = ({language}) => {
     }
 
   return (
-    <View style={styles.container}>
-        <TouchableOpacity
-          onPress={()=>{expandInfoPanel()}}>
-          <View style={{top: 25}}>
-            {openInfoPanel && 
-            <InfoPanel />}
-            <Text style={{textAlign:'center', fontSize:15, fontWeight:'700'}}>
-              {INFO_TEXT}
-            </Text>
-          </View>
-        </TouchableOpacity>
-      <View style={styles.msInfoContainer}>
+    <View style={[styles.container, {backgroundColor: theme == 'Dark' ? '#2c1a31' : 'white'}]}>
+      <TouchableOpacity 
+        onPress={()=>expandInfoPanel()}
+        style={{
+          position:'absolute',
+          right: 0,
+          width: '10%', 
+          height: 50, 
+          justifyContent:'center',
+          alignItems:'center',
+          zIndex: 10
+          }}>
+        <Icon name={openInfoPanel == true ? 'close' : 'info'} color={theme == 'Dark' ? 'white' : 'black'}/>
+      </TouchableOpacity>
+      <Animated.View 
+        style={[
+          {width: '80%',marginTop: 10,},
+          {transform: [{translateY: infoPanelPositionAnim}]}
+        ]}>
+        {openInfoPanel && <InfoPanel />}
+      </Animated.View>
+      <View style={[
+        styles.msInfoContainer, 
+        {backgroundColor: theme == 'Dark' ? '#3c2a41' : 'white'},
+        {borderColor: theme == 'Dark' ? '#dadada' : 'black'}]}>
         <Text 
           style={[styles.msText,{color: msColor}]}>{time}{"\n"}
           <Text style={{fontSize: 20}}>{MILLISECONDS_TEXT}{'\n'}</Text>
           <Text style={{fontSize: 14}}>{BETWEEN_TAPS_TEXT}</Text>
         </Text>
       </View>
-      <Animated.View style={[styles.hitMeButton, shadowOptions, {backgroundColor:`#${hitMeColor}`}, {transform: [{scale: scaleAnim}]}]}>
+      <Animated.View style={[
+        styles.hitMeButton, 
+        shadowOptions, 
+        {backgroundColor:`#774360`}, 
+        {transform: [{scale: scaleAnim}]}]}>
         <TouchableOpacity style={{width:'100%', height:'100%', justifyContent:'center', alignItems:'center'}} onPress={()=> calc()}>
-          <Text style={{ fontSize: 40 }}>{HIT_BUTTON_TEXT}</Text>
+          <Text style={
+            theme == 'Dark' 
+            ? {fontSize: 40, color:'white', fontWeight: '900'}
+            : {fontSize:40, color:'black', fontWeight:'900'}}
+            >{HIT_BUTTON_TEXT}</Text>
         </TouchableOpacity>
       </Animated.View> 
 
-      <Animated.View style={[styles.resetButton, {backgroundColor: `#${resetColor}`}, {transform: [{translateY: yAnim}]}]}>
+      <Animated.View style={[
+        styles.resetButton, 
+        {backgroundColor: `#b25068`}, 
+        {transform: [{translateY: yAnim}]}]}>
         <TouchableOpacity style={{width:"100%", justifyContent:'center', alignItems:'center'}} onPress={()=>reset()}>
-          <Text style={{ fontSize: 40 }}>{RESET_BUTTON_TEXT}</Text>
+          <Text style={
+            theme == 'Dark'
+            ? {fontSize:40,color:'white', fontWeight: '900'}
+            : {fontSize:40,color:'black', fontWeight: '900'}}>{RESET_BUTTON_TEXT}</Text>
         </TouchableOpacity>
       </Animated.View>
     </View>
@@ -212,7 +252,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     height: "100%",
-    width: "100%"
+    width: "100%",
   },
   resetButton: {
     position: 'absolute',

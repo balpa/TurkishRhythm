@@ -55,7 +55,7 @@ const App = () => {
       })}>
         <Tab.Screen 
           name="Home" 
-          children={()=> <Home language={languageFromCache} />} 
+          children={()=> <Home language={languageFromCache} theme={themeFromCache} />} 
           options={{
             tabBarIcon: () => 
               <Icon 
@@ -64,7 +64,7 @@ const App = () => {
               />}} />
         <Tab.Screen 
           name="Rhythms" 
-          children={()=> <Rhythms language={languageFromCache}/>}
+          children={()=> <Rhythms language={languageFromCache} theme={themeFromCache}/>}
           options={{
             tabBarIcon: () => 
               <Icon 
