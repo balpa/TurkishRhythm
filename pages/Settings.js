@@ -9,10 +9,10 @@ const Settings = ({language, theme}) => {
   //todo: theme color changes
 
   return (
-    <View style={styles.container}>
-      <LanguageSettings language={language} />
-      <Theme language={language}/>
-      <About language={language}/>
+    <View style={[styles.container, {backgroundColor:theme == 'Dark' ? '#2c1a31' : 'white'}]}>
+      <LanguageSettings language={language} theme={theme} />
+      <Theme language={language} theme={theme}/>
+      <About language={language} theme={theme}/>
     </View>
   )
 }

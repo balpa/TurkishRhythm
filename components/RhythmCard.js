@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, Animated, Image, TouchableOpacity, Platform } f
 import React, {useState, useEffect} from 'react'
 import { ForceTouchGestureHandler, ScrollView } from 'react-native-gesture-handler'
 
-const RhythmCard = ({ rhythmName, rhythmTime, color, imageURI, infoText }) => {
+const RhythmCard = ({ rhythmName, rhythmTime, color, imageURI, infoText, theme }) => {
 
   // TODO: name and time styling
 

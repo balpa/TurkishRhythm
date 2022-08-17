@@ -2,7 +2,7 @@ import { View, Text, ScrollView, ColorPropType, Platform } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import RhythmCard from '../components/RhythmCard'
 
-const Rhythms = () => {
+const Rhythms = ({theme, language}) => {
 
   const COLOR_PALETTE_1 = ["FEF9A7","FAC213", "F77E21", "D61C4E", "990000", "FF5B00", "D4D925", "FFEE63"]
   const COLOR_PALETTE_2 = ["7C3E66", "F2EBE9", "A5BECC", "243A73"]
@@ -111,69 +111,82 @@ const Rhythms = () => {
   const [rhythms, setRhytms] = useState([])
 
   return (
-    <View style={{ width: "100%", height:'100%' }}>
+    <View style={[
+      {width: "100%", height:'100%'},
+      {backgroundColor:theme == 'Dark' ? '#2c1a31' : 'white'}]}>
       <ScrollView contentContainerStyle={{flexGrow:1 }}>
         <RhythmCard 
+          theme={theme}
           infoText={INFO_TEXTS.nimsofyan}
           rhythmName={'Nim Sofyan'} 
           imageURI={require("../assets/nimsofyan.png")} 
           rhythmTime={"2/4"} 
           color={COLOR_PALETTE_1[Math.floor(Math.random() * COLOR_PALETTE_1.length)]} />
         <RhythmCard 
+          theme={theme}
           infoText={INFO_TEXTS.semai}
           rhythmName={'Semai'}
           imageURI={require("../assets/semai.png")} 
           rhythmTime={'3/4'} 
           color={COLOR_PALETTE_1[Math.floor(Math.random() * COLOR_PALETTE_1.length)]}/>
         <RhythmCard 
+          theme={theme}
           infoText={INFO_TEXTS.sofyan} 
           rhythmName={'Sofyan'} 
           imageURI={require("../assets/sofyan.png")} 
           rhythmTime={'4/8'} 
           color={COLOR_PALETTE_1[Math.floor(Math.random() * COLOR_PALETTE_1.length)]}/>
         <RhythmCard 
+          theme={theme}
           infoText={INFO_TEXTS.turkaksagi} 
           rhythmName={'Türk Aksağı'} 
           imageURI={require("../assets/turkaksagi.png")} 
           rhythmTime={'5/4'} 
           color={COLOR_PALETTE_1[Math.floor(Math.random() * COLOR_PALETTE_1.length)]}/>
         <RhythmCard 
+          theme={theme}
           infoText={INFO_TEXTS.yuruksemai} 
           rhythmName={'Yürük Semai'} 
           imageURI={require("../assets/yuruksemai.png")} 
           rhythmTime={'6/4'} 
           color={COLOR_PALETTE_1[Math.floor(Math.random() * COLOR_PALETTE_1.length)]}/>
         <RhythmCard 
+          theme={theme}
           infoText={INFO_TEXTS.devrihindi} 
           rhythmName={'Devr-i Hindi'} 
           imageURI={require("../assets/devrihindi.png")} 
           rhythmTime={'7/8'} 
           color={COLOR_PALETTE_1[Math.floor(Math.random() * COLOR_PALETTE_1.length)]}/>
         <RhythmCard 
+          theme={theme}
           infoText={INFO_TEXTS.duyek} 
           rhythmName={'Düyek'} 
           imageURI={require("../assets/duyek.png")} 
           rhythmTime={'8/8'} 
           color={COLOR_PALETTE_1[Math.floor(Math.random() * COLOR_PALETTE_1.length)]}/>
         <RhythmCard 
+          theme={theme}
           infoText={INFO_TEXTS.musemmen} 
           rhythmName={'Müsemmen'} 
           imageURI={require("../assets/musemmen.png")} 
           rhythmTime={'8/8'} 
           color={COLOR_PALETTE_1[Math.floor(Math.random() * COLOR_PALETTE_1.length)]}/>
         <RhythmCard 
+          theme={theme}
           infoText={INFO_TEXTS.aksak} 
           rhythmName={'Aksak'} 
           imageURI={require("../assets/aksak.png")} 
           rhythmTime={'9/4'} 
           color={COLOR_PALETTE_1[Math.floor(Math.random() * COLOR_PALETTE_1.length)]}/>
         <RhythmCard 
+          theme={theme}
           infoText={INFO_TEXTS.raksaksagi} 
           rhythmName={'Raks Aksağı'} 
           imageURI={require("../assets/raksaksagi.png")} 
           rhythmTime={'9/8'} 
           color={COLOR_PALETTE_1[Math.floor(Math.random() * COLOR_PALETTE_1.length)]}/>
         <RhythmCard 
+          theme={theme}
           infoText={INFO_TEXTS.curcuna} 
           rhythmName={'Curcuna'} 
           imageURI={require("../assets/curcuna.png")} 

@@ -184,6 +184,7 @@ const Home = ({language, theme}) => {
       )
     }
 
+    //todo: there is a gap on top of the page, logo maybe or sth 
   return (
     <View style={[styles.container, {backgroundColor: theme == 'Dark' ? '#2c1a31' : 'white'}]}>
       <TouchableOpacity 
