@@ -59,7 +59,7 @@ const LanguageSettings = ({language}) => {
           }).start(()=>{
             Animated.timing(applyButtonAnim,{
               toValue: 30,
-              duration: 500,
+              duration: 100,
               useNativeDriver:false
             }).start()
           })
@@ -68,7 +68,7 @@ const LanguageSettings = ({language}) => {
     } else {
       Animated.timing(applyButtonAnim,{
         toValue: 0,
-        duration: 200,
+        duration: 100,
         useNativeDriver: false
       }).start(()=>{
         Animated.timing(insideOpacity,{
