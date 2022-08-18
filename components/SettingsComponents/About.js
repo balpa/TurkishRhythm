@@ -36,7 +36,7 @@ const About = ({language}) => {
     )
   }
 
-  //todo: expand
+  //todo: expand & animation
   return (
     <Animated.View style={styles.container}>
       <Animated.View style={[styles.optionLabel, {height: expandAnimation}]}>
@@ -49,7 +49,7 @@ const About = ({language}) => {
             width:'100%',
             height:'100%'
           }}>
-          <Text>{ABOUT_TEXT}</Text>
+          <Text style={styles.languageFont}>{ABOUT_TEXT}</Text>
           {isExpanded && <InsideAbout />}
         </TouchableOpacity>
       </Animated.View>
@@ -78,7 +78,8 @@ const styles = StyleSheet.create({
   languageFont: {
     position:'absolute',
     top:10,
-    fontSize:15
+    fontSize:17,
+    fontWeight:'900'
   },
   optionLabel: {
     width:'100%',

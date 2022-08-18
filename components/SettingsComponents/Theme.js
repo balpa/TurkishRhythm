@@ -199,7 +199,8 @@ const styles = StyleSheet.create({
   languageFont: {
     position:'absolute',
     top:10,
-    fontSize:15
+    fontSize:17,
+    fontWeight:'800'
   },
   optionLabel: {
     width:'100%',
