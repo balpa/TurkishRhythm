@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
   optionLabel: {
     width:'100%',
     height: 30,
-    backgroundColor:'crimson',
+    backgroundColor:'#e7ab79',
     borderRadius: 10,
     marginBottom: 5,
     marginTop: 5

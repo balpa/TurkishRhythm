@@ -105,14 +105,14 @@ const LanguageSettings = ({language}) => {
               <View>
                 <Icon 
                   name={checkedLanguage == 'Turkish' ? 'radio-button-checked' : 'radio-button-unchecked'} 
-                  color={checkedLanguage == 'Turkish' ? 'crimson' : 'black'}/>
+                  color={checkedLanguage == 'Turkish' ? '#774360' : 'black'}/>
               </View>
             </TouchableOpacity>
             <TouchableOpacity onPress={()=>setCheckedLanguage('English')}>
               <View>
                 <Icon 
                   name={checkedLanguage == 'English' ? 'radio-button-checked' : 'radio-button-unchecked'} 
-                  color={checkedLanguage == 'English' ? 'crimson' : 'black'} />
+                  color={checkedLanguage == 'English' ? '#774360' : 'black'} />
               </View>
             </TouchableOpacity> 
           </View>
@@ -155,7 +155,7 @@ const LanguageSettings = ({language}) => {
         <Animated.View 
           style={[styles.applyButton, {height:applyButtonAnim}]}>
           <TouchableOpacity onPress={()=>{submitLanguage()}} style={{width:'100%', height: '100%', justifyContent:'center', alignItems:'center'}}>
-            <Text style={{color:'crimson'}}>{APPLY_TEXT}</Text>
+            <Text style={{color:'#774360'}}>{APPLY_TEXT}</Text>
           </TouchableOpacity>
         </Animated.View>
         </TouchableOpacity>
@@ -206,7 +206,7 @@ const styles = StyleSheet.create({
   optionLabel: {
     width:'100%',
     height: 30,
-    backgroundColor:'crimson',
+    backgroundColor:'#774360',
     borderRadius: 10,
     marginBottom: 5,
     marginTop: 5
