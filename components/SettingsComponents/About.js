@@ -24,7 +24,7 @@ const About = ({language}) => {
           duration: 200,
           useNativeDriver: false
         }).start()
-        setTimeout(()=>{ setIsExpanded(false) },700)
+        setIsExpanded(false)
     }
   }
 
