@@ -155,7 +155,7 @@ const LanguageSettings = ({language}) => {
         <Animated.View 
           style={[styles.applyButton, {height:applyButtonAnim}]}>
           <TouchableOpacity onPress={()=>{submitLanguage()}} style={{width:'100%', height: '100%', justifyContent:'center', alignItems:'center'}}>
-            <Text style={{color:'#774360'}}>{APPLY_TEXT}</Text>
+            <Text style={{color:'#774360', fontWeight:'700'}}>{APPLY_TEXT}</Text>
           </TouchableOpacity>
         </Animated.View>
         </TouchableOpacity>

@@ -154,7 +154,7 @@ const Theme = ({language}) => {
         <Animated.View 
           style={[styles.applyButton, {height:applyButtonAnim}]}>
           <TouchableOpacity onPress={()=>{submitTheme()}} style={{width:'100%', height: '100%', justifyContent:'center', alignItems:'center'}}>
-            <Text style={{color:'#b25068'}}>{APPLY_TEXT}</Text>
+            <Text style={{color:'#b25068', fontWeight:'700'}}>{APPLY_TEXT}</Text>
           </TouchableOpacity>
         </Animated.View>
         </TouchableOpacity>
