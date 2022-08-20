@@ -27,8 +27,18 @@ const App = () => {
     try {
       const value = await AsyncStorage.getItem('@language')
       const themeVal = await AsyncStorage.getItem('@theme')
-      if(value !== null) setLanguageFromCache(value);console.log('LANGUAGE: ', value)
-      if(themeVal !== null) setThemeFromCache(themeVal);console.log('THEME: ',themeVal)
+      if(value !== null) {
+        setLanguageFromCache(value)
+        console.log('LANGUAGE: ', value)
+      } else {
+        setLanguageFromCache('Turkish')
+      }
+      if(themeVal !== null) {
+        setThemeFromCache(themeVal)
+        console.log('THEME: ',themeVal)
+      } else {
+        setThemeFromCache('Light')
+      }
     } catch(e) {console.log(e)}
   },[])
 
