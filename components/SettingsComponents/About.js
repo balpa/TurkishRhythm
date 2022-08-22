@@ -31,7 +31,7 @@ const About = ({language}) => {
   const InsideAbout = () => {
     return (
       <View>
-        <Text>baLpa</Text>
+        <Text>created by baLpa</Text>
       </View>
     )
   }

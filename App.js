@@ -23,7 +23,7 @@ const App = () => {
   const [languageFromCache, setLanguageFromCache] = useState('')
   const [themeFromCache, setThemeFromCache] = useState('')
 
-  useEffect(async()=>{      // get language data from local storage (cache)
+  useEffect(async()=>{      // get language and theme data from local storage (cache)
     try {
       const value = await AsyncStorage.getItem('@language')
       const themeVal = await AsyncStorage.getItem('@theme')

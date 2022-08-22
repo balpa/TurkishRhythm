@@ -95,7 +95,6 @@ const Home = ({language, theme}) => {
     }
 
     const calc = () => {            // calculate the time difference
-
       // animations for hitting the button
       Animated.timing(scaleAnim, {
         toValue: 0.95,
@@ -114,7 +113,6 @@ const Home = ({language, theme}) => {
 
       if (diff.toString().length > 7){      // if number is so big which means it's in milliseconds, reduce to 3 digits
         diff = diff.toString().slice(0,3)
-
       }
 
       setTime(diff)
