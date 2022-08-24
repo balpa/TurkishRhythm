@@ -4,6 +4,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import Home from './pages/Home';
 import Rhythms from './pages/Rhythms';
 import Tuner from './pages/Tuner';
+import Makams from './pages/Makams';
 import Settings from './pages/Settings';
 import { Icon } from 'react-native-elements'
 import { NavigationContainer } from '@react-navigation/native';
@@ -79,6 +80,15 @@ const App = () => {
             tabBarIcon: () => 
               <Icon 
                 name="album" 
+                color={themeFromCache == 'Dark' ? 'white' : 'black'} 
+              />}} />
+        <Tab.Screen 
+          name="Makams" 
+          children={()=> <Makams language={languageFromCache} theme={themeFromCache}/>}
+          options={{
+            tabBarIcon: () => 
+              <Icon 
+                name="music-note" 
                 color={themeFromCache == 'Dark' ? 'white' : 'black'} 
               />}} />
         <Tab.Screen 
