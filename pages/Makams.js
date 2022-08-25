@@ -1,16 +1,23 @@
-import { View, Text, Animated, TouchableOpacity, StyleSheet } from 'react-native'
+import { View, Text, Animated, TouchableOpacity, StyleSheet, ScrollView } from 'react-native'
 import React from 'react'
-import LanguageSettings from '../components/SettingsComponents/LanguageSettings'
-import About from '../components/SettingsComponents/About'
-import Theme from '../components/SettingsComponents/Theme'
+import MakamCard from '../components/MakamCard'
+
 
 const Makams = ({language, theme}) => {
-
-  //todo: theme color changes
-
+  const COLOR_PALETTE_1 = ["FEF9A7","FAC213", "F77E21", "D61C4E", "990000", "FF5B00", "D4D925", "FFEE63"]
+  const MAKAM_INFOS = {
+    Hicaz: `Hicaz makamı bla bla...`
+  }
   return (
     <View style={[styles.container, {backgroundColor:theme == 'Dark' ? '#2c1a31' : 'white'}]}>
+      <ScrollView contentContainerStyle={{flexGrow:1 }}>
+        <MakamCard 
+          makamName={'Hicaz'}
+          makamInfo={MAKAM_INFOS.Hicaz}
+          color={COLOR_PALETTE_1[Math.floor(Math.random() * COLOR_PALETTE_1.length)]}
+          />
 
+      </ScrollView>
     </View>
   )
 }
@@ -21,8 +28,6 @@ const styles = StyleSheet.create({
   container:{
     width:'100%',
     height:'100%',
-    alignItems:'center',
-    padding:10,
   },
   optionLabel:{
     width:'90%',
