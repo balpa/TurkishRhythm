@@ -41,17 +41,17 @@ const MakamCard = ({ makamName, color, imageURI, makamInfo, theme }) => {
 
       Animated.timing(yAnim, {        // opening animation
         toValue: 300,
-        duration: 500,
+        duration: 200,
         useNativeDriver: false
       }).start(()=>{
           Animated.timing(borderRadiusAnim, {
             toValue: 20,
-            duration: 300,
+            duration: 200,
             useNativeDriver: false
           }).start(()=>{
             Animated.timing(marginAnim, {
               toValue: 20,
-              duration: 300,
+              duration: 200,
               useNativeDriver: false
             }).start(()=>{
               Animated.timing(opacityAnim, {
@@ -71,23 +71,23 @@ const MakamCard = ({ makamName, color, imageURI, makamInfo, theme }) => {
       }).start(()=>{
       Animated.timing(marginAnim, {
         toValue: 0,
-        duration: 300,
+        duration: 200,
         useNativeDriver: false
       }).start(()=>{
         Animated.timing(borderRadiusAnim, {
           toValue: 0,
-          duration: 300,
+          duration: 200,
           useNativeDriver: false
         }).start(()=>{
           Animated.timing(yAnim, {      // closing animation
             toValue: 0,
-            duration: 500,
+            duration: 200,
             useNativeDriver: false
           }).start()
     })})})
       setTimeout(() => {          // timeout for waiting the closing animation to finish
         setIsOpen(false)
-      },1300)
+      },800)
     }
 
   }
