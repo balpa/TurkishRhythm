@@ -101,7 +101,7 @@ const MakamCard = ({ makamName, color, imageURI, makamInfo, theme }) => {
               style={{
                 fontSize:25, 
                 fontWeight: "700", 
-                width:'50%', 
+                width:'75%', 
                 textAlign:'center'}}>{makamName}</Text>
         </View>
       </TouchableOpacity>

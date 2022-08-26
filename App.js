@@ -65,12 +65,12 @@ const App = () => {
           }
       })}>
         <Tab.Screen 
-          name="Home" 
-          children={()=> <Home language={languageFromCache} theme={themeFromCache} />} 
+          name="Makams" 
+          children={()=> <Makams language={languageFromCache} theme={themeFromCache}/>}
           options={{
             tabBarIcon: () => 
               <Icon 
-                name="touch-app" 
+                name="music-note" 
                 color={themeFromCache == 'Dark' ? 'white' : 'black'} 
               />}} />
         <Tab.Screen 
@@ -83,12 +83,12 @@ const App = () => {
                 color={themeFromCache == 'Dark' ? 'white' : 'black'} 
               />}} />
         <Tab.Screen 
-          name="Makams" 
-          children={()=> <Makams language={languageFromCache} theme={themeFromCache}/>}
+          name="Home" 
+          children={()=> <Home language={languageFromCache} theme={themeFromCache} />} 
           options={{
             tabBarIcon: () => 
               <Icon 
-                name="music-note" 
+                name="touch-app" 
                 color={themeFromCache == 'Dark' ? 'white' : 'black'} 
               />}} />
         <Tab.Screen 
