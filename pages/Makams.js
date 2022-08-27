@@ -1,5 +1,5 @@
 import { View, Text, Animated, TouchableOpacity, StyleSheet, ScrollView } from 'react-native'
-import React from 'react'
+import React, {useEffect} from 'react'
 import MakamCard from '../components/MakamCard'
 
 
@@ -7,7 +7,12 @@ const Makams = ({language, theme}) => {
 
   //const B = (props) => <Text style={{fontWeight: 'bold'}}>{props.children}</Text>
 
-  const COLOR_PALETTE_1 = ["FEF9A7","FAC213", "F77E21", "D61C4E", "990000", "FF5B00", "D4D925", "FFEE63"]
+  //randomize the list here so wont need to choose a random color for each makam component
+  let COLOR_PALETTE_1 = [
+    "FEF9A7", "FAC213", 
+    "F77E21", "D61C4E", 
+    "990000", "FF5B00", 
+    "D4D925", "FFEE63"].sort(() => Math.random() - 0.5)
 
   const MAKAMS = {
     hicaz: {
@@ -86,31 +91,31 @@ Daha sonra dizinin üst tarafında bulunan Rast Dörtlüsünün seslerine geçil
           makamName={MAKAMS.hicaz.makamName}
           makamInfo={MAKAMS.hicaz.info}
           imageURI={require("../assets/makams/hicaz.jpg")}
-          color={COLOR_PALETTE_1[Math.floor(Math.random() * COLOR_PALETTE_1.length)]}
+          color={COLOR_PALETTE_1[0]}
           />
         <MakamCard 
           makamName={MAKAMS.nihavend.makamName}
           makamInfo={MAKAMS.nihavend.info}
           imageURI={require("../assets/makams/nihavend.jpg")}
-          color={COLOR_PALETTE_1[Math.floor(Math.random() * COLOR_PALETTE_1.length)]}
+          color={COLOR_PALETTE_1[1]}
           />
         <MakamCard 
           makamName={MAKAMS.ussak.makamName}
           makamInfo={MAKAMS.ussak.info}
           imageURI={require("../assets/makams/ussak.jpg")}
-          color={COLOR_PALETTE_1[Math.floor(Math.random() * COLOR_PALETTE_1.length)]}
+          color={COLOR_PALETTE_1[2]}
           />
         <MakamCard 
           makamName={MAKAMS.kurdi.makamName}
           makamInfo={MAKAMS.kurdi.info}
           imageURI={require("../assets/makams/kurdi.jpg")}
-          color={COLOR_PALETTE_1[Math.floor(Math.random() * COLOR_PALETTE_1.length)]}
+          color={COLOR_PALETTE_1[3]}
           />
         <MakamCard 
           makamName={MAKAMS.rast.makamName}
           makamInfo={MAKAMS.rast.info}
           imageURI={require("../assets/makams/rast.jpg")}
-          color={COLOR_PALETTE_1[Math.floor(Math.random() * COLOR_PALETTE_1.length)]}
+          color={COLOR_PALETTE_1[4]}
           />
  
 
