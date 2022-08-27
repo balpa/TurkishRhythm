@@ -48,6 +48,19 @@ Perdelerin T.M.deki isimleri: Dügâh, Segâh, Çargâh, Nevâ, Hüseyni, Acem, 
 Genişlemesi: Uşşak makamı dizisi alt tarafından genişleme yapar.Genişleme Yegâh perdesindeki Rast Beşlisiyle olur. Dizinin seslerinde karışık olarak gezindikten sonra Nevâ’da asma kalış yapılır. Karar gidilirken özellikle Segâh perdesinde kalış gösterilir. Uşşak dörtlüsünün sesleri kullanılarak Dügâh perdesinde karar verilir.
 Makamın Özelliği:Uşşak makamı dizisinin ikinci sesi olan Segâh perdesi donanımında gösterildiği gibi 1 koma olarak icra edilmez. Daima 2-3 perde pes icra edilir. Uşşak makamına bu perde ayrı bir özellik verir. Bu ses müzikologlar tarafından şekillendirilmediğinden, biz de koma bemolü ile gösteriyoruz.
 `
+    },
+    kurdi: {
+      makamName: 'Kürdi',
+      info: `Durağı: Dügâh perdesidir.
+Seyri: Çıkıcıdır.
+Dizisi: Yerinde Kürdi dörtlüsüne Nevâ perdesinde Bûselik Beşlisinin eklenmesinden meydana gelmiştir.
+Güçlüsü: Dörtlü ile beşlinin ek yerindeki Nevâ perdesidir; üzerinde Bûselik çeşnisi bulunur.
+Yeden’i: 2.çizgideki sol (Rast) perd’esidir. Bazen Nim Zirgüle’de kullanılır.
+Donanımı: Si için küçük mücenneb bemolü donanıma yazılır.
+Perdelerin T.M.deki isimleri: Dügâh, Kürdi, Çargâh, Nevâ, Hüseyni, Acem, Gerdaniye, Muhayyer’dir.
+Dizinin seyri:Kürdi makamı en az kullanılmış olan makamlarımızdan birisidir. Ağır yapılı bir makamdır. Mevcut eserleri incelediğimiz zaman, bu makam seslerinin genellikle kendi dizisinde dolaştığını görürüz.
+Durak sesi civarından seyre başlanarak Kürdi Dörtlüsünün sesleri verilir. Neva perdesinde asma kalış yapılır. Sonra dizinin üst tarafında bulunan Bûselik Beşlisinin seslerine geçilir. Tiz duraktan aşağıya inilirken Nevâ’da Hicaz yapılabilir.
+Güçlü’de tekrar kalış gösterildikten sonra Dügâh perdesine inilirken Hicaz Dörtlüsünün sesleri de verilebilir.Ancak bitiş, Kürdi dörtlüsünün sesleri yapılır. Tam karar Dügâh perdesinde yapılır.`
     }
 
 
@@ -76,9 +89,9 @@ Makamın Özelliği:Uşşak makamı dizisinin ikinci sesi olan Segâh perdesi do
           color={COLOR_PALETTE_1[Math.floor(Math.random() * COLOR_PALETTE_1.length)]}
           />
         <MakamCard 
-          makamName={MAKAMS.hicaz.makamName}
-          makamInfo={MAKAMS.hicaz.info}
-          imageURI={require("../assets/makams/hicaz.jpg")}
+          makamName={MAKAMS.kurdi.makamName}
+          makamInfo={MAKAMS.kurdi.info}
+          imageURI={require("../assets/makams/kurdi.jpg")}
           color={COLOR_PALETTE_1[Math.floor(Math.random() * COLOR_PALETTE_1.length)]}
           />
 
