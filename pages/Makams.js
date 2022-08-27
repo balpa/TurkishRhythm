@@ -61,6 +61,18 @@ Perdelerin T.M.deki isimleri: Dügâh, Kürdi, Çargâh, Nevâ, Hüseyni, Acem, 
 Dizinin seyri:Kürdi makamı en az kullanılmış olan makamlarımızdan birisidir. Ağır yapılı bir makamdır. Mevcut eserleri incelediğimiz zaman, bu makam seslerinin genellikle kendi dizisinde dolaştığını görürüz.
 Durak sesi civarından seyre başlanarak Kürdi Dörtlüsünün sesleri verilir. Neva perdesinde asma kalış yapılır. Sonra dizinin üst tarafında bulunan Bûselik Beşlisinin seslerine geçilir. Tiz duraktan aşağıya inilirken Nevâ’da Hicaz yapılabilir.
 Güçlü’de tekrar kalış gösterildikten sonra Dügâh perdesine inilirken Hicaz Dörtlüsünün sesleri de verilebilir.Ancak bitiş, Kürdi dörtlüsünün sesleri yapılır. Tam karar Dügâh perdesinde yapılır.`
+    },
+    rast: {
+      makamName: 'Rast',
+      info: `Durağı: Rast perdesidir.
+Seyri: Çıkıcıdır.
+Dizisi: Yerinde Rast beşlisine Nevâ’da bir Rast dörtlüsünün eklenmesinden meydana gelmiştir.
+Güçlüsü: Neva perdesidir.
+Yeden:Irak perdesidir.
+Donanımı: Si için koma bemolü, fa için bakiye diyezi donanıma konulur.
+Perdelerin T.M.deki isimleri: Rast, Dügâh, Segâh, Çargâh, Nevâ, Hüseyni, Eviç veya Acem, Gerdâniye.
+Dizinin Seyri:Çıkıcı seyre sahip olan Rast makamının seyrine Durak sesi civarından başlanır. Dizi alt taraftan genişlemiştir. Çoğu kez bu genişleme seslerinden seyre başlanır. Rast beşlisinin sesleri kullanılarak Neva perdesinde asma kalış yapılır.
+Daha sonra dizinin üst tarafında bulunan Rast Dörtlüsünün seslerine geçilir. Ancak çoğunlukla çıkışta kullanılan Evç perdesi inici nağmelerde kullanılan Acem perdesi haline dönüşür. Tekrar Nevâ’da kalış yapılır. Yerinde Rast Beşlisi’nin seslerine geçilerek çeşitli seslerde, özellikle Segâh perdesinde asma kalışlar yapılabilir. Bitiş, Rast Beşlisinin sesleri ile Rast perdesinde çoğunlukla yedenli olarak yapılır.`
     }
 
 
@@ -94,6 +106,13 @@ Güçlü’de tekrar kalış gösterildikten sonra Dügâh perdesine inilirken H
           imageURI={require("../assets/makams/kurdi.jpg")}
           color={COLOR_PALETTE_1[Math.floor(Math.random() * COLOR_PALETTE_1.length)]}
           />
+        <MakamCard 
+          makamName={MAKAMS.rast.makamName}
+          makamInfo={MAKAMS.rast.info}
+          imageURI={require("../assets/makams/rast.jpg")}
+          color={COLOR_PALETTE_1[Math.floor(Math.random() * COLOR_PALETTE_1.length)]}
+          />
+ 
 
       </ScrollView>
     </View>
