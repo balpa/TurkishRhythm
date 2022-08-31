@@ -79,6 +79,20 @@ Donanımı: Si için koma bemolü, fa için bakiye diyezi donanıma konulur.
 Perdelerin T.M.deki isimleri: Rast, Dügâh, Segâh, Çargâh, Nevâ, Hüseyni, Eviç veya Acem, Gerdâniye.
 Dizinin Seyri:Çıkıcı seyre sahip olan Rast makamının seyrine Durak sesi civarından başlanır. Dizi alt taraftan genişlemiştir. Çoğu kez bu genişleme seslerinden seyre başlanır. Rast beşlisinin sesleri kullanılarak Neva perdesinde asma kalış yapılır.
 Daha sonra dizinin üst tarafında bulunan Rast Dörtlüsünün seslerine geçilir. Ancak çoğunlukla çıkışta kullanılan Evç perdesi inici nağmelerde kullanılan Acem perdesi haline dönüşür. Tekrar Nevâ’da kalış yapılır. Yerinde Rast Beşlisi’nin seslerine geçilerek çeşitli seslerde, özellikle Segâh perdesinde asma kalışlar yapılabilir. Bitiş, Rast Beşlisinin sesleri ile Rast perdesinde çoğunlukla yedenli olarak yapılır.`
+    },
+    karcigar: {
+      makamName: 'Karcığar',
+      info: `Durağı: Dügâh perdesidir.
+Seyri: İnici-çıkıcıdır.
+Dizisi: Yerinde Uşşak dörtlüsüne Nevâ perdesinde Hicaz beşlisinin eklenmesinden meydana gelmiştir.
+Güçlüsü: Uşşak dörtlüsü ile Hicaz beşlisinin ek yerindeki Nevâ perdesidir. Üzerinde Hicaz çeşnili yarım karar yapılır.
+Yeden’i: 2.çizgideki sol Rast perdesidir.
+Donanımı: Si için koma bemolü, mi için bakiye bemolü, fa için bakiye diyez donanım yazılır.
+Perdelerin T.M.deki isimleri: Dügâh, Segâh, Çargâh, Nevâ, Hisâr, Eviç, Gerdaniye, Muhayyer’dir.
+Dizinin seyri: Seyre Güçlüsü olan Nevâ perdesi civarından başlanır. Alt seslerden başlayan seyirlerde de hemen orta seslere geçilir. Dizinin muhtelif seslerinde dolaşılarak Güçlü olan Nevâ perdesinde asma kalış yapılır.
+Ancak, Karcığar makamının karakteristik asma kalış perdesi Çargâh perdesidir. Bu nedenle Güçlü perdesinde kalış her zaman gösterilmez.Çargâh perdesinde güçlü gibi kalış gösterilir. Bu şekilde Çargâh perdesindeki kalış Nikriz Beşlisi adını alır.
+Dizinin seslerinde dolaşılarak, Uşşak Dörtlüsünün sesleri kullanılarak Dügâh perdesinde karar verilir.Makamın Özelliği:Yukarıdaki dizide de görüldüğü gibi, Gerdaniye perdesi üzerinde bir Bûselik Beşlisi yapılmaktadır. Karcığar makamı dizisi alttan genişlemez. Üst kısımda ise yukarıda görüldüğü gibi genişler.
+Karcığar makamının asma kararı, dörtlü ile beşlinin birleştiği yerde değildir. Asma karar Çargâh perdesidir.`
     }
 
 
@@ -118,6 +132,13 @@ Daha sonra dizinin üst tarafında bulunan Rast Dörtlüsünün seslerine geçil
           imageURI={require("../assets/makams/rast.jpg")}
           color={COLOR_PALETTE_1[4]}
           />
+         <MakamCard 
+          makamName={MAKAMS.karcigar.makamName}
+          makamInfo={MAKAMS.karcigar.info}
+          imageURI={require("../assets/makams/karcigar.jpg")}
+          color={COLOR_PALETTE_1[4]}
+          />
+ 
  
 
       </ScrollView>
