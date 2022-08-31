@@ -5,6 +5,7 @@ import MakamCard from '../components/MakamCard'
 
 const Makams = ({language, theme}) => {
 
+  // 2 make a bold text but couldnt implement here
   //const B = (props) => <Text style={{fontWeight: 'bold'}}>{props.children}</Text>
 
   //randomize the list here so wont need to choose a random color for each makam component
