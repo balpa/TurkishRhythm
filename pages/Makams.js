@@ -93,6 +93,17 @@ Dizinin seyri: Seyre Güçlüsü olan Nevâ perdesi civarından başlanır. Alt 
 Ancak, Karcığar makamının karakteristik asma kalış perdesi Çargâh perdesidir. Bu nedenle Güçlü perdesinde kalış her zaman gösterilmez.Çargâh perdesinde güçlü gibi kalış gösterilir. Bu şekilde Çargâh perdesindeki kalış Nikriz Beşlisi adını alır.
 Dizinin seslerinde dolaşılarak, Uşşak Dörtlüsünün sesleri kullanılarak Dügâh perdesinde karar verilir.Makamın Özelliği:Yukarıdaki dizide de görüldüğü gibi, Gerdaniye perdesi üzerinde bir Bûselik Beşlisi yapılmaktadır. Karcığar makamı dizisi alttan genişlemez. Üst kısımda ise yukarıda görüldüğü gibi genişler.
 Karcığar makamının asma kararı, dörtlü ile beşlinin birleştiği yerde değildir. Asma karar Çargâh perdesidir.`
+    },
+    kurdilihicazkar: {
+      makamName: 'Kürdilihicazkar',
+      info: `Durağı: Rast perdesidir.
+Seyri: İnicidir.
+Güçlüsü: Gerdaniye perdesidir.(İkinci derecede Çargâh)
+Yeden: Acem Aşiran perdesidir.
+Donanım: Si,mi,lâ için küçük mücennep bemolü donanıma yazılır.
+Dizinin Seyri: İnici bir seyre sahip olan Kürdili Hicazkâr makamının seyrine ekseriya Tiz Durak (Gerdaniye) civarından başlanır. Hicazkâr makamı gibi başlayan eserler de çoğunluktadır. Hattâ Hicazkâr makamının bütün dizisi icra edilebilir. Nevâ’da Bayâti makamı dizisi ve Çargâh perdesindeki Rast Beşlisinin sesleriyle meydana gelen Arazbar makamı seyri ile de başlayan Kürdili Hicazkâr eserler vardı.
+Asma Karar Perdeleri: Asma karar perdesi olarak en önemli perde ana dizinin ek yerindeki Çargâh perdesidir. Yukarıda da belirtildiği gibi bu perde üzerinde Bûselik çeşnisiyle asma karar yapılır. Nevâ perdesi üzerinde Kürdi çeşnisiyle önemli asma kararlar yapılır.
+Çok parlak ve renkli nağmelerin yapıldığı Kürdili Hicazkâr makamının seyri yapılırken, Gerdaniye üzerindeki Kürdi ve Hicaz’lı kalışlar bu makamın karakteristik özelliğidir. Dizinin diğer sesleri kullanılarak Neva’da Bayâti’li kalış yapılır. Ana dizinin sesleri kullanılarak Kürdi Dörtlüsünün sesleri ile Rast perdesinde karar verilir.`
     }
 
 
@@ -132,10 +143,16 @@ Karcığar makamının asma kararı, dörtlü ile beşlinin birleştiği yerde d
           imageURI={require("../assets/makams/rast.jpg")}
           color={COLOR_PALETTE_1[4]}
           />
-         <MakamCard 
+        <MakamCard 
           makamName={MAKAMS.karcigar.makamName}
           makamInfo={MAKAMS.karcigar.info}
           imageURI={require("../assets/makams/karcigar.jpg")}
+          color={COLOR_PALETTE_1[4]}
+          />
+        <MakamCard 
+          makamName={MAKAMS.kurdilihicazkar.makamName}
+          makamInfo={MAKAMS.kurdilihicazkar.info}
+          imageURI={require("../assets/makams/kurdilihicazkar.jpg")}
           color={COLOR_PALETTE_1[4]}
           />
  
