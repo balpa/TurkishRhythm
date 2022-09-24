@@ -115,7 +115,6 @@ const RhythmCard = ({ rhythmName, rhythmTime, color, imageURI, infoText, theme }
             <Text>
               {infoText}
             </Text>
-            <Text>DİNLE BUTONU:TODO</Text>
           </ScrollView>
         </Animated.View>
 

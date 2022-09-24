@@ -4,11 +4,10 @@ import MakamCard from '../components/MakamCard'
 
 
 const Makams = ({language, theme}) => {
-
-  // 2 make a bold text but couldnt implement here
+  
   //const B = (props) => <Text style={{fontWeight: 'bold'}}>{props.children}</Text>
 
-  //randomize the list here so wont need to choose a random color for each makam component
+  //randomize the list here so wont need to choose a random color for each makam component (its not what i wanted here, gonna check)
   let COLOR_PALETTE_1 = [
     "FEF9A7", "FAC213", 
     "F77E21", "D61C4E", 
@@ -104,12 +103,35 @@ Donanım: Si,mi,lâ için küçük mücennep bemolü donanıma yazılır.
 Dizinin Seyri: İnici bir seyre sahip olan Kürdili Hicazkâr makamının seyrine ekseriya Tiz Durak (Gerdaniye) civarından başlanır. Hicazkâr makamı gibi başlayan eserler de çoğunluktadır. Hattâ Hicazkâr makamının bütün dizisi icra edilebilir. Nevâ’da Bayâti makamı dizisi ve Çargâh perdesindeki Rast Beşlisinin sesleriyle meydana gelen Arazbar makamı seyri ile de başlayan Kürdili Hicazkâr eserler vardı.
 Asma Karar Perdeleri: Asma karar perdesi olarak en önemli perde ana dizinin ek yerindeki Çargâh perdesidir. Yukarıda da belirtildiği gibi bu perde üzerinde Bûselik çeşnisiyle asma karar yapılır. Nevâ perdesi üzerinde Kürdi çeşnisiyle önemli asma kararlar yapılır.
 Çok parlak ve renkli nağmelerin yapıldığı Kürdili Hicazkâr makamının seyri yapılırken, Gerdaniye üzerindeki Kürdi ve Hicaz’lı kalışlar bu makamın karakteristik özelliğidir. Dizinin diğer sesleri kullanılarak Neva’da Bayâti’li kalış yapılır. Ana dizinin sesleri kullanılarak Kürdi Dörtlüsünün sesleri ile Rast perdesinde karar verilir.`
+    },
+    segah: {
+      makamName: 'Segâh',
+      info: `Durağı: Segâh perdesidir.
+Seyri: Çıkıcıdır.
+Güçlü: Nevâ perdesidir.
+Yeden: Kürdi perdesidir.
+Donanımı: Si ve mi için koma bemolü, fa için bakiye diyezi donanıma yazılır.Gerekli değişiklikler eser içinde gösterilir.
+Dizisi: Segâh makamı dizisi, Segâh perdesi üzerindeki Segâh Beşlisine, Hicaz Dörtlüsünün eklenmesiyle meydana gelir.
+Segâh makamı için gerekli olan Segâh Beşlisi (STKT) özelliği olan bir Beşlidir. Hüzzam makamına yakınlığı vardır. Ancak etkisi daha hafif, daha parlaktır.
+Seyri: Segâh makamının seyrine, Durak sesi civarından başlanır.Segâh Beşlisinin sesleri kullanılarak Nevâ perdesinde asma kalış yapılır. Segâh Beşlisinin sesleri kullanılarak Evç perdesi üzerinde bulunan Hicaz Dörtlüsünün seslerine geçilir. İnici hallerde Evc perdesi genellikle Bekar yapılarak Acem perdesi haline dönüşür.
+Segâh makamı seyri yapılırken muhtelif geçkiler yapılabilir. Segâh Beşlisinin seslerinde ısrarlı dolaşılır. Segâh Beşlisinin sesleri kullanılarak Segâh perdesinde bazen Yedeni olan Kürdi perdesi de belirtilerek karar verilir.`
+    },
+    huzzam: {
+      makamName: 'Hüzzam',
+      info: `Durağı: Segâh perdesidir.
+Seyri: İnici-çıkıcıdır.
+Güçlüsü: Nevâ perdesidir.
+Yeden: Kürdi perdesidir.
+Donanımı: Si için koma bemolü, mi için bakiye bemolü, fa için bakiye diyezi donanıma yazılır.
+Dizisi: Hüzzam makamı dizisi, yerinde Hüzzam Beşlisine, Neva perdesinde Hicaz Dörtlüsünün eklenmesiyle meydana gelir.
+Seyri: Hüzzam makamının seyrine genellikle Güçlü sesi civarından başlanır. Hüzzam Beşlisinin seslerinde dolaşılarak Neva perdesinde asma kalış gösterilir.Neva perdesi üzerinde bulunan Hümayûn dizisinin seslerine geçilerek bu seslerde dolaşılır.Muhtelif perdeler üzerinde kalışlar yapılabilir. Tekrar Neva perdesinde inilerek bu perdede asma kalış yapılır.
+Hüzzam Beşlisine geçilerek, bu dizinin sesleri ile, Yedeni olan Kürdi perdesi de gösterilmek suretiyle Segâh perdesinde karar verilir.`
     }
 
 
   }
 
-  // could refactor and render from a list via map etc (image linking wont work)
+  // could refactor and render from a list via map etc (image linking wont work, need a sol)
   return (
     <View style={[styles.container, {backgroundColor:theme == 'Dark' ? '#2c1a31' : 'white'}]}>
       <ScrollView contentContainerStyle={{flexGrow:1 }}>
@@ -147,15 +169,26 @@ Asma Karar Perdeleri: Asma karar perdesi olarak en önemli perde ana dizinin ek 
           makamName={MAKAMS.karcigar.makamName}
           makamInfo={MAKAMS.karcigar.info}
           imageURI={require("../assets/makams/karcigar.jpg")}
-          color={COLOR_PALETTE_1[4]}
+          color={COLOR_PALETTE_1[5]}
           />
         <MakamCard 
           makamName={MAKAMS.kurdilihicazkar.makamName}
           makamInfo={MAKAMS.kurdilihicazkar.info}
           imageURI={require("../assets/makams/kurdilihicazkar.jpg")}
-          color={COLOR_PALETTE_1[4]}
+          color={COLOR_PALETTE_1[6]}
           />
- 
+        <MakamCard 
+          makamName={MAKAMS.segah.makamName}
+          makamInfo={MAKAMS.segah.info}
+          imageURI={require("../assets/makams/segah.jpg")}
+          color={COLOR_PALETTE_1[7]}
+          />
+        <MakamCard 
+          makamName={MAKAMS.huzzam.makamName}
+          makamInfo={MAKAMS.huzzam.info}
+          imageURI={require("../assets/makams/huzzam.jpg")}
+          color={COLOR_PALETTE_1[0]}
+          />
  
 
       </ScrollView>

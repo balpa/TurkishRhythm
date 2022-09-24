@@ -6,6 +6,7 @@ import { Icon } from 'react-native-elements'
 const Home = ({language, theme}) => {
 
   //TODO: change component name related to metronome
+  //MIGHT NEED TO CHANGE THE LOGIC FOR MS COUNTER
 
     const COLOR_PALETTE_1 = ["FEF9A7","FAC213", "F77E21", "D61C4E", "990000", "FF5B00", "D4D925", "FFEE63"]
 
@@ -177,7 +178,7 @@ const Home = ({language, theme}) => {
           }}>
           Bu uygulamanın amacı; butona her basışınızda,
           bir önceki basışınız arasındaki farkı hesaplayıp milisaniye cinsinden
-          ekrana yazdırarak ritim duyusunu göstermek ve pratik yaparak
+          ekrana yazdırarak ritim duyunuzun performansını göstermek ve pratik yaparak
           gelişmesine katkıda bulunmaktır.
         </Text>
       </Animated.View>
