@@ -33,6 +33,10 @@ const Home = ({language, theme}) => {
     const scaleAnim = React.useRef(new Animated.Value(0)).current
     const infoPanelPositionAnim = React.useRef(new Animated.Value(-200)).current
 
+    const createRandomColorFromArray = () => {
+      return COLOR_PALETTE_1[Math.floor(Math.random() * COLOR_PALETTE_1.length)]
+    }
+
 
     useEffect(() => {          // platform based shadow options
       if (Platform.OS === "android") {
@@ -85,8 +89,8 @@ const Home = ({language, theme}) => {
     },[timeArray])
 
     useEffect(() => {         // choose random color for buttons on first render
-      setHitMeColor(COLOR_PALETTE_1[Math.floor(Math.random() * COLOR_PALETTE_1.length)])
-      setResetColor(COLOR_PALETTE_1[Math.floor(Math.random() * COLOR_PALETTE_1.length)])
+      setHitMeColor(createRandomColorFromArray())
+      setResetColor(createRandomColorFromArray())
     },[])
     
     const createTime = () => {      // create current time in milliseconds
@@ -154,7 +158,6 @@ const Home = ({language, theme}) => {
 
     }
 
-
     const InfoPanel = () => {
       return (
         <Animated.View style={styles.infoPanelMargin}>
@@ -170,7 +173,7 @@ const Home = ({language, theme}) => {
             textAlign:'center', 
             fontSize:12, 
             fontWeight:'700',
-            color:'white'
+            color:'black'
           }}>
           Bu uygulamanın amacı; butona her basışınızda,
           bir önceki basışınız arasındaki farkı hesaplayıp milisaniye cinsinden
@@ -181,7 +184,6 @@ const Home = ({language, theme}) => {
       )
     }
 
-    //todo: there is a gap on top of the page, logo maybe or sth 
   return (
     <View style={[styles.container, {backgroundColor: theme == 'Dark' ? '#2c1a31' : 'white'}]}>
       <TouchableOpacity 
