@@ -47,7 +47,6 @@ const App = () => {
     setTabBarIndicatorColor(COLOR_PALETTE_1[Math.floor(Math.random() * COLOR_PALETTE_1.length)])
   }, [])
   
-  //todo: makam page
   return (
 
     <NavigationContainer>

@@ -24,7 +24,6 @@ const MakamCard = ({ makamName, color, imageURI, makamInfo, theme }) => {
         shadowRadius: 5, 
       })
     }
-
   }, [])
 
 
@@ -92,7 +91,7 @@ const MakamCard = ({ makamName, color, imageURI, makamInfo, theme }) => {
 
   }
 
-
+  //TODO: SCROLLWIEW NOT WORKING ON ANDROID
   return (
     <View style={[styles.rhythmCardContainer, shadowOptions ,{backgroundColor: `#${color}`}]}>
       <TouchableOpacity style={{width:'100%'}} onPress={()=>showInfoPanel()}>
@@ -119,7 +118,7 @@ const MakamCard = ({ makamName, color, imageURI, makamInfo, theme }) => {
 
         <Animated.View style={[styles.infoScrollContainer, {opacity: opacityAnim}]}>
 
-          <ScrollView style={{zIndex: 5}}>
+          <ScrollView>
             <Text>
               {makamInfo}
             </Text>
