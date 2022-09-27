@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Platform } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Home from './pages/Home';
 import Rhythms from './pages/Rhythms';
@@ -38,7 +38,7 @@ const App = () => {
         setThemeFromCache(themeVal)
         console.log('THEME: ',themeVal)
       } else {
-        setThemeFromCache('Light')
+        setThemeFromCache('Dark') //default theme
       }
     } catch(e) {console.log(e)}
   },[])
@@ -51,7 +51,16 @@ const App = () => {
   return (
 
     <NavigationContainer>
-
+     {Platform.OS == 'android' && <StatusBar 
+        backgroundColor={
+          themeFromCache == 'Light'
+          ? 'white' 
+          : '#4c3a51'} 
+        style={
+          themeFromCache == 'Light'
+          ? 'dark' 
+          : 'light'}
+        />}
       <Tab.Navigator 
         screenOptions={({ route }) => ({
           tabBarShowLabel: false,

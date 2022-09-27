@@ -19,12 +19,11 @@ const Theme = ({language}) => {
   const letterSpacingAnim = React.useRef(new Animated.Value(0)).current
   const applyButtonAnim = React.useRef(new Animated.Value(0)).current
 
-
   const setThemeToAsyncStorage = async() => {
     try {await AsyncStorage.setItem('@theme', checkedTheme)} // set theme data to cache storage
     catch (e) {console.log(e)}
   }
-  
+
   const submitTheme = () => {
     setThemeToAsyncStorage()
     setTimeout(()=>{expandLabel()},400)
@@ -95,7 +94,7 @@ const Theme = ({language}) => {
   }
 
   //todo: checked language function (change lang actually)
-  const LanguageInside = () => {
+  const ThemeInside = () => {
     return (
       <Animated.View style={[styles.languageInsideContainer, {opacity: insideOpacity}]}>
         <View style={{width:'100%', height:'100%',flexDirection:'row', alignItems:'center', justifyContent:'space-evenly'}}>
@@ -171,7 +170,7 @@ const Theme = ({language}) => {
           onPress={()=>expandLabel()}  
           style={{width:'100%', height:'100%', justifyContent:'center', alignItems:'center'}}>
           <Animated.Text style={[styles.languageFont, {letterSpacing: letterSpacingAnim}]}>{THEME_TEXT}</Animated.Text>
-          {isExpanded && <LanguageInside />}
+          {isExpanded && <ThemeInside />}
         </TouchableOpacity>
       </Animated.View>
     </Animated.View>

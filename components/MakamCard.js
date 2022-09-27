@@ -1,6 +1,6 @@
-import { View, Text, StyleSheet, Animated, Image, TouchableOpacity, Platform } from 'react-native'
+import { View, Text, StyleSheet, Animated, Image, TouchableOpacity, Platform, ScrollView } from 'react-native'
 import React, {useState, useEffect} from 'react'
-import { ForceTouchGestureHandler, ScrollView } from 'react-native-gesture-handler'
+import { ForceTouchGestureHandler } from 'react-native-gesture-handler'
 
 const MakamCard = ({ makamName, color, imageURI, makamInfo, theme }) => {
 
@@ -118,11 +118,13 @@ const MakamCard = ({ makamName, color, imageURI, makamInfo, theme }) => {
         </Animated.View>
 
         <Animated.View style={[styles.infoScrollContainer, {opacity: opacityAnim}]}>
-          <ScrollView>
+
+          <ScrollView style={{zIndex: 5}}>
             <Text>
               {makamInfo}
             </Text>
           </ScrollView>
+
         </Animated.View>
 
       </Animated.View>
@@ -144,7 +146,6 @@ const styles = StyleSheet.create({
     justifyContent:'center',
     alignItems:'center',
     alignSelf:'center',
-
   },
   shadow: {
     shadowColor: '#171717',
@@ -167,7 +168,6 @@ const styles = StyleSheet.create({
     height: '40%',
   },
   infoScrollContainer: {
-    width: '100%',
-    height: '60%',
+    flex: 1
   }
 })
