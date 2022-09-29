@@ -20,7 +20,7 @@ const Theme = ({language}) => {
   const applyButtonAnim = React.useRef(new Animated.Value(0)).current
 
   const setThemeToAsyncStorage = async() => {
-    try {await AsyncStorage.setItem('@theme', checkedTheme)} // set theme data to cache storage
+    try {await AsyncStorage.setItem('@theme', checkedTheme)} // set theme data to async storage
     catch (e) {console.log(e)}
   }
 
@@ -29,10 +29,10 @@ const Theme = ({language}) => {
     setTimeout(()=>{expandLabel()},400)
   }
 
-  useEffect(async()=>{      // get theme data from local storage (cache)
+  useEffect(async()=>{      // get theme data from async storage
     try {
       const value = await AsyncStorage.getItem('@theme')
-      if(value !== null) setThemeFromCache(value);console.log('Theme: ', value);setCheckedTheme(value)
+      if(value !== null) {setThemeFromCache(value);console.log('Theme: ', value);setCheckedTheme(value)}
     } catch(e) {console.log(e)}
   },[])
 
