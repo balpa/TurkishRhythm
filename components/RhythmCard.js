@@ -111,7 +111,7 @@ const RhythmCard = ({ rhythmName, rhythmTime, color, imageURI, infoText, theme }
         </Animated.View>
 
         <Animated.View style={[styles.infoScrollContainer, {opacity: opacityAnim}]}>
-          <ScrollView>
+          <ScrollView nestedScrollEnabled={true}>
             <Text>
               {infoText}
             </Text>
