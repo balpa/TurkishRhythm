@@ -118,11 +118,12 @@ const MakamCard = ({ makamName, color, imageURI, makamInfo, theme }) => {
 
         <Animated.View style={[styles.infoScrollContainer, {opacity: opacityAnim}]}>
 
-          <ScrollView>
+          <ScrollView nestedScrollEnabled={true}>
             <Text>
               {makamInfo}
             </Text>
           </ScrollView>
+
 
         </Animated.View>
 
