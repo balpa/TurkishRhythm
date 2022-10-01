@@ -93,7 +93,7 @@ const Theme = ({language}) => {
     }
   }
 
-  //TODO: THEME AND LANG CANT BE STORED ON ANDROID
+  //TODO: THEME AND LANG CACHE ON ANDROID
   const ThemeInside = () => {
     return (
       <Animated.View style={[styles.languageInsideContainer, {opacity: insideOpacity}]}>
