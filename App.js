@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Platform } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import Home from './pages/Home';
+import Metronomy from './pages/Metronomy';
 import Rhythms from './pages/Rhythms';
 import Tuner from './pages/Tuner';
 import Makams from './pages/Makams';
@@ -11,13 +11,11 @@ import { NavigationContainer } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
-const Tab = createMaterialTopTabNavigator();
+const Tab = createMaterialTopTabNavigator()
 
 const App = () => {
 
   const COLOR_PALETTE_1 = ["FEF9A7","FAC213", "F77E21", "D61C4E", "990000", "FF5B00", "D4D925", "FFEE63"]
-
   const DARK_MODE_PALETTE = ['#4c3a51', '#774360', '#b25068', '#e7ab79']
 
   const [tabBarIndicatorColor, setTabBarIndicatorColor] = useState('white')
@@ -91,15 +89,15 @@ const App = () => {
                 color={themeFromCache == 'Dark' ? 'white' : 'black'} 
               />}} />
         <Tab.Screen 
-          name="Home" 
-          children={()=> <Home language={languageFromCache} theme={themeFromCache} />} 
+          name="Metronomy" 
+          children={()=> <Metronomy language={languageFromCache} theme={themeFromCache} />} 
           options={{
             tabBarIcon: () => 
               <Icon 
                 name="touch-app" 
                 color={themeFromCache == 'Dark' ? 'white' : 'black'} 
               />}} />
-        <Tab.Screen 
+        {Platform.OS == 'ios' && <Tab.Screen 
           name="Settings" 
           children={()=> <Settings language={languageFromCache} theme={themeFromCache}/>}
           options={{
@@ -107,7 +105,7 @@ const App = () => {
               <Icon 
                 name="settings" 
                 color={themeFromCache == 'Dark' ? 'white' : 'black'} 
-              />}} />
+              />}} />}
       </Tab.Navigator>
 
     </NavigationContainer>

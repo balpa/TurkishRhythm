@@ -3,9 +3,8 @@ import React, { useState, useEffect} from 'react'
 import { Icon } from 'react-native-elements'
 
 
-const Home = ({language, theme}) => {
-
-  //TODO: change component name related to metronome
+const Metronomy = ({language, theme}) => {
+  //TODO: re-styling
   //MIGHT NEED TO CHANGE THE LOGIC FOR MS COUNTER
 
     const COLOR_PALETTE_1 = ["FEF9A7","FAC213", "F77E21", "D61C4E", "990000", "FF5B00", "D4D925", "FFEE63"]
@@ -246,7 +245,7 @@ const Home = ({language, theme}) => {
   )
 }
 
-export default Home
+export default Metronomy
 
 const styles = StyleSheet.create({
   container: {
