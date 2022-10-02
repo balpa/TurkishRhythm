@@ -4,6 +4,7 @@ import { Icon } from 'react-native-elements'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Theme = ({language}) => {
+  //TODO: renaming styles etc
 
   const THEME_TEXT = language == 'Turkish' ? 'Tema' : 'Theme'
   const DARKMODE_TEXT = language == 'Turkish' ? 'Karanlık' : 'Dark'
@@ -188,7 +189,7 @@ const styles = StyleSheet.create({
   applyButton: {
     width:'40%',
     height: 30,
-    backgroundColor:'white',
+    backgroundColor:'wheat',
     alignSelf:'center',
     justifyContent:'center',
     alignItems:'center',
@@ -212,7 +213,7 @@ const styles = StyleSheet.create({
   languageInsideContainer: {
     width:'80%',
     height:'50%',
-    backgroundColor:'white',
+    backgroundColor:'wheat',
     borderRadius: 10,
   },
   fontTurkish:{

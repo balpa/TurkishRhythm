@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
   applyButton: {
     width:'40%',
     height: 30,
-    backgroundColor:'white',
+    backgroundColor:'wheat',
     alignSelf:'center',
     justifyContent:'center',
     alignItems:'center',
@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
   languageInsideContainer: {
     width:'80%',
     height:'50%',
-    backgroundColor:'white',
+    backgroundColor:'wheat',
     borderRadius: 10,
   },
   fontTurkish:{

@@ -322,6 +322,9 @@ genişlemiş kısımda; Tiz Segâh, Tiz Çargâh, Tiz Nevâ, Tiz Hüseyni’dir.
   // could refactor and render from a list via map etc (image linking wont work, need a sol)
   return (
     <View style={[styles.container, {backgroundColor:theme == 'Dark' ? '#2c1a31' : 'white'}]}>
+      <View style={styles.makamTextContainer}>
+        <Text style={styles.makamText}>MAKAMLAR</Text>
+      </View>
       <ScrollView contentContainerStyle={{flexGrow:1 }}>
         <MakamCard 
           makamName={MAKAMS.hicaz.makamName}
@@ -441,6 +444,22 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 5,
     marginTop: 5
+  },
+  makamTextContainer: {
+    width: '100%',
+    height: 40,
+    flexDirection:'row',
+    alignItems: 'center',
+    justifyContent:'center'
+  },
+  makamText: {
+    textAlign:'center',
+    color: 'wheat',
+    fontWeight: '800',
+    letterSpacing: 1,
+    fontSize: 18,
+    textDecorationLine: 'underline',
+    textDecorationStyle: 'double'
   }
 
 })

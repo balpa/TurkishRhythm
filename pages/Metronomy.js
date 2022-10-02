@@ -167,7 +167,7 @@ const Metronomy = ({language, theme}) => {
             textAlign:'center', 
             fontSize:12, 
             fontWeight:'700',
-            color:'white'
+            color:'wheat'
           }
          :{
             textAlign:'center', 
@@ -197,7 +197,7 @@ const Metronomy = ({language, theme}) => {
           alignItems:'center',
           zIndex: 10
           }}>
-        <Icon name={openInfoPanel == true ? 'close' : 'info'} color={theme == 'Dark' ? 'white' : 'black'}/>
+        <Icon name={openInfoPanel == true ? 'close' : 'info'} color={theme == 'Dark' ? 'wheat' : 'black'}/>
       </TouchableOpacity>
       <Animated.View 
         style={[
@@ -209,7 +209,7 @@ const Metronomy = ({language, theme}) => {
       <View style={[
         styles.msInfoContainer, 
         {backgroundColor: theme == 'Dark' ? '#3c2a41' : 'white'},
-        {borderColor: theme == 'Dark' ? '#dadada' : 'black'}]}>
+        {borderColor: theme == 'Dark' ? 'wheat' : 'black'}]}>
         <Text 
           style={[styles.msText,{color: msColor}]}>{time}{"\n"}
           <Text style={{fontSize: 20}}>{MILLISECONDS_TEXT}{'\n'}</Text>
@@ -224,7 +224,7 @@ const Metronomy = ({language, theme}) => {
         <TouchableOpacity style={{width:'100%', height:'100%', justifyContent:'center', alignItems:'center'}} onPress={()=> calc()}>
           <Text style={
             theme == 'Dark' 
-            ? {fontSize: 40, color:'white', fontWeight: '900'}
+            ? {fontSize: 40, color:'wheat', fontWeight: '900'}
             : {fontSize:40, color:'black', fontWeight:'900'}}
             >{HIT_BUTTON_TEXT}</Text>
         </TouchableOpacity>
@@ -232,12 +232,13 @@ const Metronomy = ({language, theme}) => {
 
       <Animated.View style={[
         styles.resetButton, 
+        Platform.OS == 'android' ? {borderBottomLeftRadius: 25, borderBottomRightRadius: 25} : {},
         {backgroundColor: `#b25068`}, 
         {transform: [{translateY: yAnim}]}]}>
         <TouchableOpacity style={{width:"100%", justifyContent:'center', alignItems:'center'}} onPress={()=>reset()}>
           <Text style={
             theme == 'Dark'
-            ? {fontSize:40,color:'white', fontWeight: '900'}
+            ? {fontSize:40,color:'wheat', fontWeight: '900'}
             : {fontSize:40,color:'black', fontWeight: '900'}}>{RESET_BUTTON_TEXT}</Text>
         </TouchableOpacity>
       </Animated.View>
@@ -266,8 +267,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderBottomRightRadius: 40,
     borderBottomLeftRadius: 40,
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25
   },
   hitMeButton: {
     width: 300,

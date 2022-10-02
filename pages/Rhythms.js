@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, ColorPropType, Platform } from 'react-native'
+import { View, Text, ScrollView, ColorPropType, Platform, StyleSheet } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import RhythmCard from '../components/RhythmCard'
 
@@ -119,6 +119,9 @@ const Rhythms = ({theme, language}) => {
       {width: "100%", height:'100%'},
       {backgroundColor:theme == 'Dark' ? '#2c1a31' : 'white'}]}>
       <ScrollView contentContainerStyle={{flexGrow:1 }}>
+        <View style={styles.ritimTextContainer}>
+          <Text style={styles.ritimText}>RİTİMLER</Text>
+        </View>
         <RhythmCard 
           theme={theme}
           infoText={INFO_TEXTS.nimsofyan}
@@ -202,3 +205,22 @@ const Rhythms = ({theme, language}) => {
 }
 
 export default Rhythms
+
+const styles = StyleSheet.create({
+  ritimTextContainer: {
+    width: '100%',
+    height: 40,
+    flexDirection:'row',
+    alignItems: 'center',
+    justifyContent:'center'
+  },
+  ritimText: {
+    textAlign:'center',
+    color: 'wheat',
+    fontWeight: '800',
+    letterSpacing: 1,
+    fontSize: 18,
+    textDecorationLine: 'underline',
+    textDecorationStyle: 'double'
+  }
+})

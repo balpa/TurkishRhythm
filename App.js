@@ -77,7 +77,7 @@ const App = () => {
             tabBarIcon: () => 
               <Icon 
                 name="music-note" 
-                color={themeFromCache == 'Dark' ? 'white' : 'black'} 
+                color={themeFromCache == 'Dark' ? 'wheat' : 'black'} 
               />}} />
         <Tab.Screen 
           name="Rhythms" 
@@ -86,7 +86,7 @@ const App = () => {
             tabBarIcon: () => 
               <Icon 
                 name="album" 
-                color={themeFromCache == 'Dark' ? 'white' : 'black'} 
+                color={themeFromCache == 'Dark' ? 'wheat' : 'black'} 
               />}} />
         <Tab.Screen 
           name="Metronomy" 
@@ -95,7 +95,7 @@ const App = () => {
             tabBarIcon: () => 
               <Icon 
                 name="touch-app" 
-                color={themeFromCache == 'Dark' ? 'white' : 'black'} 
+                color={themeFromCache == 'Dark' ? 'wheat' : 'black'} 
               />}} />
         {Platform.OS == 'ios' && <Tab.Screen 
           name="Settings" 
@@ -104,7 +104,7 @@ const App = () => {
             tabBarIcon: () => 
               <Icon 
                 name="settings" 
-                color={themeFromCache == 'Dark' ? 'white' : 'black'} 
+                color={themeFromCache == 'Dark' ? 'wheat' : 'black'} 
               />}} />}
       </Tab.Navigator>
 
