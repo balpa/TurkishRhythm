@@ -201,7 +201,7 @@ const Metronomy = ({language, theme}) => {
       </TouchableOpacity>
       <Animated.View 
         style={[
-          {width: '80%',marginTop: 10,},
+          {width: '80%',marginTop: 10},
           {transform: [{translateY: infoPanelPositionAnim}]}
         ]}>
         {openInfoPanel && <InfoPanel />}
@@ -221,7 +221,9 @@ const Metronomy = ({language, theme}) => {
         shadowOptions, 
         {backgroundColor:`#774360`}, 
         {transform: [{scale: scaleAnim}]}]}>
-        <TouchableOpacity style={{width:'100%', height:'100%', justifyContent:'center', alignItems:'center'}} onPress={()=> calc()}>
+        <TouchableOpacity 
+          style={styles.w100h100JCAI} 
+          onPress={()=> calc()}>
           <Text style={
             theme == 'Dark' 
             ? {fontSize: 40, color:'wheat', fontWeight: '900'}
@@ -235,7 +237,7 @@ const Metronomy = ({language, theme}) => {
         Platform.OS == 'android' ? {borderBottomLeftRadius: 25, borderBottomRightRadius: 25} : {},
         {backgroundColor: `#b25068`}, 
         {transform: [{translateY: yAnim}]}]}>
-        <TouchableOpacity style={{width:"100%", justifyContent:'center', alignItems:'center'}} onPress={()=>reset()}>
+        <TouchableOpacity style={styles.w100JCAI} onPress={()=>reset()}>
           <Text style={
             theme == 'Dark'
             ? {fontSize:40,color:'wheat', fontWeight: '900'}
@@ -312,5 +314,16 @@ const styles = StyleSheet.create({
     textAlign:'center', 
     position:'absolute', 
     paddingBottom: 25 
+  },
+  w100h100JCAI: { 
+  width: '100%',
+  height: '100%',
+  justifyContent:'center',
+  alignItems:'center'  
+  },
+  w100JCAI: {
+    width:'100%',
+    justifyContent:'center',
+    alignItems:'center'
   }
 })

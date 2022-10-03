@@ -16,8 +16,7 @@ const RhythmCard = ({ rhythmName, rhythmTime, color, imageURI, infoText, theme }
       setShadowOptions({
         elevation: 20
       })
-  }
-    else if (Platform.OS === "ios") {
+    } else if (Platform.OS === "ios") {
       setPlatform("ios")
       setShadowOptions({
         shadowColor: '#171717',
@@ -29,12 +28,10 @@ const RhythmCard = ({ rhythmName, rhythmTime, color, imageURI, infoText, theme }
 
   }, [])
 
-
   const yAnim = React.useRef(new Animated.Value(0)).current
   const borderRadiusAnim = React.useRef(new Animated.Value(0)).current
   const marginAnim = React.useRef(new Animated.Value(0)).current
   const opacityAnim = React.useRef(new Animated.Value(0)).current
-
 
   function showInfoPanel(){
     
@@ -94,20 +91,27 @@ const RhythmCard = ({ rhythmName, rhythmTime, color, imageURI, infoText, theme }
 
   }
 
-
   return (
-    <View style={[styles.rhythmCardContainer, shadowOptions ,{backgroundColor: `#${color}`}]}>
+    <View 
+      style={[
+        styles.rhythmCardContainer, 
+        shadowOptions,
+        {backgroundColor: `#${color}`}
+      ]}>
       <TouchableOpacity style={{width:'100%'}} onPress={()=>showInfoPanel()}>
         <View style={{width:'100%', flexDirection:'row'}}>
-            <Text style={{fontSize:25, fontWeight: "900", width:'30%'}}>{rhythmTime}</Text>
-            <Text style={{fontSize:25, fontWeight: "700", width:'50%', textAlign:'center'}}>{rhythmName}</Text>
+            <Text style={styles.rhythmTime}>{rhythmTime}</Text>
+            <Text style={styles.rhythmName}>{rhythmName}</Text>
         </View>
       </TouchableOpacity>
       {isOpen && 
-      <Animated.View style={[styles.rhythmInfoContainer, {height: yAnim, borderRadius: borderRadiusAnim, margin: marginAnim }]}>
-
+      <Animated.View 
+        style={[
+          styles.rhythmInfoContainer, 
+          {height: yAnim, borderRadius: borderRadiusAnim, margin: marginAnim }
+        ]}>
         <Animated.View style={[styles.imageContainer, {opacity: opacityAnim}]}>
-          <Image source={imageURI} style={{height:undefined, width:'90%', alignSelf:'center', aspectRatio:2.7}}/>
+          <Image source={imageURI} style={styles.rhythmImage}/>
         </Animated.View>
 
         <Animated.View style={[styles.infoScrollContainer, {opacity: opacityAnim}]}>
@@ -162,5 +166,22 @@ const styles = StyleSheet.create({
   infoScrollContainer: {
     width: '100%',
     height: '60%',
+  },
+  rhythmTime: {
+    fontSize:25, 
+    fontWeight: "900", 
+    width:'30%'
+  },
+  rhythmName: {
+    fontSize:25, 
+    fontWeight: "700", 
+    width:'50%', 
+    textAlign:'center' 
+  },
+  rhythmImage: {
+    height:undefined, 
+    width:'90%', 
+    alignSelf:'center', 
+    aspectRatio:2.7
   }
 })

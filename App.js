@@ -22,6 +22,18 @@ const App = () => {
   const [languageFromCache, setLanguageFromCache] = useState('')
   const [themeFromCache, setThemeFromCache] = useState('')
 
+  const tabNavigatorScreenOpts = {
+    tabBarShowLabel: false,
+    tabBarStyle: {
+      backgroundColor: themeFromCache == 'Dark' ? '#4c3a51' : 'white',
+      marginTop: 40,
+    },
+    tabBarIndicatorStyle: {
+      backgroundColor: `#${tabBarIndicatorColor}`,
+      height: 5
+    }
+  }
+
   useEffect(async()=>{      // get language and theme data from local storage (cache)
     try {
       const value = await AsyncStorage.getItem('@language')
@@ -59,17 +71,7 @@ const App = () => {
           : 'light'}
         />}
       <Tab.Navigator 
-        screenOptions={({ route }) => ({
-          tabBarShowLabel: false,
-          tabBarStyle: {
-            backgroundColor: themeFromCache == 'Dark' ? '#4c3a51' : 'white',
-            marginTop: 40,
-          },
-          tabBarIndicatorStyle: {
-            backgroundColor: `#${tabBarIndicatorColor}`,
-            height: 5
-          }
-      })}>
+        screenOptions={({ route }) => (tabNavigatorScreenOpts)}>
         <Tab.Screen 
           name="Makams" 
           children={()=> <Makams language={languageFromCache} theme={themeFromCache}/>}

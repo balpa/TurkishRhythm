@@ -26,7 +26,6 @@ const MakamCard = ({ makamName, color, imageURI, makamInfo, theme }) => {
     }
   }, [])
 
-
   const yAnim = React.useRef(new Animated.Value(0)).current
   const borderRadiusAnim = React.useRef(new Animated.Value(0)).current
   const marginAnim = React.useRef(new Animated.Value(0)).current
@@ -91,17 +90,18 @@ const MakamCard = ({ makamName, color, imageURI, makamInfo, theme }) => {
 
   }
 
-  //TODO: SCROLLWIEW NOT WORKING ON ANDROID
   return (
-    <View style={[styles.rhythmCardContainer, shadowOptions ,{backgroundColor: `#${color}`}]}>
+    <View 
+      style={[
+        styles.rhythmCardContainer, 
+        shadowOptions,
+        {backgroundColor: `#${color}`}
+      ]}>
       <TouchableOpacity style={{width:'100%'}} onPress={()=>showInfoPanel()}>
-        <View style={{width:'100%', flexDirection:'row', alignItems:'center', justifyContent:'center'}}>
-            <Text 
-              style={{
-                fontSize:25, 
-                fontWeight: "700", 
-                width:'75%', 
-                textAlign:'center'}}>{makamName}</Text>
+        <View style={styles.W100_FLEXROW_AI_JC}>
+            <Text style={styles.makamNameText}>
+              {makamName}
+            </Text>
         </View>
       </TouchableOpacity>
       {isOpen && 
@@ -113,20 +113,16 @@ const MakamCard = ({ makamName, color, imageURI, makamInfo, theme }) => {
           style={[
             styles.imageContainer, 
             {opacity: opacityAnim}]}>
-          <Image source={imageURI} style={{height:undefined, width:'90%', alignSelf:'center', aspectRatio:2.7}}/>
+          <Image source={imageURI} style={styles.makamImageStyle}/>
         </Animated.View>
 
         <Animated.View style={[styles.infoScrollContainer, {opacity: opacityAnim}]}>
-
           <ScrollView nestedScrollEnabled={true}>
             <Text>
               {makamInfo}
             </Text>
           </ScrollView>
-
-
         </Animated.View>
-
       </Animated.View>
       }
     </View>
@@ -169,5 +165,23 @@ const styles = StyleSheet.create({
   },
   infoScrollContainer: {
     flex: 1
+  },
+  W100_FLEXROW_AI_JC: {
+    width: '100%',
+    flexDirection: 'row',
+    alignItems:'center',
+    justifyContent:'center'
+  },
+  makamNameText: {
+    fontSize:25, 
+    fontWeight: "700", 
+    width:'75%', 
+    textAlign:'center'
+  },
+  makamImageStyle: {
+    height:undefined, 
+    width:'90%', 
+    alignSelf:'center', 
+    aspectRatio:2.7 
   }
 })
