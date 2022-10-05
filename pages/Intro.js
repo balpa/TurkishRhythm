@@ -7,22 +7,22 @@ const Intro = ({setShowIntroPage}) => {
   let zIndexAnim = useRef(new Animated.Value(0)).current
 
   useEffect(()=>{
-    setTimeout(()=>{
-      Animated.timing(zIndexAnim, {
-        toValue: -5,
-        duration: 50
-      })
-    },2500)
+    // setTimeout(()=>{    //z index animation for kinda debugging scrollview
+    //   Animated.timing(zIndexAnim, {
+    //     toValue: -5,
+    //     duration: 50
+    //   })
+    // },2500)
 
-    setTimeout(() => {
+    setTimeout(() => {    //zoom out animation for intro page
       Animated.spring(scaleAnim, {
           toValue: 0,
           friction: 8,
-          tension: 40,
+          tension: 30,
           useNativeDriver: false
       }).start();
     } , 2000)
-    //setTimeout(()=>{setShowIntroPage(false)},1500)
+    setTimeout(()=>{setShowIntroPage(false)},2500)
   },[])
 
   return (

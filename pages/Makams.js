@@ -1,5 +1,5 @@
 import {View, Text, Animated, TouchableOpacity, StyleSheet, ScrollView} from 'react-native'
-import React, {useEffect} from 'react'
+import React, {useEffect, useMemo, useRef} from 'react'
 import MakamCard from '../components/MakamCard'
 import {MAKAMS} from '../data/data'
 
@@ -7,13 +7,16 @@ import {MAKAMS} from '../data/data'
 const Makams = ({language, theme}) => {
   //const B = (props) => <Text style={{fontWeight: 'bold'}}>{props.children}</Text>
 
-  const [componentArray, setComponentArray] = React.useState([])
+  const COLOR_PALETTE_1 = useRef([])
 
-  let COLOR_PALETTE_1 = [
-    "FEF9A7", "FAC213", 
-    "F77E21", "D61C4E", 
-    "990000", "FF5B00", 
-    "D4D925", "FFEE63"].sort(() => Math.random() - 0.5)
+  useEffect(()=> {
+    COLOR_PALETTE_1.current = [
+      "FEF9A7", "FAC213", 
+      "F77E21", "D61C4E", 
+      "990000", "FF5B00", 
+      "D4D925", "FFEE63"].sort(() => Math.random() - 0.5)
+  },[])
+
 
   // could refactor and render from a list via map etc (image linking wont work, need a sol)
   return (
@@ -26,97 +29,97 @@ const Makams = ({language, theme}) => {
           makamName={MAKAMS.hicaz.makamName}
           makamInfo={MAKAMS.hicaz.info}
           imageURI={require("../assets/makams/hicaz.jpg")}
-          color={COLOR_PALETTE_1[0]}
+          color={COLOR_PALETTE_1.current[0]}
           />
         <MakamCard 
           makamName={MAKAMS.nihavend.makamName}
           makamInfo={MAKAMS.nihavend.info}
           imageURI={require("../assets/makams/nihavend.jpg")}
-          color={COLOR_PALETTE_1[1]}
+          color={COLOR_PALETTE_1.current[1]}
           />
         <MakamCard 
           makamName={MAKAMS.ussak.makamName}
           makamInfo={MAKAMS.ussak.info}
           imageURI={require("../assets/makams/ussak.jpg")}
-          color={COLOR_PALETTE_1[2]}
+          color={COLOR_PALETTE_1.current[2]}
           />
         <MakamCard 
           makamName={MAKAMS.kurdi.makamName}
           makamInfo={MAKAMS.kurdi.info}
           imageURI={require("../assets/makams/kurdi.jpg")}
-          color={COLOR_PALETTE_1[3]}
+          color={COLOR_PALETTE_1.current[3]}
           />
         <MakamCard 
           makamName={MAKAMS.rast.makamName}
           makamInfo={MAKAMS.rast.info}
           imageURI={require("../assets/makams/rast.jpg")}
-          color={COLOR_PALETTE_1[4]}
+          color={COLOR_PALETTE_1.current[4]}
           />
         <MakamCard 
           makamName={MAKAMS.karcigar.makamName}
           makamInfo={MAKAMS.karcigar.info}
           imageURI={require("../assets/makams/karcigar.jpg")}
-          color={COLOR_PALETTE_1[5]}
+          color={COLOR_PALETTE_1.current[5]}
           />
         <MakamCard 
           makamName={MAKAMS.kurdilihicazkar.makamName}
           makamInfo={MAKAMS.kurdilihicazkar.info}
           imageURI={require("../assets/makams/kurdilihicazkar.jpg")}
-          color={COLOR_PALETTE_1[6]}
+          color={COLOR_PALETTE_1.current[6]}
           />
         <MakamCard 
           makamName={MAKAMS.segah.makamName}
           makamInfo={MAKAMS.segah.info}
           imageURI={require("../assets/makams/segah.jpg")}
-          color={COLOR_PALETTE_1[7]}
+          color={COLOR_PALETTE_1.current[7]}
           />
         <MakamCard 
           makamName={MAKAMS.huzzam.makamName}
           makamInfo={MAKAMS.huzzam.info}
           imageURI={require("../assets/makams/huzzam.jpg")}
-          color={COLOR_PALETTE_1[0]}
+          color={COLOR_PALETTE_1.current[0]}
           />
         <MakamCard 
           makamName={MAKAMS.huseyni.makamName}
           makamInfo={MAKAMS.huseyni.info}
           imageURI={require("../assets/makams/huseyni.jpg")}
-          color={COLOR_PALETTE_1[6]}            
+          color={COLOR_PALETTE_1.current[6]}            
           /> 
         <MakamCard 
           makamName={MAKAMS.sehnaz.makamName}
           makamInfo={MAKAMS.sehnaz.info}
           imageURI={require("../assets/makams/sehnaz.jpg")}
-          color={COLOR_PALETTE_1[1]}
+          color={COLOR_PALETTE_1.current[1]}
           />
         <MakamCard 
           makamName={MAKAMS.evic.makamName}
           makamInfo={MAKAMS.evic.info}
           imageURI={require("../assets/makams/evic.jpg")}
-          color={COLOR_PALETTE_1[2]}
+          color={COLOR_PALETTE_1.current[2]}
           />
         <MakamCard 
           makamName={MAKAMS.cargah.makamName}
           makamInfo={MAKAMS.cargah.info}
           imageURI={require("../assets/makams/cargah.jpg")}
-          color={COLOR_PALETTE_1[3]}
+          color={COLOR_PALETTE_1.current[3]}
           />
         <MakamCard 
           makamName={MAKAMS.buselik.makamName}
           makamInfo={MAKAMS.buselik.info}
           imageURI={require("../assets/makams/buselik.jpg")}
-          color={COLOR_PALETTE_1[4]}
+          color={COLOR_PALETTE_1.current[4]}
           />
         <MakamCard 
           makamName={MAKAMS.beyati.makamName}
           makamInfo={MAKAMS.beyati.info}
           imageURI={require("../assets/makams/beyati.jpg")}
-          color={COLOR_PALETTE_1[5]}
+          color={COLOR_PALETTE_1.current[5]}
           /> 
         <MakamCard 
           makamName={MAKAMS.muhayyer.makamName}
           makamInfo={MAKAMS.muhayyer.info}
           imageURI={require("../assets/makams/muhayyer.jpg")}
-          color={COLOR_PALETTE_1[6]}
+          color={COLOR_PALETTE_1.current[6]}
           />  
           
  
