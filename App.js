@@ -6,6 +6,7 @@ import Rhythms from './pages/Rhythms';
 import Tuner from './pages/Tuner';
 import Makams from './pages/Makams';
 import Settings from './pages/Settings';
+import Intro from './pages/Intro'
 import { Icon } from 'react-native-elements'
 import { NavigationContainer } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
@@ -21,6 +22,7 @@ const App = () => {
   const [tabBarIndicatorColor, setTabBarIndicatorColor] = useState('white')
   const [languageFromCache, setLanguageFromCache] = useState('')
   const [themeFromCache, setThemeFromCache] = useState('')
+  const [showIntroPage, setShowIntroPage] = useState(true)
 
   const tabNavigatorScreenOpts = {
     tabBarShowLabel: false,
@@ -57,7 +59,7 @@ const App = () => {
     setTabBarIndicatorColor(COLOR_PALETTE_1[Math.floor(Math.random() * COLOR_PALETTE_1.length)])
   }, [])
   
-  return (
+  return (<>
 
     <NavigationContainer>
      {Platform.OS == 'android' && <StatusBar 
@@ -111,8 +113,8 @@ const App = () => {
       </Tab.Navigator>
 
     </NavigationContainer>
-
-  )
+    {showIntroPage && <Intro setShowIntroPage={setShowIntroPage} />}
+  </>)
 }
 
 export default App
