@@ -32,6 +32,7 @@ const Metronomy = ({language, theme}) => {
     const yAnim = React.useRef(new Animated.Value(500)).current
     const scaleAnim = React.useRef(new Animated.Value(0)).current
     const infoPanelPositionAnim = React.useRef(new Animated.Value(-200)).current
+    const topAnimDependingOnInfoContainer = React.useRef(new Animated.Value(75)).current
 
     const createRandomColorFromArray = () => {
       return COLOR_PALETTE_1[Math.floor(Math.random() * COLOR_PALETTE_1.length)]
@@ -139,14 +140,27 @@ const Metronomy = ({language, theme}) => {
       if (openInfoPanel == false) {
         setOpenInfoPanel(true)
 
-        Animated.timing(infoPanelPositionAnim,{
+        Animated.timing(topAnimDependingOnInfoContainer, {  //ms container top margin cloisng anim
+          toValue: 150,
+          duration: 450,
+          useNativeDriver: false
+        }).start()
+
+        Animated.timing(infoPanelPositionAnim,{ //info panel position opening anim
           toValue: 0,
           duration:400,
           useNativeDriver:false
         }).start()
 
       } else {
-        Animated.timing(infoPanelPositionAnim,{
+
+        Animated.timing(topAnimDependingOnInfoContainer, {  //ms container top margin closin anim
+          toValue: 75,
+          duration: 450,
+          useNativeDriver: false
+        }).start()
+
+        Animated.timing(infoPanelPositionAnim,{ //info panel position closing anim
           toValue: -200,
           duration: 400,
           useNativeDriver: false
@@ -206,8 +220,9 @@ const Metronomy = ({language, theme}) => {
         ]}>
         {openInfoPanel && <InfoPanel />}
       </Animated.View>
-      <View style={[
+      <Animated.View style={[
         styles.msInfoContainer, 
+        {top: topAnimDependingOnInfoContainer},
         {backgroundColor: theme == 'Dark' ? '#3c2a41' : 'white'},
         {borderColor: theme == 'Dark' ? 'wheat' : 'black'}]}>
         <Text 
@@ -215,7 +230,7 @@ const Metronomy = ({language, theme}) => {
           <Text style={{fontSize: 20}}>{MILLISECONDS_TEXT}{'\n'}</Text>
           <Text style={{fontSize: 14}}>{BETWEEN_TAPS_TEXT}</Text>
         </Text>
-      </View>
+      </Animated.View>
       <Animated.View style={[
         styles.hitMeButton, 
         shadowOptions, 
@@ -300,7 +315,6 @@ const styles = StyleSheet.create({
     height:200,
     justifyContent:'center',
     alignItems:'center',
-    top: 150,
     borderWidth: 2,
     borderRadius:20,
   },
