@@ -15,6 +15,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const Tab = createMaterialTopTabNavigator()
 
 const App = () => {
+  //settings page removed for now
 
   const COLOR_PALETTE_1 = ["FEF9A7","FAC213", "F77E21", "D61C4E", "990000", "FF5B00", "D4D925", "FFEE63"]
   const DARK_MODE_PALETTE = ['#4c3a51', '#774360', '#b25068', '#e7ab79']
@@ -101,7 +102,7 @@ const App = () => {
                 name="touch-app" 
                 color={themeFromCache == 'Dark' ? 'wheat' : 'black'} 
               />}} />
-        {Platform.OS == 'ios' && <Tab.Screen 
+        {/* {Platform.OS == 'ios' && <Tab.Screen 
           name="Settings" 
           children={()=> <Settings language={languageFromCache} theme={themeFromCache}/>}
           options={{
@@ -109,7 +110,7 @@ const App = () => {
               <Icon 
                 name="settings" 
                 color={themeFromCache == 'Dark' ? 'wheat' : 'black'} 
-              />}} />}
+              />}} />} */}
       </Tab.Navigator>
 
     </NavigationContainer>
