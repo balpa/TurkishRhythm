@@ -118,7 +118,6 @@ const RhythmCard = ({ rhythmName, rhythmTime, color, imageURI, infoText, theme }
         setIsOpen(false)
       },800)
     }
-
   }
 
   return (
@@ -132,10 +131,14 @@ const RhythmCard = ({ rhythmName, rhythmTime, color, imageURI, infoText, theme }
       <TouchableOpacity style={{width:'100%'}} onPress={()=>showInfoPanel()}>
         <View style={{width:'100%', flexDirection:'row'}}>
             <Text style={styles.rhythmTime}>{rhythmTime}</Text>
-            <Animated.Text style={[
-              styles.rhythmName,
-              {letterSpacing: letterSpacingAnim}
-              ]}>{rhythmName}</Animated.Text>
+            <Animated.Text 
+              numberOfLines={1}
+              style={[
+                styles.rhythmName,
+                {letterSpacing: letterSpacingAnim}
+              ]}>
+              {rhythmName}
+            </Animated.Text>
         </View>
       </TouchableOpacity>
       {isOpen && 
@@ -209,8 +212,8 @@ const styles = StyleSheet.create({
   rhythmName: {
     fontSize:25, 
     fontWeight: "700", 
-    width:'50%', 
-    textAlign:'center' 
+    width:'55%', 
+    textAlign:'center',
   },
   rhythmImage: {
     height:undefined, 
