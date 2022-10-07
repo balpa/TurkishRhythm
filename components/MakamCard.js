@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, Animated, Image, TouchableOpacity, Platform, ScrollView } from 'react-native'
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import { ForceTouchGestureHandler } from 'react-native-gesture-handler'
 
 const MakamCard = ({ makamName, color, imageURI, makamInfo, theme }) => {
@@ -26,16 +26,39 @@ const MakamCard = ({ makamName, color, imageURI, makamInfo, theme }) => {
     }
   }, [])
 
-  const yAnim = React.useRef(new Animated.Value(0)).current
-  const borderRadiusAnim = React.useRef(new Animated.Value(0)).current
-  const marginAnim = React.useRef(new Animated.Value(0)).current
-  const opacityAnim = React.useRef(new Animated.Value(0)).current
+  const yAnim = useRef(new Animated.Value(0)).current
+  const borderRadiusAnim = useRef(new Animated.Value(0)).current
+  const marginAnim = useRef(new Animated.Value(0)).current
+  const opacityAnim = useRef(new Animated.Value(0)).current
+  const scaleAnimOnClick = useRef(new Animated.Value(1)).current
+  const letterSpacingAnim = useRef(new Animated.Value(0)).current
 
 
   function showInfoPanel(){
+
+    Animated.timing(scaleAnimOnClick, {   // on click animation 
+      toValue: 0.98,
+      duration: 100,
+      useNativeDriver: false
+    }).start(()=>{
+      Animated.timing(scaleAnimOnClick, {
+        toValue: 1,
+        duration: 100,
+        useNativeDriver: false
+      }).start()
+    })
     
     if (!isOpen){
       setIsOpen(true)
+    
+      setTimeout(()=>{    // letter spacing anim on opening the comp
+        Animated.timing(letterSpacingAnim, {
+          toValue: 2,
+          duration: 200,
+          useNativeDriver: false
+        }).start()
+      },900)
+
 
       Animated.timing(yAnim, {        // opening animation
         toValue: 300,
@@ -61,8 +84,16 @@ const MakamCard = ({ makamName, color, imageURI, makamInfo, theme }) => {
           })
       })
     } else {
+
+      setTimeout(()=>{    // letter spacing anim on closing the comp
+        Animated.timing(letterSpacingAnim, {
+          toValue: 0,
+          duration: 200,
+          useNativeDriver: false
+        }).start()
+      },900)
     
-      Animated.timing(opacityAnim, {
+      Animated.timing(opacityAnim, {    // closing animation
         toValue: 0,
         duration: 200,
         useNativeDriver: false
@@ -77,7 +108,7 @@ const MakamCard = ({ makamName, color, imageURI, makamInfo, theme }) => {
           duration: 200,
           useNativeDriver: false
         }).start(()=>{
-          Animated.timing(yAnim, {      // closing animation
+          Animated.timing(yAnim, {      
             toValue: 0,
             duration: 200,
             useNativeDriver: false
@@ -91,17 +122,21 @@ const MakamCard = ({ makamName, color, imageURI, makamInfo, theme }) => {
   }
 
   return (
-    <View 
+    <Animated.View 
       style={[
         styles.rhythmCardContainer, 
         shadowOptions,
-        {backgroundColor: `#${color}`}
+        {backgroundColor: `#${color}`},
+        {transform: [{scale: scaleAnimOnClick}]}
       ]}>
       <TouchableOpacity style={{width:'100%'}} onPress={()=>showInfoPanel()}>
         <View style={styles.W100_FLEXROW_AI_JC}>
-            <Text style={styles.makamNameText}>
+            <Animated.Text style={[
+              styles.makamNameText,
+              {letterSpacing: letterSpacingAnim}
+              ]}>
               {makamName}
-            </Text>
+            </Animated.Text>
         </View>
       </TouchableOpacity>
       {isOpen && 
@@ -125,7 +160,7 @@ const MakamCard = ({ makamName, color, imageURI, makamInfo, theme }) => {
         </Animated.View>
       </Animated.View>
       }
-    </View>
+    </Animated.View>
   )
 }
 

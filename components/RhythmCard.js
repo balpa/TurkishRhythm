@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, Animated, Image, TouchableOpacity, Platform } from 'react-native'
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import { ForceTouchGestureHandler, ScrollView } from 'react-native-gesture-handler'
 
 const RhythmCard = ({ rhythmName, rhythmTime, color, imageURI, infoText, theme }) => {
@@ -28,12 +28,25 @@ const RhythmCard = ({ rhythmName, rhythmTime, color, imageURI, infoText, theme }
 
   }, [])
 
-  const yAnim = React.useRef(new Animated.Value(0)).current
-  const borderRadiusAnim = React.useRef(new Animated.Value(0)).current
-  const marginAnim = React.useRef(new Animated.Value(0)).current
-  const opacityAnim = React.useRef(new Animated.Value(0)).current
+  const yAnim = useRef(new Animated.Value(0)).current
+  const borderRadiusAnim = useRef(new Animated.Value(0)).current
+  const marginAnim = useRef(new Animated.Value(0)).current
+  const opacityAnim = useRef(new Animated.Value(0)).current
+  const scaleAnimOnClick = useRef(new Animated.Value(1)).current
 
   function showInfoPanel(){
+    
+    Animated.timing(scaleAnimOnClick, {   // on click animation
+      toValue: 0.98,
+      duration: 100,
+      useNativeDriver: false
+    }).start(()=>{
+      Animated.timing(scaleAnimOnClick, {
+        toValue: 1,
+        duration: 100,
+        useNativeDriver: false
+      }).start()
+    })
     
     if (!isOpen){
       setIsOpen(true)
@@ -62,27 +75,26 @@ const RhythmCard = ({ rhythmName, rhythmTime, color, imageURI, infoText, theme }
           })
       })
     } else {
-    
       Animated.timing(opacityAnim, {
         toValue: 0,
         duration: 200,
         useNativeDriver: false
       }).start(()=>{
-      Animated.timing(marginAnim, {
-        toValue: 0,
-        duration: 200,
-        useNativeDriver: false
-      }).start(()=>{
-        Animated.timing(borderRadiusAnim, {
+        Animated.timing(marginAnim, {
           toValue: 0,
           duration: 200,
           useNativeDriver: false
         }).start(()=>{
-          Animated.timing(yAnim, {      // closing animation
+          Animated.timing(borderRadiusAnim, {
             toValue: 0,
             duration: 200,
             useNativeDriver: false
-          }).start()
+          }).start(()=>{
+            Animated.timing(yAnim, {      // closing animation
+              toValue: 0,
+              duration: 200,
+              useNativeDriver: false
+            }).start()
     })})})
       setTimeout(() => {          // timeout for waiting the closing animation to finish
         setIsOpen(false)
@@ -92,11 +104,12 @@ const RhythmCard = ({ rhythmName, rhythmTime, color, imageURI, infoText, theme }
   }
 
   return (
-    <View 
+    <Animated.View 
       style={[
         styles.rhythmCardContainer, 
         shadowOptions,
-        {backgroundColor: `#${color}`}
+        {backgroundColor: `#${color}`},
+        {transform: [{scale: scaleAnimOnClick}]}
       ]}>
       <TouchableOpacity style={{width:'100%'}} onPress={()=>showInfoPanel()}>
         <View style={{width:'100%', flexDirection:'row'}}>
@@ -124,7 +137,7 @@ const RhythmCard = ({ rhythmName, rhythmTime, color, imageURI, infoText, theme }
 
       </Animated.View>
       }
-    </View>
+    </Animated.View>
   )
 }
 
