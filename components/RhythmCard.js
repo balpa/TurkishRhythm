@@ -33,6 +33,7 @@ const RhythmCard = ({ rhythmName, rhythmTime, color, imageURI, infoText, theme }
   const marginAnim = useRef(new Animated.Value(0)).current
   const opacityAnim = useRef(new Animated.Value(0)).current
   const scaleAnimOnClick = useRef(new Animated.Value(1)).current
+  const letterSpacingAnim = useRef(new Animated.Value(0)).current
 
   function showInfoPanel(){
     
@@ -47,9 +48,17 @@ const RhythmCard = ({ rhythmName, rhythmTime, color, imageURI, infoText, theme }
         useNativeDriver: false
       }).start()
     })
-    
+
     if (!isOpen){
       setIsOpen(true)
+
+      setTimeout(()=>{    // letter spacing anim on opening the comp
+        Animated.timing(letterSpacingAnim, {
+          toValue: 2,
+          duration: 200,
+          useNativeDriver: false
+        }).start()
+      },900)
 
       Animated.timing(yAnim, {        // opening animation
         toValue: 300,
@@ -75,6 +84,15 @@ const RhythmCard = ({ rhythmName, rhythmTime, color, imageURI, infoText, theme }
           })
       })
     } else {
+
+      setTimeout(()=>{    // letter spacing anim on opening the comp
+        Animated.timing(letterSpacingAnim, {
+          toValue: 0,
+          duration: 200,
+          useNativeDriver: false
+        }).start()
+      },900)
+
       Animated.timing(opacityAnim, {
         toValue: 0,
         duration: 200,
@@ -114,7 +132,10 @@ const RhythmCard = ({ rhythmName, rhythmTime, color, imageURI, infoText, theme }
       <TouchableOpacity style={{width:'100%'}} onPress={()=>showInfoPanel()}>
         <View style={{width:'100%', flexDirection:'row'}}>
             <Text style={styles.rhythmTime}>{rhythmTime}</Text>
-            <Text style={styles.rhythmName}>{rhythmName}</Text>
+            <Animated.Text style={[
+              styles.rhythmName,
+              {letterSpacing: letterSpacingAnim}
+              ]}>{rhythmName}</Animated.Text>
         </View>
       </TouchableOpacity>
       {isOpen && 

@@ -118,7 +118,6 @@ const MakamCard = ({ makamName, color, imageURI, makamInfo, theme }) => {
         setIsOpen(false)
       },800)
     }
-
   }
 
   return (
