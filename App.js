@@ -43,13 +43,11 @@ const App = () => {
       const themeVal = await AsyncStorage.getItem('@theme')
       if(value !== null) {
         setLanguageFromCache(value)
-        console.log('LANGUAGE: ', value)
       } else {
         setLanguageFromCache('Turkish')
       }
       if(themeVal !== null) {
         setThemeFromCache(themeVal)
-        console.log('THEME: ',themeVal)
       } else {
         setThemeFromCache('Dark') //default theme
       }
