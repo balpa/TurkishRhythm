@@ -3,7 +3,6 @@ import { StyleSheet, Text, View, Platform } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Metronomy from './pages/Metronomy';
 import Rhythms from './pages/Rhythms';
-import Tuner from './pages/Tuner';
 import Makams from './pages/Makams';
 import Settings from './pages/Settings';
 import Intro from './pages/Intro'

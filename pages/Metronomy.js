@@ -38,7 +38,6 @@ const Metronomy = ({language, theme}) => {
       return COLOR_PALETTE_1[Math.floor(Math.random() * COLOR_PALETTE_1.length)]
     }
 
-
     useEffect(() => {          // platform based shadow options
       if (Platform.OS === "android") {
         setPlatform("android")
@@ -179,15 +178,17 @@ const Metronomy = ({language, theme}) => {
           theme == 'Dark'
           ?{
             textAlign:'center', 
-            fontSize:12, 
+            fontSize:14, 
             fontWeight:'700',
-            color:'wheat'
+            color:'wheat',
+            letterSpacing: 0.3
           }
          :{
             textAlign:'center', 
-            fontSize:12, 
+            fontSize:14, 
             fontWeight:'700',
-            color:'black'
+            color:'black',
+            letterSpacing: 0.3
           }}>
           Bu uygulamanın amacı; butona her basışınızda,
           bir önceki basışınız arasındaki farkı hesaplayıp milisaniye cinsinden
