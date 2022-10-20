@@ -28,11 +28,14 @@ const Metronomy = ({language, theme}) => {
     const [platform, setPlatform] = useState("")
     const [shadowOptions, setShadowOptions] = useState({})
     const [openInfoPanel, setOpenInfoPanel] = useState(false)
+    const [score, setScore] = useState(0)
+    const [showScore, setShowScore] = useState(true)
 
     const yAnim = React.useRef(new Animated.Value(500)).current
     const scaleAnim = React.useRef(new Animated.Value(0)).current
     const infoPanelPositionAnim = React.useRef(new Animated.Value(-200)).current
     const topAnimDependingOnInfoContainer = React.useRef(new Animated.Value(75)).current
+    const msContainerScaleAnim = React.useRef(new Animated.Value(1)).current
 
     const createRandomColorFromArray = () => {
       return COLOR_PALETTE_1[Math.floor(Math.random() * COLOR_PALETTE_1.length)]
@@ -76,10 +79,9 @@ const Metronomy = ({language, theme}) => {
     }, [])
 
     useEffect(() => {           // change color of text depending on time difference. its done to show if user is doing okay
-      if (timeArray[timeArray.length-1]-timeArray[timeArray.length-2] < 50) setMsColor('green') 
-      else if (timeArray[timeArray.length-1]-timeArray[timeArray.length-2] < 75) setMsColor('#b7ec09')
-      else setMsColor('red')
-
+      if (timeArray[timeArray.length-1]-timeArray[timeArray.length-2] < 50) {setMsColor('green'); setScore(score+1)}
+      else if (timeArray[timeArray.length-1]-timeArray[timeArray.length-2] < 75) {setMsColor('#b7ec09'); setScore(score-1)}
+      else {setMsColor('red'); setScore(score-2)}
     },[currentTime])
 
     useEffect(() => {         // if timearray size is bigger than 20, set the array to last 10 elements. IDK why 20 :)
@@ -92,6 +94,15 @@ const Metronomy = ({language, theme}) => {
       setHitMeColor(createRandomColorFromArray())
       setResetColor(createRandomColorFromArray())
     },[])
+
+    useEffect(()=>{           // bounce animation for ms container
+      bounceAnimation()
+    },[time])
+
+    useEffect(()=>{
+      if (openInfoPanel) setShowScore(false)
+      else setShowScore(true)
+    },[openInfoPanel])
     
     const createTime = () => {      // create current time in milliseconds
       let now = new Date().getTime()
@@ -133,6 +144,7 @@ const Metronomy = ({language, theme}) => {
       setPreviousTime(0)
       setisOn(false)
       setTimeArray([])
+      setScore(0)
     }
 
     const expandInfoPanel = () => {
@@ -169,6 +181,26 @@ const Metronomy = ({language, theme}) => {
       }
 
 
+    }
+
+    const bounceAnimation = () => {
+      Animated.timing(msContainerScaleAnim, {
+        toValue: 1.02,
+        duration: 50,
+        useNativeDriver: false
+      }).start(()=>{
+        Animated.timing(msContainerScaleAnim, {
+          toValue: 0.98,
+          duration: 50,
+          useNativeDriver: false
+        }).start(()=>{
+        Animated.timing(msContainerScaleAnim, {
+          toValue: 1,
+          duration: 50,
+          useNativeDriver: false
+        }).start()
+        })
+      })  
     }
 
     const InfoPanel = () => {
@@ -222,7 +254,8 @@ const Metronomy = ({language, theme}) => {
         {openInfoPanel && <InfoPanel />}
       </Animated.View>
       <Animated.View style={[
-        styles.msInfoContainer, 
+        styles.msInfoContainer,
+        {transform: [{scale: msContainerScaleAnim}]},
         {top: topAnimDependingOnInfoContainer},
         {backgroundColor: theme == 'Dark' ? '#3c2a41' : 'white'},
         {borderColor: theme == 'Dark' ? 'wheat' : 'black'}]}>
@@ -232,6 +265,11 @@ const Metronomy = ({language, theme}) => {
           <Text style={{fontSize: 14}}>{BETWEEN_TAPS_TEXT}</Text>
         </Text>
       </Animated.View>
+      <View style={styles.scoreContainer}>
+        <Text style={styles.scoreText}>
+         {showScore && `Skor: ${score}`}
+        </Text>
+      </View>
       <Animated.View style={[
         styles.hitMeButton, 
         shadowOptions, 
@@ -247,7 +285,6 @@ const Metronomy = ({language, theme}) => {
             >{HIT_BUTTON_TEXT}</Text>
         </TouchableOpacity>
       </Animated.View> 
-
       <Animated.View style={[
         styles.resetButton, 
         Platform.OS == 'android' ? {borderBottomLeftRadius: 25, borderBottomRightRadius: 25} : {},
@@ -340,5 +377,18 @@ const styles = StyleSheet.create({
     width:'100%',
     justifyContent:'center',
     alignItems:'center'
+  },
+  scoreContainer: {
+    position: 'absolute',
+    width: '100%',
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    left: 0
+  },
+  scoreText: {
+    fontSize: 16,
+    fontWeight: '800',
+    color: 'wheat'
   }
 })
