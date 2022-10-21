@@ -222,7 +222,7 @@ const Metronomy = ({language, theme}) => {
             color:'black',
             letterSpacing: 0.3
           }}>
-          Bu uygulamanın amacı; butona her basışınızda,
+          Bu uygulamanın amacı, butona her basışınızda,
           bir önceki basışınız arasındaki farkı hesaplayıp milisaniye cinsinden
           ekrana yazdırarak ritim duyunuzun performansını göstermek ve pratik yaparak
           gelişmesine katkıda bulunmaktır.
@@ -314,7 +314,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 20,
     borderWidth: 2,
-    borderColor:'black',
+    borderColor:'wheat',
     backgroundColor: 'rgba(230,230,230,1)',
     width: '90%',
     height: 100,
@@ -332,7 +332,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 250,
     borderWidth: 2,
-    borderColor:'black',
+    borderColor:'wheat',
     alignItems: 'center',
     justifyContent: 'center',
     // shadowColor: '#171717',
