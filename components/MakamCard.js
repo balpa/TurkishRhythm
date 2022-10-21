@@ -8,31 +8,30 @@ const MakamCard = ({ makamName, color, imageURI, makamInfo, theme }) => {
   const [platform, setPlatform] = useState("")
   const [shadowOptions, setShadowOptions] = useState({})
 
-   useEffect(() => {          // platform based shadow options
-    if (Platform.OS === "android") {
-      setPlatform("android")
-      setShadowOptions({
-        elevation: 20
-      })
-  }
-    else if (Platform.OS === "ios") {
-      setPlatform("ios")
-      setShadowOptions({
-        shadowColor: '#171717',
-        shadowOffset: {width: -1, height: 3},
-        shadowOpacity: 0.4,
-        shadowRadius: 5, 
-      })
-    }
-  }, [])
-
   const yAnim = useRef(new Animated.Value(0)).current
   const borderRadiusAnim = useRef(new Animated.Value(0)).current
   const marginAnim = useRef(new Animated.Value(0)).current
   const opacityAnim = useRef(new Animated.Value(0)).current
   const scaleAnimOnClick = useRef(new Animated.Value(1)).current
   const letterSpacingAnim = useRef(new Animated.Value(0)).current
-
+  
+  useEffect(() => {          // platform based shadow options
+   if (Platform.OS === "android") {
+     setPlatform("android")
+     setShadowOptions({
+       elevation: 20
+     })
+ }
+   else if (Platform.OS === "ios") {
+     setPlatform("ios")
+     setShadowOptions({
+       shadowColor: '#171717',
+       shadowOffset: {width: -1, height: 3},
+       shadowOpacity: 0.4,
+       shadowRadius: 5, 
+     })
+   }
+  }, [])
 
   function showInfoPanel(){
 
@@ -123,7 +122,7 @@ const MakamCard = ({ makamName, color, imageURI, makamInfo, theme }) => {
   return (
     <Animated.View 
       style={[
-        styles.rhythmCardContainer, 
+        styles.makamCardContainer, 
         shadowOptions,
         {backgroundColor: `#${color}`},
         {transform: [{scale: scaleAnimOnClick}]}
@@ -167,7 +166,7 @@ export default MakamCard
 
 
 const styles = StyleSheet.create({
-  rhythmCardContainer: {
+  makamCardContainer: {
     width: "90%",
     margin: 10,
     borderRadius: 12,
