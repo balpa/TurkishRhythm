@@ -267,7 +267,7 @@ const Metronomy = ({language, theme}) => {
       </Animated.View>
       <View style={styles.scoreContainer}>
         <Text style={styles.scoreText}>
-         {showScore && `Skor: ${score}`}
+         {showScore && `Skor: ${score >= 0 ? score : '-0'}`}
         </Text>
       </View>
       <Animated.View style={[
