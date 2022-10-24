@@ -6,6 +6,7 @@ import { Icon } from 'react-native-elements'
 const Metronomy = ({language, theme}) => {
   //TODO: re-styling
   //MIGHT NEED TO CHANGE THE LOGIC FOR MS COUNTER
+  //SCORE REMOVED 
 
     const COLOR_PALETTE_1 = ["FEF9A7","FAC213", "F77E21", "D61C4E", "990000", "FF5B00", "D4D925", "FFEE63"]
 

@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Platform } from 'react-native';
+import { StyleSheet, Platform, Image } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Metronomy from './pages/Metronomy';
 import Rhythms from './pages/Rhythms';
@@ -10,6 +10,10 @@ import { Icon } from 'react-native-elements'
 import { NavigationContainer } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { registerCustomIconType } from 'react-native-elements';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+
+registerCustomIconType('font-awesome-5', FontAwesome5) // font awesome 5 not registered by def
 
 const Tab = createMaterialTopTabNavigator()
 
@@ -74,28 +78,34 @@ const App = () => {
           children={()=> <Makams language={languageFromCache} theme={themeFromCache}/>}
           options={{
             tabBarIcon: () => 
-              <Icon 
-                name="music-note" 
-                color={themeFromCache == 'Dark' ? 'wheat' : 'black'} 
-              />}} />
+              <Icon
+                name='music'
+                type='font-awesome'
+                color={themeFromCache == 'Dark' ? 'wheat' : 'black'}  
+              />
+              }}/>
         <Tab.Screen 
           name="Rhythms" 
           children={()=> <Rhythms language={languageFromCache} theme={themeFromCache}/>}
           options={{
             tabBarIcon: () => 
               <Icon 
-                name="album" 
+                name="drum" 
+                type='font-awesome-5'
                 color={themeFromCache == 'Dark' ? 'wheat' : 'black'} 
-              />}} />
+              />
+              }}/>
         <Tab.Screen 
           name="Metronomy" 
           children={()=> <Metronomy language={languageFromCache} theme={themeFromCache} />} 
           options={{
             tabBarIcon: () => 
               <Icon 
-                name="touch-app" 
+                name='play'
+                type='font-awesome-5' 
                 color={themeFromCache == 'Dark' ? 'wheat' : 'black'} 
-              />}} />
+              />
+             }}/>
         {/* {Platform.OS == 'ios' && <Tab.Screen 
           name="Settings" 
           children={()=> <Settings language={languageFromCache} theme={themeFromCache}/>}
