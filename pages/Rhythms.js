@@ -2,14 +2,24 @@ import { View, Text, ScrollView, StyleSheet } from 'react-native'
 import React, { useState, useEffect, useRef } from 'react'
 import RhythmCard from '../components/RhythmCard'
 import {RHYTHMS} from '../data/data'
+import * as Font from 'expo-font'
 
 const Rhythms = ({theme, language}) => {
 
   const COLOR_PALETTE_2 = ["7C3E66", "F2EBE9", "A5BECC", "243A73"]
 
-  const [rhythms, setRhytms] = useState([])
+  let fonts = {
+    'customFont': require('../assets/fonts/Mom.ttf') 
+  }
 
   const COLOR_PALETTE_1 = useRef([])
+  const [rhythms, setRhytms] = useState([])
+  const [isFontLoaded, setIsFontLoaded] = useState(false)
+
+  useEffect(async()=>{
+    await Font.loadAsync(fonts).then(()=> setIsFontLoaded(true))
+  }, [])
+
   useEffect(()=> {
     COLOR_PALETTE_1.current = [
       "FEF9A7", "FAC213", 
@@ -24,7 +34,9 @@ const Rhythms = ({theme, language}) => {
       {backgroundColor:theme == 'Dark' ? '#2c1a31' : 'white'}]}>
       <ScrollView contentContainerStyle={{flexGrow:1 }}>
         <View style={styles.ritimTextContainer}>
-          <Text style={styles.ritimText}>RİTİMLER</Text>
+          {isFontLoaded && <Text style={[styles.ritimText, {fontFamily: 'customFont'}]}>
+          RITIMLER
+        </Text>}
         </View>
         <RhythmCard 
           theme={theme}
@@ -122,9 +134,7 @@ const styles = StyleSheet.create({
     textAlign:'center',
     color: 'wheat',
     fontWeight: '800',
-    letterSpacing: 1,
-    fontSize: 18,
-    textDecorationLine: 'underline',
-    textDecorationStyle: 'double'
+    letterSpacing: 3,
+    fontSize: 24,
   }
 })

@@ -265,11 +265,11 @@ const Metronomy = ({language, theme}) => {
           <Text style={{fontSize: 14}}>{BETWEEN_TAPS_TEXT}</Text>
         </Text>
       </Animated.View>
-      <View style={styles.scoreContainer}>
+      {/* <View style={styles.scoreContainer}>
         <Text style={styles.scoreText}>
          {showScore && `Skor: ${score >= 0 ? score : '-0'}`}
         </Text>
-      </View>
+      </View> */}
       <Animated.View style={[
         styles.hitMeButton, 
         shadowOptions, 

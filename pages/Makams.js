@@ -1,15 +1,25 @@
 import {View, Text, StyleSheet, ScrollView} from 'react-native'
-import React, {useEffect, useRef} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import MakamCard from '../components/MakamCard'
 import {MAKAMS} from '../data/data'
+import * as Font from 'expo-font'
 
 
 const Makams = ({language, theme}) => {
   //const B = (props) => <Text style={{fontWeight: 'bold'}}>{props.children}</Text>
 
+  const [isFontLoaded, setIsFontLoaded] = useState(false)
   const COLOR_PALETTE_1 = useRef([])
 
-  useEffect(()=> {
+  let fonts = {
+    'customFont': require('../assets/fonts/Mom.ttf') 
+  }
+
+  useEffect(async()=>{    // load font at first render
+    await Font.loadAsync(fonts).then(()=> setIsFontLoaded(true))
+  }, [])
+
+  useEffect(()=> {        // create randomized color arr at 1st render
     COLOR_PALETTE_1.current = [
       "FEF9A7", "FAC213", 
       "F77E21", "D61C4E", 
@@ -22,7 +32,11 @@ const Makams = ({language, theme}) => {
   return (
     <View style={[styles.container, {backgroundColor:theme == 'Dark' ? '#2c1a31' : 'white'}]}>
       <View style={styles.makamTextContainer}>
-        <Text style={styles.makamText}>MAKAMLAR</Text>
+        {isFontLoaded && <Text style={[
+          styles.makamText, 
+          {fontFamily: 'customFont' }]}>
+          MAKAMLAR
+        </Text>}
       </View>
       <ScrollView contentContainerStyle={{flexGrow:1 }}>
         <MakamCard 
@@ -155,10 +169,8 @@ const styles = StyleSheet.create({
     textAlign:'center',
     color: 'wheat',
     fontWeight: '800',
-    letterSpacing: 1,
-    fontSize: 18,
-    textDecorationLine: 'underline',
-    textDecorationStyle: 'double'
+    letterSpacing: 3,
+    fontSize: 24,
   }
 
 })
