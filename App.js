@@ -36,7 +36,7 @@ const App = () => {
     },
     tabBarIndicatorStyle: {
       backgroundColor: `#${tabBarIndicatorColor}`,
-      height: 5
+      height: 1.5
     }
   }
 
