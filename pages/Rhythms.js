@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, ColorPropType, Platform, StyleSheet } from 'react-native'
+import { View, Text, ScrollView, StyleSheet } from 'react-native'
 import React, { useState, useEffect, useRef } from 'react'
 import RhythmCard from '../components/RhythmCard'
 import {RHYTHMS} from '../data/data'

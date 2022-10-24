@@ -1,6 +1,5 @@
 import { View, Text, StyleSheet, Animated, Image, TouchableOpacity, Platform, ScrollView } from 'react-native'
 import React, {useState, useEffect, useRef} from 'react'
-import { ForceTouchGestureHandler } from 'react-native-gesture-handler'
 
 const MakamCard = ({ makamName, color, imageURI, makamInfo, theme }) => {
 

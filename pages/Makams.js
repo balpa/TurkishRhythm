@@ -1,5 +1,5 @@
-import {View, Text, Animated, TouchableOpacity, StyleSheet, ScrollView} from 'react-native'
-import React, {useEffect, useMemo, useRef} from 'react'
+import {View, Text, StyleSheet, ScrollView} from 'react-native'
+import React, {useEffect, useRef} from 'react'
 import MakamCard from '../components/MakamCard'
 import {MAKAMS} from '../data/data'
 
