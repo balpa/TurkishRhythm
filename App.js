@@ -62,14 +62,8 @@ const App = () => {
 
     <NavigationContainer>
      {Platform.OS == 'android' && <StatusBar 
-        backgroundColor={
-          themeFromCache == 'Light'
-          ? 'white' 
-          : '#4c3a51'} 
-        style={
-          themeFromCache == 'Light'
-          ? 'dark' 
-          : 'light'}
+        backgroundColor={themeFromCache == 'Light' ? 'white' : '#4c3a51'} 
+        style={themeFromCache == 'Light' ? 'dark' : 'light'}
         />}
       <Tab.Navigator 
         screenOptions={({ route }) => (tabNavigatorScreenOpts)}>
