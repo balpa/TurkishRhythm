@@ -6,7 +6,7 @@ import * as Font from 'expo-font'
 
 
 const Makams = ({language, theme}) => {
-  
+
   const [isFontLoaded, setIsFontLoaded] = useState(false)
   const COLOR_PALETTE_1 = useRef([])
 
@@ -167,9 +167,8 @@ const styles = StyleSheet.create({
   makamText: {
     textAlign:'center',
     color: 'wheat',
-    fontWeight: '800',
-    letterSpacing: 3,
-    fontSize: 24,
+    letterSpacing: 2,
+    fontSize: 20,
   }
 
 })

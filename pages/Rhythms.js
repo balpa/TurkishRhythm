@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
     textAlign:'center',
     color: 'wheat',
     fontWeight: '800',
-    letterSpacing: 3,
-    fontSize: 24,
+    letterSpacing: 2,
+    fontSize: 20,
   }
 })
