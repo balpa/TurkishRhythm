@@ -98,6 +98,7 @@ const App = () => {
                 name='play'
                 type='font-awesome-5' 
                 color={themeFromCache == 'Dark' ? 'wheat' : 'black'} 
+                style={{transform: [{scale: 0.85}]}}
               />
              }}/>
         {/* {Platform.OS == 'ios' && <Tab.Screen 

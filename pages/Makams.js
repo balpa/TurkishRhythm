@@ -6,8 +6,7 @@ import * as Font from 'expo-font'
 
 
 const Makams = ({language, theme}) => {
-  //const B = (props) => <Text style={{fontWeight: 'bold'}}>{props.children}</Text>
-
+  
   const [isFontLoaded, setIsFontLoaded] = useState(false)
   const COLOR_PALETTE_1 = useRef([])
 
