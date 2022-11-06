@@ -18,7 +18,7 @@ registerCustomIconType('font-awesome-5', FontAwesome5) // font awesome 5 not reg
 const Tab = createMaterialTopTabNavigator()
 
 const App = () => {
-  //settings page removed for now
+  //settings page removed for now (android cache problem)
 
   const COLOR_PALETTE_1 = ["FEF9A7","FAC213", "F77E21", "D61C4E", "990000", "FF5B00", "D4D925", "FFEE63"]
   const DARK_MODE_PALETTE = ['#4c3a51', '#774360', '#b25068', '#e7ab79']

@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet, ScrollView} from 'react-native'
+import {View, Text, StyleSheet, ScrollView, Animated} from 'react-native'
 import React, {useEffect, useRef, useState} from 'react'
 import MakamCard from '../components/MakamCard'
 import {MAKAMS} from '../data/data'
@@ -7,8 +7,20 @@ import * as Font from 'expo-font'
 
 const Makams = ({language, theme}) => {
 
+  const fontSizeAnim = useRef(new Animated.Value(20)).current
+
   const [isFontLoaded, setIsFontLoaded] = useState(false)
   const COLOR_PALETTE_1 = useRef([])
+
+  useEffect(()=>{
+    if (isFontLoaded){
+      Animated.timing(fontSizeAnim, {
+        toValue: 14,
+        duration: 5000,
+        useNativeDriver: false
+      }).start()
+    }
+  },[isFontLoaded])
 
   let fonts = {
     'customFont': require('../assets/fonts/Mom.ttf') 
@@ -31,11 +43,12 @@ const Makams = ({language, theme}) => {
   return (
     <View style={[styles.container, {backgroundColor:theme == 'Dark' ? '#2c1a31' : 'white'}]}>
       <View style={styles.makamTextContainer}>
-        {isFontLoaded && <Text style={[
+        {isFontLoaded && <Animated.Text style={[
           styles.makamText, 
+          {fontSize: fontSizeAnim},
           {fontFamily: 'customFont' }]}>
           MAKAMLAR
-        </Text>}
+        </Animated.Text>}
       </View>
       <ScrollView contentContainerStyle={{flexGrow:1 }}>
         <MakamCard 

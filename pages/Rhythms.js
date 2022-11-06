@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, StyleSheet } from 'react-native'
+import { View, Text, ScrollView, StyleSheet, Animated } from 'react-native'
 import React, { useState, useEffect, useRef } from 'react'
 import RhythmCard from '../components/RhythmCard'
 import {RHYTHMS} from '../data/data'
@@ -8,6 +8,8 @@ const Rhythms = ({theme, language}) => {
 
   const COLOR_PALETTE_2 = ["7C3E66", "F2EBE9", "A5BECC", "243A73"]
 
+  const fontSizeAnim = useRef(new Animated.Value(20)).current
+
   let fonts = {
     'customFont': require('../assets/fonts/Mom.ttf') 
   }
@@ -15,6 +17,16 @@ const Rhythms = ({theme, language}) => {
   const COLOR_PALETTE_1 = useRef([])
   const [rhythms, setRhytms] = useState([])
   const [isFontLoaded, setIsFontLoaded] = useState(false)
+
+  useEffect(()=>{
+    if (isFontLoaded){
+      Animated.timing(fontSizeAnim, {
+        toValue: 14,
+        duration: 5000,
+        useNativeDriver: false
+      }).start()
+    }
+  },[isFontLoaded])
 
   useEffect(async()=>{
     await Font.loadAsync(fonts).then(()=> setIsFontLoaded(true))
@@ -34,9 +46,15 @@ const Rhythms = ({theme, language}) => {
       {backgroundColor:theme == 'Dark' ? '#2c1a31' : 'white'}]}>
       <ScrollView contentContainerStyle={{flexGrow:1 }}>
         <View style={styles.ritimTextContainer}>
-          {isFontLoaded && <Text style={[styles.ritimText, {fontFamily: 'customFont'}]}>
-          RITIMLER
-        </Text>}
+          {isFontLoaded && 
+            <Animated.Text 
+              style={[
+                styles.ritimText,
+                {fontSize: fontSizeAnim},
+                {fontFamily: 'customFont'}]
+              }>
+            RITIMLER
+        </Animated.Text>}
         </View>
         <RhythmCard 
           theme={theme}
