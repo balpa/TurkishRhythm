@@ -20,7 +20,7 @@ const Tab = createMaterialTopTabNavigator()
 const App = () => {
   //settings page removed for now (android cache problem)
 
-  const COLOR_PALETTE_1 = ["FEF9A7","FAC213", "F77E21", "D61C4E", "990000", "FF5B00", "D4D925", "FFEE63"]
+  const COLOR_PALETTE_1 = ["FEF9A7", "FAC213", "F77E21", "D61C4E", "990000", "FF5B00", "D4D925", "FFEE63"]
   const DARK_MODE_PALETTE = ['#4c3a51', '#774360', '#b25068', '#e7ab79']
 
   const [tabBarIndicatorColor, setTabBarIndicatorColor] = useState('white')
@@ -40,67 +40,67 @@ const App = () => {
     }
   }
 
-  useEffect(async()=>{      // get language and theme data from local storage (cache)
+  useEffect(async () => {      // get language and theme data from local storage (cache)
     try {
       const value = await AsyncStorage.getItem('@language')
       const themeVal = await AsyncStorage.getItem('@theme')
 
-      if(value !== null) setLanguageFromCache(value) 
+      if (value !== null) setLanguageFromCache(value)
       else setLanguageFromCache('Turkish')
 
-      if(themeVal !== null) setThemeFromCache(themeVal)
+      if (themeVal !== null) setThemeFromCache(themeVal)
       else setThemeFromCache('Dark') //default theme
-      
-    } catch(e) {console.log(e)}
-  },[])
+
+    } catch (e) { console.log(e) }
+  }, [])
 
   useEffect(() => {     // set random tab bar indicator color at first render
     setTabBarIndicatorColor(COLOR_PALETTE_1[Math.floor(Math.random() * COLOR_PALETTE_1.length)])
   }, [])
-  
+
   return (<>
 
     <NavigationContainer>
-     {Platform.OS == 'android' && <StatusBar 
-        backgroundColor={themeFromCache == 'Light' ? 'white' : '#4c3a51'} 
+      {Platform.OS == 'android' && <StatusBar
+        backgroundColor={themeFromCache == 'Light' ? 'white' : '#4c3a51'}
         style={themeFromCache == 'Light' ? 'dark' : 'light'}
-        />}
-      <Tab.Navigator 
+      />}
+      <Tab.Navigator
         screenOptions={({ route }) => (tabNavigatorScreenOpts)}>
-        <Tab.Screen 
-          name="Makams" 
-          children={()=> <Makams language={languageFromCache} theme={themeFromCache}/>}
+        <Tab.Screen
+          name="Makams"
+          children={() => <Makams language={languageFromCache} theme={themeFromCache} />}
           options={{
-            tabBarIcon: () => 
+            tabBarIcon: () =>
               <Icon
                 name='music'
                 type='font-awesome'
-                color={themeFromCache == 'Dark' ? 'wheat' : 'black'}  
+                color={themeFromCache == 'Dark' ? 'wheat' : 'black'}
               />
-              }}/>
-        <Tab.Screen 
-          name="Rhythms" 
-          children={()=> <Rhythms language={languageFromCache} theme={themeFromCache}/>}
+          }} />
+        <Tab.Screen
+          name="Rhythms"
+          children={() => <Rhythms language={languageFromCache} theme={themeFromCache} />}
           options={{
-            tabBarIcon: () => 
-              <Icon 
-                name="drum" 
+            tabBarIcon: () =>
+              <Icon
+                name="drum"
                 type='font-awesome-5'
-                color={themeFromCache == 'Dark' ? 'wheat' : 'black'} 
+                color={themeFromCache == 'Dark' ? 'wheat' : 'black'}
               />
-              }}/>
-        <Tab.Screen 
-          name="Metronomy" 
-          children={()=> <Metronomy language={languageFromCache} theme={themeFromCache} />} 
+          }} />
+        <Tab.Screen
+          name="Metronomy"
+          children={() => <Metronomy language={languageFromCache} theme={themeFromCache} />}
           options={{
-            tabBarIcon: () => 
-              <Icon 
+            tabBarIcon: () =>
+              <Icon
                 name='play'
-                type='font-awesome-5' 
-                color={themeFromCache == 'Dark' ? 'wheat' : 'black'} 
-                style={{transform: [{scale: 0.85}]}}
+                type='font-awesome-5'
+                color={themeFromCache == 'Dark' ? 'wheat' : 'black'}
+                style={{ transform: [{ scale: 0.85 }] }}
               />
-             }}/>
+          }} />
         {/* {Platform.OS == 'ios' && <Tab.Screen 
           name="Settings" 
           children={()=> <Settings language={languageFromCache} theme={themeFromCache}/>}
