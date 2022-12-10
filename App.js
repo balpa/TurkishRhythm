@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Platform, Image } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Metronomy from './pages/Metronomy';
 import Rhythms from './pages/Rhythms';
@@ -9,13 +9,21 @@ import Intro from './pages/Intro'
 import { Icon } from 'react-native-elements'
 import { NavigationContainer } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { registerCustomIconType } from 'react-native-elements';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import {
+  SafeAreaView,
+  SafeAreaProvider,
+  SafeAreaInsetsContext,
+  useSafeAreaInsets,
+  initialWindowMetrics,
+} from 'react-native-safe-area-context';
 
 registerCustomIconType('font-awesome-5', FontAwesome5) // font awesome 5 not registered by def
 
 const Tab = createMaterialTopTabNavigator()
+
+// SAFE AREA - COLORS - BORDER FOR MAKAMS/RHYTHMS
 
 const App = () => {
   //settings page removed for now (android cache problem)
@@ -24,35 +32,19 @@ const App = () => {
   const DARK_MODE_PALETTE = ['#4c3a51', '#774360', '#b25068', '#e7ab79']
 
   const [tabBarIndicatorColor, setTabBarIndicatorColor] = useState('white')
-  const [languageFromCache, setLanguageFromCache] = useState('')
-  const [themeFromCache, setThemeFromCache] = useState('')
   const [showIntroPage, setShowIntroPage] = useState(true)
 
   const tabNavigatorScreenOpts = {
     tabBarShowLabel: false,
     tabBarStyle: {
-      backgroundColor: themeFromCache == 'Dark' ? '#4c3a51' : 'white',
-      marginTop: 40,
+      backgroundColor: '#F0DBDB',
+      //marginTop: 40,
     },
     tabBarIndicatorStyle: {
-      backgroundColor: `#${tabBarIndicatorColor}`,
-      height: 1.5
+      backgroundColor: `black`,
+      height: 5
     }
   }
-
-  useEffect(async () => {      // get language and theme data from local storage (cache)
-    try {
-      const value = await AsyncStorage.getItem('@language')
-      const themeVal = await AsyncStorage.getItem('@theme')
-
-      if (value !== null) setLanguageFromCache(value)
-      else setLanguageFromCache('Turkish')
-
-      if (themeVal !== null) setThemeFromCache(themeVal)
-      else setThemeFromCache('Dark') //default theme
-
-    } catch (e) { console.log(e) }
-  }, [])
 
   useEffect(() => {     // set random tab bar indicator color at first render
     setTabBarIndicatorColor(COLOR_PALETTE_1[Math.floor(Math.random() * COLOR_PALETTE_1.length)])
@@ -62,42 +54,42 @@ const App = () => {
 
     <NavigationContainer>
       {Platform.OS == 'android' && <StatusBar
-        backgroundColor={themeFromCache == 'Light' ? 'white' : '#4c3a51'}
+        backgroundColor={'#F0DBDB'}
         style={themeFromCache == 'Light' ? 'dark' : 'light'}
       />}
       <Tab.Navigator
         screenOptions={({ route }) => (tabNavigatorScreenOpts)}>
         <Tab.Screen
           name="Makams"
-          children={() => <Makams language={languageFromCache} theme={themeFromCache} />}
+          children={() => <Makams />}
           options={{
             tabBarIcon: () =>
               <Icon
                 name='music'
                 type='font-awesome'
-                color={themeFromCache == 'Dark' ? 'wheat' : 'black'}
+                color={'black'}
               />
           }} />
         <Tab.Screen
           name="Rhythms"
-          children={() => <Rhythms language={languageFromCache} theme={themeFromCache} />}
+          children={() => <Rhythms />}
           options={{
             tabBarIcon: () =>
               <Icon
                 name="drum"
                 type='font-awesome-5'
-                color={themeFromCache == 'Dark' ? 'wheat' : 'black'}
+                color={'black'}
               />
           }} />
         <Tab.Screen
           name="Metronomy"
-          children={() => <Metronomy language={languageFromCache} theme={themeFromCache} />}
+          children={() => <Metronomy />}
           options={{
             tabBarIcon: () =>
               <Icon
                 name='play'
                 type='font-awesome-5'
-                color={themeFromCache == 'Dark' ? 'wheat' : 'black'}
+                color={'black'}
                 style={{ transform: [{ scale: 0.85 }] }}
               />
           }} />

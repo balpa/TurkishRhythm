@@ -28,11 +28,14 @@ const Rhythms = ({ theme, language }) => {
     }
   }, [isFontLoaded])
 
-  useEffect(async () => {
-    await Font.loadAsync(fonts).then(() => setIsFontLoaded(true))
+  useEffect(() => { // load font
+    async function loadFont() {
+      await Font.loadAsync(fonts).then(() => setIsFontLoaded(true))
+    }
+    loadFont()
   }, [])
 
-  useEffect(() => {
+  useEffect(() => { // random color
     COLOR_PALETTE_1.current = [
       "FEF9A7", "FAC213",
       "F77E21", "D61C4E",
@@ -41,9 +44,7 @@ const Rhythms = ({ theme, language }) => {
   }, [])
 
   return (
-    <View style={[
-      { width: "100%", height: '100%' },
-      { backgroundColor: theme == 'Dark' ? '#2c1a31' : 'white' }]}>
+    <View style={styles.container}>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View style={styles.ritimTextContainer}>
           {isFontLoaded &&
@@ -141,6 +142,11 @@ const Rhythms = ({ theme, language }) => {
 export default Rhythms
 
 const styles = StyleSheet.create({
+  container: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: '#F0DBDB'
+  },
   ritimTextContainer: {
     width: '100%',
     height: 40,
@@ -150,7 +156,7 @@ const styles = StyleSheet.create({
   },
   ritimText: {
     textAlign: 'center',
-    color: 'wheat',
+    color: 'black',
     fontWeight: '800',
     letterSpacing: 2,
     fontSize: 20,

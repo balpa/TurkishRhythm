@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, Animated } from 'react-native'
+import { View, StyleSheet, ScrollView, Animated } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import MakamCard from '../components/MakamCard'
 import { MAKAMS } from '../data/data'
@@ -25,8 +25,11 @@ const Makams = ({ language, theme }) => {
     'customFont': require('../assets/fonts/Mom.ttf')
   }
 
-  useEffect(async () => {    // load font at first render
-    await Font.loadAsync(fonts).then(() => setIsFontLoaded(true))
+  useEffect(() => {    // load font at first render
+    async function loadFont() {
+      await Font.loadAsync(fonts).then(() => setIsFontLoaded(true))
+    }
+    loadFont()
   }, [])
 
   useEffect(() => {        // create randomized color arr at 1st render
@@ -40,7 +43,7 @@ const Makams = ({ language, theme }) => {
 
   // could refactor and render from a list via map etc (image linking wont work, need a sol)
   return (
-    <View style={[styles.container, { backgroundColor: theme == 'Dark' ? '#2c1a31' : 'white' }]}>
+    <View style={[styles.container, { backgroundColor: '#F0DBDB' }]}>
       <View style={styles.makamTextContainer}>
         {isFontLoaded && <Animated.Text style={[
           styles.makamText,
@@ -178,7 +181,7 @@ const styles = StyleSheet.create({
   },
   makamText: {
     textAlign: 'center',
-    color: 'wheat',
+    color: 'black',
     letterSpacing: 2,
     fontSize: 20,
   }
