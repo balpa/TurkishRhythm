@@ -1,26 +1,26 @@
 export const MAKAMS = {
     hicaz: {
-      makamName: 'Hicaz',
-      info: `*Durağı: Dügâh perdesidir. 
+        makamName: 'Hicaz',
+        info: `*Durağı: Dügâh perdesidir. 
 
-*Seyri: İnici-çıkıcı, bâzen de çıkıcı olarak kullanılmıştır.
+*Seyri: İnici-çıkıcı, bazen de çıkıcı olarak kullanılmıştır.
 
-*Dizisi: Yerinde Hicaz dörtlüsününe Nevâ’da bir Rast beşlisinin eklenmesinden meydana gelmiştir.
+*Dizisi: Yerinde Hicaz dörtlüsüne, Nevâ’da bir Rast beşlisinin eklenmesinden meydana gelmiştir.
 
-*Güçlüsü: Hicaz dörtlüsü ile Rast beşlisinin ek yerindeki 5. derece Nevâ perdesidir. Üzerinde Rast çeşnisi ile yarım karar yapılır.
+*Güçlüsü: Hicaz dörtlüsü ile Rast beşlisinin ek yerindeki Nevâ perdesidir. Üzerinde Rast çeşnisi ile yarım karar yapılır.
 
 *Donanımı: Si için bakiye bemolü, fa ve do için bakiye diyezi donanıma yazılır.
-Perdelerin T.M.deki isimleri: Dügâh, Dik Kürdi, Nim Hicaz, Nevâ, Hüseyni, Eviç, Gerdaniye ve Muhayyer’dir.
+Perdelerin isimleri: Dügâh, Dik Kürdi, Nim Hicaz, Nevâ, Hüseyni, Eviç, Gerdaniye ve Muhayyer’dir.
 
 *Yedeni: 2.çizgideki sol Rast perdesidir (Bâzı klâsiklerde nâdir de olasa Nim Zirgüle kullanılmıştır).
-Dizinin seyri:İnici-çıkıcı seyre sahip olan Hicaz makamının seyrine Nevâ perdesi civarından başlanır. Bazen dizinin alt ve üst tarafından başlayan eserler yapılmışsa da, bu diziler de hemen orta seslere geçmiştir. Hicaz dörtlüsünün sesleri verilerek güçlü olan Nevâ perdesinde kalış yapılır. Sonra dizinin üst tarafında bulunan Rast beşlisinin seslerine geçilir. Tiz Duraktan, Güçlüye doğru inilirken genellikle Fa diyez (Evç perdesi) bekar yapılarak Acem perdesi haline getirilir. Bu şekilde inici olarak Nevâ’da bir Bûselik Beşlisi meydana gelmiş olur. Güçlü perdesinde kalış gösterilerek, karışık seslerle Hicaz dörtlüsünde gezinilerek Dügâh perdesinde karar verilir.
+Dizinin seyri: İnici-çıkıcı seyre sahip olan Hicaz makamının seyrine Nevâ perdesi civarından başlanır. Bazen dizinin alt ve üst tarafından başlayan eserler yapılmışsa da, bu diziler de hemen orta seslere geçmiştir. Hicaz dörtlüsünün sesleri verilerek güçlü olan Nevâ perdesinde kalış yapılır. Sonra dizinin üst tarafında bulunan Rast beşlisinin seslerine geçilir. Tiz Duraktan, Güçlüye doğru inilirken genellikle Fa diyez (Evç perdesi) bekar yapılarak Acem perdesi haline getirilir. Bu şekilde inici olarak Nevâ’da bir Bûselik Beşlisi meydana gelmiş olur. Güçlü perdesinde kalış gösterilerek, karışık seslerle Hicaz dörtlüsünde gezinilerek Dügâh perdesinde karar verilir.
 `,
     },
     nihavend: {
-      makamName:'Nihavend',
-      info:`*Durağı: Rast perdesidir.
+        makamName: 'Nihavend',
+        info: `*Durağı: Rast perdesidir.
 
-*Seyri: İnici-çıkıcıdır. Bâzen çıkıcı, bâzen de inici gibi seyre başlarsa da, hemen çıkıcı-inici hâle döner.   
+*Seyri: İnici-çıkıcıdır. Bâzen çıkıcı, bâzen de inici gibi seyre başlansa da, hemen çıkıcı-inici hâle döner.   
 
 *Güçlüsü: Neva perdesidir.
 
@@ -35,8 +35,8 @@ Karara doğru Bûselik’li olarak inilir. Dizi alt taraftan Hicaz’lı olarak 
 `,
     },
     ussak: {
-      makamName: 'Uşşak',
-      info: `*Durağı: Dügâh perdesidir.
+        makamName: 'Uşşak',
+        info: `*Durağı: Dügâh perdesidir.
 
 *Seyri: Çıkıcıdır.
 
@@ -48,16 +48,16 @@ Karara doğru Bûselik’li olarak inilir. Dizi alt taraftan Hicaz’lı olarak 
 
 *Donanımı: Yalnız si için koma bemolü donanıma yazılır.
 
-*Dizinin Seyri: Uşşak makamı da Rast makamı gibi ağır yapılı bir makamdır.Çıkıcı diziye sahip olduğundan,seyre durak perdesi civarından başlanır. Uşşak dörtlüsünün sesleri kullanılarak Güçlü olan Nevâ perdesinde asma kalış yapılır.
-Perdelerin T.M.deki isimleri: Dügâh, Segâh, Çargâh, Nevâ, Hüseyni, Acem, Gerdâniye ve Muhayyer’dir.
+*Dizinin Seyri: Uşşak makamı da Rast makamı gibi ağır yapılı bir makamdır. Çıkıcı diziye sahip olduğundan, seyre durak perdesi civarından başlanır. Uşşak dörtlüsünün sesleri kullanılarak Güçlü olan Nevâ perdesinde asma kalış yapılır.
+Perdelerin isimleri: Dügâh, Segâh, Çargâh, Nevâ, Hüseyni, Acem, Gerdâniye ve Muhayyer’dir.
 
-*Genişlemesi: Uşşak makamı dizisi alt tarafından genişleme yapar.Genişleme Yegâh perdesindeki Rast Beşlisiyle olur. Dizinin seslerinde karışık olarak gezindikten sonra Nevâ’da asma kalış yapılır. Karar gidilirken özellikle Segâh perdesinde kalış gösterilir. Uşşak dörtlüsünün sesleri kullanılarak Dügâh perdesinde karar verilir.
-Makamın Özelliği:Uşşak makamı dizisinin ikinci sesi olan Segâh perdesi donanımında gösterildiği gibi 1 koma olarak icra edilmez. Daima 2-3 perde pes icra edilir. Uşşak makamına bu perde ayrı bir özellik verir. Bu ses müzikologlar tarafından şekillendirilmediğinden, biz de koma bemolü ile gösteriyoruz.
+*Genişlemesi: Uşşak makamı dizisi alt tarafından genişleme yapar. Genişleme Yegâh perdesindeki Rast Beşlisiyle olur. Dizinin seslerinde karışık olarak gezindikten sonra Nevâ’da asma kalış yapılır. Karar gidilirken özellikle Segâh perdesinde kalış gösterilir. Uşşak dörtlüsünün sesleri kullanılarak Dügâh perdesinde karar verilir.
+Makamın Özelliği: Uşşak makamı dizisinin ikinci sesi olan Segâh perdesi donanımında gösterildiği gibi 1 koma olarak icra edilmez. Daima 2-3 perde pes icra edilir. Uşşak makamına bu perde ayrı bir özellik verir. Bu ses müzikologlar tarafından şekillendirilmediğinden, biz de koma bemolü ile gösteriyoruz.
 `
     },
     kurdi: {
-      makamName: 'Kürdi',
-      info: `*Durağı: Dügâh perdesidir.
+        makamName: 'Kürdi',
+        info: `*Durağı: Dügâh perdesidir.
 
 *Seyri: Çıkıcıdır.
 
@@ -65,18 +65,18 @@ Makamın Özelliği:Uşşak makamı dizisinin ikinci sesi olan Segâh perdesi do
 
 *Güçlüsü: Dörtlü ile beşlinin ek yerindeki Nevâ perdesidir; üzerinde Bûselik çeşnisi bulunur.
 
-*Yedeni: 2.çizgideki sol (Rast) perd’esidir. Bazen Nim Zirgüle’de kullanılır.
+*Yedeni: 2.çizgideki sol (Rast) perdesidir. Bazen Nim Zirgüle’de kullanılır.
 
 *Donanımı: Si için küçük mücenneb bemolü donanıma yazılır.
-Perdelerin T.M.deki isimleri: Dügâh, Kürdi, Çargâh, Nevâ, Hüseyni, Acem, Gerdaniye, Muhayyer’dir.
+Perdelerin isimleri: Dügâh, Kürdi, Çargâh, Nevâ, Hüseyni, Acem, Gerdaniye, Muhayyer’dir.
 
 *Dizinin seyri: Kürdi makamı en az kullanılmış olan makamlarımızdan birisidir. Ağır yapılı bir makamdır. Mevcut eserleri incelediğimiz zaman, bu makam seslerinin genellikle kendi dizisinde dolaştığını görürüz.
 Durak sesi civarından seyre başlanarak Kürdi Dörtlüsünün sesleri verilir. Neva perdesinde asma kalış yapılır. Sonra dizinin üst tarafında bulunan Bûselik Beşlisinin seslerine geçilir. Tiz duraktan aşağıya inilirken Nevâ’da Hicaz yapılabilir.
 Güçlü’de tekrar kalış gösterildikten sonra Dügâh perdesine inilirken Hicaz Dörtlüsünün sesleri de verilebilir.Ancak bitiş, Kürdi dörtlüsünün sesleri yapılır. Tam karar Dügâh perdesinde yapılır.`
     },
     rast: {
-      makamName: 'Rast',
-      info: `*Durağı: Rast perdesidir.
+        makamName: 'Rast',
+        info: `*Durağı: Rast perdesidir.
 
 *Seyri: Çıkıcıdır.
 
@@ -87,14 +87,14 @@ Güçlü’de tekrar kalış gösterildikten sonra Dügâh perdesine inilirken H
 *Yeden:Irak perdesidir.
 
 *Donanımı: Si için koma bemolü, fa için bakiye diyezi donanıma konulur.
-Perdelerin T.M.deki isimleri: Rast, Dügâh, Segâh, Çargâh, Nevâ, Hüseyni, Eviç veya Acem, Gerdâniye.
+Perdelerin isimleri: Rast, Dügâh, Segâh, Çargâh, Nevâ, Hüseyni, Eviç veya Acem, Gerdâniye.
 
 *Dizinin Seyri: Çıkıcı seyre sahip olan Rast makamının seyrine Durak sesi civarından başlanır. Dizi alt taraftan genişlemiştir. Çoğu kez bu genişleme seslerinden seyre başlanır. Rast beşlisinin sesleri kullanılarak Neva perdesinde asma kalış yapılır.
 Daha sonra dizinin üst tarafında bulunan Rast Dörtlüsünün seslerine geçilir. Ancak çoğunlukla çıkışta kullanılan Evç perdesi inici nağmelerde kullanılan Acem perdesi haline dönüşür. Tekrar Nevâ’da kalış yapılır. Yerinde Rast Beşlisi’nin seslerine geçilerek çeşitli seslerde, özellikle Segâh perdesinde asma kalışlar yapılabilir. Bitiş, Rast Beşlisinin sesleri ile Rast perdesinde çoğunlukla yedenli olarak yapılır.`
     },
     karcigar: {
-      makamName: 'Karcığar',
-      info: `*Durağı: Dügâh perdesidir.
+        makamName: 'Karcığar',
+        info: `*Durağı: Dügâh perdesidir.
 
 *Seyri: İnici-çıkıcıdır.
 
@@ -105,7 +105,7 @@ Daha sonra dizinin üst tarafında bulunan Rast Dörtlüsünün seslerine geçil
 *Yedeni: 2.çizgideki sol Rast perdesidir.
 
 *Donanımı: Si için koma bemolü, mi için bakiye bemolü, fa için bakiye diyez donanım yazılır.
-Perdelerin T.M.deki isimleri: Dügâh, Segâh, Çargâh, Nevâ, Hisâr, Eviç, Gerdaniye, Muhayyer’dir.
+Perdelerin isimleri: Dügâh, Segâh, Çargâh, Nevâ, Hisâr, Eviç, Gerdaniye, Muhayyer’dir.
 
 *Dizinin seyri: Seyre Güçlüsü olan Nevâ perdesi civarından başlanır. Alt seslerden başlayan seyirlerde de hemen orta seslere geçilir. Dizinin muhtelif seslerinde dolaşılarak Güçlü olan Nevâ perdesinde asma kalış yapılır.
 Ancak, Karcığar makamının karakteristik asma kalış perdesi Çargâh perdesidir. Bu nedenle Güçlü perdesinde kalış her zaman gösterilmez.Çargâh perdesinde güçlü gibi kalış gösterilir. Bu şekilde Çargâh perdesindeki kalış Nikriz Beşlisi adını alır.
@@ -113,8 +113,8 @@ Dizinin seslerinde dolaşılarak, Uşşak Dörtlüsünün sesleri kullanılarak 
 Karcığar makamının asma kararı, dörtlü ile beşlinin birleştiği yerde değildir. Asma karar Çargâh perdesidir.`
     },
     kurdilihicazkar: {
-      makamName: 'Kürdilihicazkar',
-      info: `*Durağı: Rast perdesidir.
+        makamName: 'Kürdilihicazkar',
+        info: `*Durağı: Rast perdesidir.
 
 *Seyri: İnicidir.
 
@@ -124,14 +124,14 @@ Karcığar makamının asma kararı, dörtlü ile beşlinin birleştiği yerde d
 
 *Donanım: Si,mi,lâ için küçük mücennep bemolü donanıma yazılır.
 
-*Dizinin Seyri: İnici bir seyre sahip olan Kürdili Hicazkâr makamının seyrine ekseriya Tiz Durak (Gerdaniye) civarından başlanır. Hicazkâr makamı gibi başlayan eserler de çoğunluktadır. Hattâ Hicazkâr makamının bütün dizisi icra edilebilir. Nevâ’da Bayâti makamı dizisi ve Çargâh perdesindeki Rast Beşlisinin sesleriyle meydana gelen Arazbar makamı seyri ile de başlayan Kürdili Hicazkâr eserler vardı.
+*Dizinin Seyri: İnici bir seyre sahip olan Kürdili Hicazkâr makamının seyrine ekseriya Tiz Durak (Gerdaniye) civarından başlanır. Hicazkâr makamı gibi başlayan eserler de çoğunluktadır. Hattâ Hicazkâr makamının bütün dizisi icra edilebilir. Nevâ’da Bayâti makamı dizisi ve Çargâh perdesindeki Rast Beşlisinin sesleriyle meydana gelen Arazbar makamı seyri ile de başlayan Kürdili Hicazkâr eserler vardır.
 
 Asma Karar Perdeleri: Asma karar perdesi olarak en önemli perde ana dizinin ek yerindeki Çargâh perdesidir. Yukarıda da belirtildiği gibi bu perde üzerinde Bûselik çeşnisiyle asma karar yapılır. Nevâ perdesi üzerinde Kürdi çeşnisiyle önemli asma kararlar yapılır.
 Çok parlak ve renkli nağmelerin yapıldığı Kürdili Hicazkâr makamının seyri yapılırken, Gerdaniye üzerindeki Kürdi ve Hicaz’lı kalışlar bu makamın karakteristik özelliğidir. Dizinin diğer sesleri kullanılarak Neva’da Bayâti’li kalış yapılır. Ana dizinin sesleri kullanılarak Kürdi Dörtlüsünün sesleri ile Rast perdesinde karar verilir.`
     },
     segah: {
-      makamName: 'Segâh',
-      info: `*Durağı: Segâh perdesidir.
+        makamName: 'Segâh',
+        info: `*Durağı: Segâh perdesidir.
 
 *Seyri: Çıkıcıdır.
 
@@ -139,17 +139,17 @@ Asma Karar Perdeleri: Asma karar perdesi olarak en önemli perde ana dizinin ek 
 
 *Yeden: Kürdi perdesidir.
 
-*Donanımı: Si ve mi için koma bemolü, fa için bakiye diyezi donanıma yazılır.Gerekli değişiklikler eser içinde gösterilir.
+*Donanımı: Si ve mi için koma bemolü, fa için bakiye diyezi donanıma yazılır. Gerekli değişiklikler eser içinde gösterilir.
 
 *Dizisi: Segâh makamı dizisi, Segâh perdesi üzerindeki Segâh Beşlisine, Hicaz Dörtlüsünün eklenmesiyle meydana gelir.
-Segâh makamı için gerekli olan Segâh Beşlisi (STKT) özelliği olan bir Beşlidir. Hüzzam makamına yakınlığı vardır. Ancak etkisi daha hafif, daha parlaktır.
+Segâh makamı için gerekli olan Segâh Beşlisi özelliği olan bir Beşlidir. Hüzzam makamına yakınlığı vardır. Ancak etkisi daha hafif, daha parlaktır.
 
-*Seyri: Segâh makamının seyrine, Durak sesi civarından başlanır.Segâh Beşlisinin sesleri kullanılarak Nevâ perdesinde asma kalış yapılır. Segâh Beşlisinin sesleri kullanılarak Evç perdesi üzerinde bulunan Hicaz Dörtlüsünün seslerine geçilir. İnici hallerde Evc perdesi genellikle Bekar yapılarak Acem perdesi haline dönüşür.
+*Seyri: Segâh makamının seyrine, Durak sesi civarından başlanır. Segâh Beşlisinin sesleri kullanılarak Nevâ perdesinde asma kalış yapılır. Segâh Beşlisinin sesleri kullanılarak Evç perdesi üzerinde bulunan Hicaz Dörtlüsünün seslerine geçilir. İnici hallerde Evc perdesi genellikle Bekar yapılarak Acem perdesi haline dönüşür.
 Segâh makamı seyri yapılırken muhtelif geçkiler yapılabilir. Segâh Beşlisinin seslerinde ısrarlı dolaşılır. Segâh Beşlisinin sesleri kullanılarak Segâh perdesinde bazen Yedeni olan Kürdi perdesi de belirtilerek karar verilir.`
     },
     huzzam: {
-      makamName: 'Hüzzam',
-      info: `*Durağı: Segâh perdesidir.
+        makamName: 'Hüzzam',
+        info: `*Durağı: Segâh perdesidir.
 
 *Seyri: İnici-çıkıcıdır.
 
@@ -161,12 +161,12 @@ Segâh makamı seyri yapılırken muhtelif geçkiler yapılabilir. Segâh Beşli
 
 *Dizisi: Hüzzam makamı dizisi, yerinde Hüzzam Beşlisine, Neva perdesinde Hicaz Dörtlüsünün eklenmesiyle meydana gelir.
 
-*Seyri: Hüzzam makamının seyrine genellikle Güçlü sesi civarından başlanır. Hüzzam Beşlisinin seslerinde dolaşılarak Neva perdesinde asma kalış gösterilir.Neva perdesi üzerinde bulunan Hümayûn dizisinin seslerine geçilerek bu seslerde dolaşılır.Muhtelif perdeler üzerinde kalışlar yapılabilir. Tekrar Neva perdesinde inilerek bu perdede asma kalış yapılır.
+*Seyri: Hüzzam makamının seyrine genellikle Güçlü sesi civarından başlanır. Hüzzam Beşlisinin seslerinde dolaşılarak Neva perdesinde asma kalış gösterilir. Neva perdesi üzerinde bulunan Hümayûn dizisinin seslerine geçilerek bu seslerde dolaşılır. Muhtelif perdeler üzerinde kalışlar yapılabilir. Tekrar Neva perdesinde inilerek bu perdede asma kalış yapılır.
 Hüzzam Beşlisine geçilerek, bu dizinin sesleri ile, Yedeni olan Kürdi perdesi de gösterilmek suretiyle Segâh perdesinde karar verilir.`
     },
     sehnaz: {
-      makamName: 'Şehnaz',
-      info: `*Durağı: Dügâh perdesidir.
+        makamName: 'Şehnaz',
+        info: `*Durağı: Dügâh perdesidir.
 
 *Seyri: İnicidir.
 
@@ -182,8 +182,8 @@ Hüzzam Beşlisine geçilerek, bu dizinin sesleri ile, Yedeni olan Kürdi perdes
 Hüseyni perdesi üzerinde Uşşak Dörtlüsü halinde geçki yapılabilir. Sonra Hicaz ailesinin sesleri ile aşağıya doğru inilerek Dügâh perdesinde karar kılınır.`
     },
     evic: {
-      makamName: 'Eviç',
-      info: `*Durağı: Irak perdesidir.
+        makamName: 'Eviç',
+        info: `*Durağı: Irak perdesidir.
 
 *Seyri: İnicidir.
 
@@ -193,13 +193,13 @@ Hüseyni perdesi üzerinde Uşşak Dörtlüsü halinde geçki yapılabilir. Sonr
 
 *Donanımı: Si için koma bemolü, fa için bakiye donanıma yazılır. Gerekli değişiklikler eser içinde gösterilir. Bazıları fa ve mi için bakiye diyezini donanıma yazmayı tercih ederler.
 
-*Perdelerin T.M.deki isimleri: Pestten tize doğru: Irak, Rast, Dügâh, Segâh, Çargâh, Nevâ, Hüseyni veya Acem, Eviç veya Acem, Gerdâniye, Muhayyer, Tiz Segâh.
+*Perdelerin isimleri: Pestten tize doğru: Irak, Rast, Dügâh, Segâh, Çargâh, Nevâ, Hüseyni veya Acem, Eviç veya Acem, Gerdâniye, Muhayyer, Tiz Segâh.
 
 *Dizinin Seyri: Evic makamının seyrine Tiz durak civarından başlanır. İnici seyre sahip olduğundan sürekli olarak tiz perdelerde dolaşılarak Evic perdesinde asma kalış gösterilir. Dizinin orta seslerine inilerek Nim Hicaz perdesinde Hicaz’lı asma kalış gösterilebilir. Daha sonra Dügâh perdesine inilerek Uşşak Dörtlüsünün sesleri ile kalış yapılır.`
     },
     cargah: {
-      makamName: 'Çargâh',
-      info: `*Durağı: Çargâh veya Kaba Çargâh perdesidir .
+        makamName: 'Çargâh',
+        info: `*Durağı: Çargâh veya Kaba Çargâh perdesidir .
 
 *Seyri: Çıkıcı veya çıkıcı-inici olarak kullanılmıştır.
 
@@ -209,7 +209,7 @@ Hüseyni perdesi üzerinde Uşşak Dörtlüsü halinde geçki yapılabilir. Sonr
 
 *Donanım: Çargâh dizisi, doğal bir dizidir. Donanıma hiçbir işaret konulmaz.
 
-*Perdelerin Türk Mûsikisi’ndeki isimleri: Eğer dizi Çargâh perdesi üzerinde ise Çargâh, Nevâ, Hüseyni, Acem, Gerdâniye, Muhayyer, Tiz Bûselik, Tiz Çargâh’dır.
+*Perdelerin isimleri: Eğer dizi Çargâh perdesi üzerinde ise Çargâh, Nevâ, Hüseyni, Acem, Gerdâniye, Muhayyer, Tiz Bûselik, Tiz Çargâh’dır.
 Eğer dizi Kaba Çargâh perdesi üzerinde ise Kaba Çargâh, Yegâh, Hüseyni Aşirân, Acem Aşirân, Râst, Dügâh, Bûselik, Çargâh’tır.
 
 *Yedeni: Bûselik veya Kaba Bûselik perdesidir.
@@ -220,8 +220,8 @@ Güçlü üzerinde bulunan Çargâh Dörtlüsünün seslerine geçilerek Tiz Dur
 *Makamın özelliği: Ağır yapılı bir makam olduğunda fazla işlenmemiştir. Ancak genellikle bu makamda yapılan eserlere dikkât edilecek olursa, seyir esnasında sık sık Hicaz ve Nikriz geçkileri yapıldığı görülür.`
     },
     buselik: {
-      makamName: 'Buselik',
-      info: `*Durağı: Dügâh perdesidir.
+        makamName: 'Buselik',
+        info: `*Durağı: Dügâh perdesidir.
 
 *Seyri: Çıkıcıdır. Bazen çıkıcı-inici olarak da kullanılmıştır.
 
@@ -240,8 +240,8 @@ Güçlü üzerinde bulunan Çargâh Dörtlüsünün seslerine geçilerek Tiz Dur
 *Dizinin Seyri: Genellikle güçlü civarından seyre başlanır. Yerinde Bûselik beşlisinin seslerinde dolanarak güçlüsü Hüseyni perdesinde kalış gösterilir. Güçlü sesi üzerinde bulunan Kürdi veya Hicaz dörtlüsünün seslerinde dolaşılır. Tekrar Hüseyni perdesinde asma kalış yapılır. Çargâh perdesi üzerinde Nikriz’li kalış da yapılabilir. Tekrar Bûselik beşlisinin seslerine dönülür ve yedeni olan Nim Zirgüle perdesi de belirtilerek Dügâh perdesinde karar verilir.`
     },
     beyati: {
-      makamName: 'Beyâti',
-      info: `*Durağı: Dügâh perdesidir.
+        makamName: 'Beyâti',
+        info: `*Durağı: Dügâh perdesidir.
 
 *Seyri: Çıkıcı-inicidir ki, Uşşak makamından ilk bakışta bu özelliği ile ayrılır. Uşşak makamı çıkıcıdır.
 
@@ -256,8 +256,8 @@ Güçlü üzerinde bulunan Çargâh Dörtlüsünün seslerine geçilerek Tiz Dur
 *Dizinin seyri: Uşşak makamında seyre durak sesi civarından başlanır. Bayâti makamında ise güçlü perdesi civarından başlanır. Seyir sırasında Nevâ’da Hicaz ve Çargâh’ta Nikriz geçkileri yapmak âdet olunmuştur. Bayâti makamı, Uşşak makamının kullanmış olduğu Durağın altında bulunan Rast Beşlisinin seslerinde hiç dolaşmaz. Muhayyer perdesinde bir Kürdi Dörtlüsü halinde genişleme yapar.`
     },
     huseyni: {
-      makamName: 'Hüseyni',
-      info: `*Durağı: Dügâh perdesidir.
+        makamName: 'Hüseyni',
+        info: `*Durağı: Dügâh perdesidir.
 
 *Seyri: İnici-çıkıcıdır.
 
@@ -276,8 +276,8 @@ Güçlü olan Hüseyni perdesinde kalış gösterildikten sonra, yukarıdaki Uş
 Hüseyni makamı dizisi, üst taraftan Muhayyer üzerinde Bûselik Beşlsi halinde genişler.`
     },
     muhayyer: {
-      makamName: 'Muhayyer',
-      info: `*Durağı: Dügâh perdesidir.
+        makamName: 'Muhayyer',
+        info: `*Durağı: Dügâh perdesidir.
 
 *Seyri: İnicidir.
 
@@ -290,7 +290,7 @@ Hüseyni makamı dizisi, üst taraftan Muhayyer üzerinde Bûselik Beşlsi halin
 
 *Donanımı: Hüseyni makamında olduğu gibi, si için koma bemolü fa için bakiye diyezi donanıma yazılır.
 
-*Perdelerin T.M.deki isimleri: Pestten tize doğru: Dügâh, Segâh, Çargâh, Nevâ, Hüseyni, Eviç, Gerdâniye, Muhayyer’dir.
+*Perdelerin isimleri: Pestten tize doğru: Dügâh, Segâh, Çargâh, Nevâ, Hüseyni, Eviç, Gerdâniye, Muhayyer’dir.
 genişlemiş kısımda; Tiz Segâh, Tiz Çargâh, Tiz Nevâ, Tiz Hüseyni’dir.
 
 *Yedeni: 2.çizgideki sol Rast perdesidir.
@@ -300,10 +300,9 @@ genişlemiş kısımda; Tiz Segâh, Tiz Çargâh, Tiz Nevâ, Tiz Hüseyni’dir.
 *Dizinin Seyri: Tiz durak Muhayyer perdesi civârından seyre başlanır. Muhayyer perdesi üzerindeki tiz bölgede gezinildikten sonra, Muhayyer perdesinde yarım karar yapılır. Daha sonra, ikinci mertebe güçlü olan Hüseyni perdesindeki asma kararı gösterilir. Bu arada, gerekli yerlerde gerekli asma kararlar da yapılır. Nihâyet karışık gezinerek Dügâh perdesinde Hüseyni dizisiyle tam karar yapılır.`
     }
 
+}
 
-  }
-
-  export const RHYTHMS = {
+export const RHYTHMS = {
     nimsofyan: `
 *İki zamanlıdır.
 *2/4'lük ve 2/8'lik değerlerde vurulur.
@@ -333,7 +332,7 @@ genişlemiş kısımda; Tiz Segâh, Tiz Çargâh, Tiz Nevâ, Tiz Hüseyni’dir.
 *Tek 1 zamanlı, zayıftır.
 *5/8 ve 5/4'lük değerlerde vurulur.
     `,
-    yuruksemai:`
+    yuruksemai: `
 *Altı zamanlıdır.
 *İki Semai veya üç Nim Sofyan’dan meydana gelmiştir.
 *Düm 1 zamanlı, kuvvetli
@@ -344,7 +343,7 @@ genişlemiş kısımda; Tiz Segâh, Tiz Çargâh, Tiz Nevâ, Tiz Hüseyni’dir.
 *6/8, 6/4 ve 6/2'lik değerlerde vurulur.
 *6/4 Sengin Semai, 6/2 Ağır Sengin Semai olur.
     `,
-    devrihindi:`
+    devrihindi: `
 *Yedi zamanlıdır.
 *Bir Semai ve bir Sofyan’dan meydana gelir. (Bazen bir Semai ve iki Nim Sofyan vurulur)
 *Düm 2 zamanlı, kuvvetli
@@ -354,7 +353,7 @@ genişlemiş kısımda; Tiz Segâh, Tiz Çargâh, Tiz Nevâ, Tiz Hüseyni’dir.
 *Te-ek 2 zamanlı, zayıftır.
 *7/8 ve 7/4'lük değerlerde vurulur.
     `,
-    duyek:`
+    duyek: `
 *Sekiz zamanlıdır. İki Sofyan’dan meydana gelir.
 *Düm 1 zamanlı, yarı kuvvetli
 *Te-ek 2 zamanlı, kuvvetli
@@ -363,7 +362,7 @@ genişlemiş kısımda; Tiz Segâh, Tiz Çargâh, Tiz Nevâ, Tiz Hüseyni’dir.
 *Te-ek 2 zamanlı, zayıftır.
 *8/8 ve 8/4'lük vurulur. 8/4 Ağır Düyek adını alır.
     `,
-    musemmen:`
+    musemmen: `
 *Sekiz zamanlıdır.
 *Eskiden bu usüle Katikofti de denilmiştir.
 *Bir Semai, bir Nim Sofyan ve yine bir Semai’den meydana gelir.
@@ -372,7 +371,7 @@ genişlemiş kısımda; Tiz Segâh, Tiz Çargâh, Tiz Nevâ, Tiz Hüseyni’dir.
 *Te-e-ek 3 zamanlı, yarı kuvvetlidir.
 *8/8'lik değerde vurulur.
     `,
-    aksak:`
+    aksak: `
 *Dokuz zamanlıdır. Bir Sofyan ve bir Türk Aksağından oluşur.
 *Dü-üm 2 zamanlı, kuvvetli
 *Te 1 zamanlı, yarı kuvvetli
@@ -398,5 +397,5 @@ genişlemiş kısımda; Tiz Segâh, Tiz Çargâh, Tiz Nevâ, Tiz Hüseyni’dir.
 *Dü-üm 2 zamanlı, kuvvetli
 *Te-ek 2 zamanlı, yarı kuvvetli
 *Tek 1 zamanlı, zayıftır.
-    `  
-  }
+    `
+}
