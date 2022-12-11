@@ -11,13 +11,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { registerCustomIconType } from 'react-native-elements';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import {
-  SafeAreaView,
-  SafeAreaProvider,
-  SafeAreaInsetsContext,
-  useSafeAreaInsets,
-  initialWindowMetrics,
-} from 'react-native-safe-area-context';
+
+
 
 registerCustomIconType('font-awesome-5', FontAwesome5) // font awesome 5 not registered by def
 
@@ -26,7 +21,6 @@ const Tab = createMaterialTopTabNavigator()
 // SAFE AREA - COLORS - BORDER FOR MAKAMS/RHYTHMS
 
 const App = () => {
-  //settings page removed for now (android cache problem)
 
   const COLOR_PALETTE_1 = ["FEF9A7", "FAC213", "F77E21", "D61C4E", "990000", "FF5B00", "D4D925", "FFEE63"]
   const DARK_MODE_PALETTE = ['#4c3a51', '#774360', '#b25068', '#e7ab79']
@@ -38,7 +32,7 @@ const App = () => {
     tabBarShowLabel: false,
     tabBarStyle: {
       backgroundColor: '#F0DBDB',
-      //marginTop: 40,
+      paddingTop: 50
     },
     tabBarIndicatorStyle: {
       backgroundColor: `black`,
@@ -50,50 +44,50 @@ const App = () => {
     setTabBarIndicatorColor(COLOR_PALETTE_1[Math.floor(Math.random() * COLOR_PALETTE_1.length)])
   }, [])
 
-  return (<>
-
-    <NavigationContainer>
-      {Platform.OS == 'android' && <StatusBar
-        backgroundColor={'#F0DBDB'}
-        style={themeFromCache == 'Light' ? 'dark' : 'light'}
-      />}
-      <Tab.Navigator
-        screenOptions={({ route }) => (tabNavigatorScreenOpts)}>
-        <Tab.Screen
-          name="Makams"
-          children={() => <Makams />}
-          options={{
-            tabBarIcon: () =>
-              <Icon
-                name='music'
-                type='font-awesome'
-                color={'black'}
-              />
-          }} />
-        <Tab.Screen
-          name="Rhythms"
-          children={() => <Rhythms />}
-          options={{
-            tabBarIcon: () =>
-              <Icon
-                name="drum"
-                type='font-awesome-5'
-                color={'black'}
-              />
-          }} />
-        <Tab.Screen
-          name="Metronomy"
-          children={() => <Metronomy />}
-          options={{
-            tabBarIcon: () =>
-              <Icon
-                name='play'
-                type='font-awesome-5'
-                color={'black'}
-                style={{ transform: [{ scale: 0.85 }] }}
-              />
-          }} />
-        {/* {Platform.OS == 'ios' && <Tab.Screen 
+  return (
+    <>
+      <NavigationContainer>
+        {Platform.OS == 'android' && <StatusBar
+          backgroundColor={'#F0DBDB'}
+          style={themeFromCache == 'Light' ? 'dark' : 'light'}
+        />}
+        <Tab.Navigator
+          screenOptions={({ route }) => (tabNavigatorScreenOpts)}>
+          <Tab.Screen
+            name="Makams"
+            children={() => <Makams />}
+            options={{
+              tabBarIcon: () =>
+                <Icon
+                  name='music'
+                  type='font-awesome'
+                  color={'black'}
+                />
+            }} />
+          <Tab.Screen
+            name="Rhythms"
+            children={() => <Rhythms />}
+            options={{
+              tabBarIcon: () =>
+                <Icon
+                  name="drum"
+                  type='font-awesome-5'
+                  color={'black'}
+                />
+            }} />
+          <Tab.Screen
+            name="Metronomy"
+            children={() => <Metronomy />}
+            options={{
+              tabBarIcon: () =>
+                <Icon
+                  name='play'
+                  type='font-awesome-5'
+                  color={'black'}
+                  style={{ transform: [{ scale: 0.85 }] }}
+                />
+            }} />
+          {/* {Platform.OS == 'ios' && <Tab.Screen 
           name="Settings" 
           children={()=> <Settings language={languageFromCache} theme={themeFromCache}/>}
           options={{
@@ -102,11 +96,11 @@ const App = () => {
                 name="settings" 
                 color={themeFromCache == 'Dark' ? 'wheat' : 'black'} 
               />}} />} */}
-      </Tab.Navigator>
-
-    </NavigationContainer>
-    {showIntroPage && <Intro setShowIntroPage={setShowIntroPage} />}
-  </>)
+        </Tab.Navigator>
+        <StatusBar style='dark' />
+      </NavigationContainer>
+      {showIntroPage && <Intro setShowIntroPage={setShowIntroPage} />}
+    </>)
 }
 
 export default App

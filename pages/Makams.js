@@ -1,36 +1,10 @@
-import { View, StyleSheet, ScrollView, Animated } from 'react-native'
-import React, { useEffect, useRef, useState } from 'react'
+import { View, StyleSheet, ScrollView } from 'react-native'
+import React, { useEffect, useRef } from 'react'
 import MakamCard from '../components/MakamCard'
 import { MAKAMS } from '../data/data'
-import * as Font from 'expo-font'
 
-const Makams = ({ language, theme }) => {
-
-  const fontSizeAnim = useRef(new Animated.Value(20)).current
-
-  const [isFontLoaded, setIsFontLoaded] = useState(false)
+const Makams = () => {
   const COLOR_PALETTE_1 = useRef([])
-
-  useEffect(() => {
-    if (isFontLoaded) {
-      Animated.timing(fontSizeAnim, {
-        toValue: 14,
-        duration: 5000,
-        useNativeDriver: false
-      }).start()
-    }
-  }, [isFontLoaded])
-
-  let fonts = {
-    'customFont': require('../assets/fonts/Mom.ttf')
-  }
-
-  useEffect(() => {    // load font at first render
-    async function loadFont() {
-      await Font.loadAsync(fonts).then(() => setIsFontLoaded(true))
-    }
-    loadFont()
-  }, [])
 
   useEffect(() => {        // create randomized color arr at 1st render
     COLOR_PALETTE_1.current = [
@@ -40,18 +14,8 @@ const Makams = ({ language, theme }) => {
       "D4D925", "FFEE63"].sort(() => Math.random() - 0.5)
   }, [])
 
-
-  // could refactor and render from a list via map etc (image linking wont work, need a sol)
   return (
     <View style={[styles.container, { backgroundColor: '#F0DBDB' }]}>
-      <View style={styles.makamTextContainer}>
-        {isFontLoaded && <Animated.Text style={[
-          styles.makamText,
-          { fontSize: fontSizeAnim },
-          { fontFamily: 'customFont' }]}>
-          MAKAMLAR
-        </Animated.Text>}
-      </View>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <MakamCard
           makamName={MAKAMS.hicaz.makamName}
@@ -163,6 +127,7 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     height: '100%',
+    paddingTop: 10
   },
   optionLabel: {
     width: '90%',

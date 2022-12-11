@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, TouchableOpacity, Animated, Platform } from 'react-native'
 import React, { useState, useEffect, useRef } from 'react'
 import { Icon } from 'react-native-elements'
-
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 const Metronomy = () => {
   //TODO: re-styling
