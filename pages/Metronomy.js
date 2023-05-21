@@ -4,15 +4,21 @@ import { Icon } from 'react-native-elements'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 const Metronomy = () => {
-  //TODO: re-styling
+  //TODO: re-styling, remove inline styling
   //MIGHT NEED TO CHANGE THE LOGIC FOR MS COUNTER
 
+  const { infoPanel, infoPanelMargin, infoPanelText, container, msInfoContainer, hitMeButton, msText,
+    w100JCAI, w100h100JCAI, resetButton } = styles
   const COLOR_PALETTE_1 = ["FEF9A7", "FAC213", "F77E21", "D61C4E", "990000", "FF5B00", "D4D925", "FFEE63"]
 
   const MILLISECONDS_TEXT = 'milisaniye'
   const BETWEEN_TAPS_TEXT = 'vuruşlar arası'
   const HIT_BUTTON_TEXT = 'dokun'
   const RESET_BUTTON_TEXT = 'reset'
+  const infoText = `Bu uygulamanın amacı, butona her basışınızda,
+  bir önceki basışınız arasındaki farkı hesaplayıp milisaniye cinsinden
+  ekrana yazdırarak ritim duyunuzun performansını göstermek ve pratik yaparak
+  gelişmesine katkıda bulunmaktır.`
 
   const [time, setTime] = useState(0)
   const [isOn, setisOn] = useState(false)
@@ -165,25 +171,16 @@ const Metronomy = () => {
 
   const InfoPanel = () => {
     return (
-      <Animated.View style={styles.infoPanelMargin}>
-        <Text style={{
-          textAlign: 'center',
-          fontSize: 14,
-          fontWeight: '700',
-          color: 'black',
-          letterSpacing: 0.3
-        }}>
-          Bu uygulamanın amacı, butona her basışınızda,
-          bir önceki basışınız arasındaki farkı hesaplayıp milisaniye cinsinden
-          ekrana yazdırarak ritim duyunuzun performansını göstermek ve pratik yaparak
-          gelişmesine katkıda bulunmaktır.
+      <Animated.View style={infoPanelMargin}>
+        <Text style={infoPanelText}>
+          {infoText}
         </Text>
       </Animated.View>
     )
   }
 
   return (
-    <View style={[styles.container, { backgroundColor: '#F0DBDB' }]}>
+    <View style={[container, { backgroundColor: '#F0DBDB' }]}>
       <TouchableOpacity
         onPress={() => expandInfoPanel()}
         style={{
@@ -205,31 +202,31 @@ const Metronomy = () => {
         {openInfoPanel && <InfoPanel />}
       </Animated.View>
       <Animated.View style={[
-        styles.msInfoContainer,
+        msInfoContainer,
         { transform: [{ scale: msContainerScaleAnim }] },
         { top: topAnimDependingOnInfoContainer }]}>
         <Text
-          style={[styles.msText, { color: msColor }]}>{time}{"\n"}
+          style={[msText, { color: msColor }]}>{time}{"\n"}
           <Text style={{ fontSize: 20 }}>{MILLISECONDS_TEXT}{'\n'}</Text>
           <Text style={{ fontSize: 14 }}>{BETWEEN_TAPS_TEXT}</Text>
         </Text>
       </Animated.View>
       <Animated.View style={[
-        styles.hitMeButton,
+        hitMeButton,
         shadowOptions,
         { transform: [{ scale: scaleAnim }] }]}>
         <TouchableOpacity
-          style={styles.w100h100JCAI}
+          style={w100h100JCAI}
           onPress={() => calc()}>
           <Text style={{ fontSize: 40, color: '#b25068', fontWeight: '900' }}
           >{HIT_BUTTON_TEXT}</Text>
         </TouchableOpacity>
       </Animated.View>
       <Animated.View style={[
-        styles.resetButton,
+        resetButton,
         Platform.OS == 'android' ? { borderBottomLeftRadius: 25, borderBottomRightRadius: 25 } : {},
         { transform: [{ translateY: yAnim }] }]}>
-        <TouchableOpacity style={styles.w100JCAI} onPress={() => reset()}>
+        <TouchableOpacity style={w100JCAI} onPress={() => reset()}>
           <Text style={{ fontSize: 40, color: 'wheat', fontWeight: '900' }}>{RESET_BUTTON_TEXT}</Text>
         </TouchableOpacity>
       </Animated.View>
@@ -329,5 +326,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '800',
     color: 'wheat'
+  },
+  infoPanelText: {
+    textAlign: 'center',
+    fontSize: 14,
+    fontWeight: '700',
+    color: 'black',
+    letterSpacing: 0.3
   }
 })

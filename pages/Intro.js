@@ -2,6 +2,7 @@ import { View, StyleSheet, Image, Animated, ActivityIndicator } from 'react-nati
 import React, { useEffect, useRef } from 'react'
 
 const Intro = ({ setShowIntroPage }) => {
+  const { container, logoContainer, activityIndicator, logo } = styles
 
   let scaleAnim = useRef(new Animated.Value(1)).current
   let zIndexAnim = useRef(new Animated.Value(0)).current
@@ -21,14 +22,14 @@ const Intro = ({ setShowIntroPage }) => {
   return (
     <Animated.View
       style={[
-        styles.container,
+        container,
         { transform: [{ scale: scaleAnim }] },
         { zIndex: zIndexAnim }
       ]}>
-      <View style={styles.logoContainer}>
-        <Image source={require('../assets/logo/logo-low-res.png')} style={styles.logo} />
+      <View style={logoContainer}>
+        <Image source={require('../assets/logo/logo-low-res.png')} style={logo} />
       </View>
-      <View style={styles.activityIndicator}>
+      <View style={activityIndicator}>
         <ActivityIndicator size='large' />
       </View>
     </Animated.View>
