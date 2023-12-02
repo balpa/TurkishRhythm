@@ -2,7 +2,6 @@ import { View, Text, StyleSheet, Animated, Image, TouchableOpacity, ScrollView }
 import React, { useState, useRef } from 'react'
 
 const MakamCard = ({ makamName, color, imageURI, makamInfo }) => {
-
   const [isOpen, setIsOpen] = useState(false)
 
   const yAnim = useRef(new Animated.Value(0)).current
@@ -13,8 +12,7 @@ const MakamCard = ({ makamName, color, imageURI, makamInfo }) => {
   const letterSpacingAnim = useRef(new Animated.Value(0)).current
 
   function showInfoPanel() {
-
-    Animated.timing(scaleAnimOnClick, {   // on click animation 
+    Animated.timing(scaleAnimOnClick, {
       toValue: 0.98,
       duration: 100,
       useNativeDriver: false
@@ -39,7 +37,7 @@ const MakamCard = ({ makamName, color, imageURI, makamInfo }) => {
 
 
       Animated.timing(yAnim, {        // opening animation
-        toValue: 300,
+        toValue: 400,
         duration: 200,
         useNativeDriver: false
       }).start(() => {

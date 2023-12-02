@@ -1,12 +1,8 @@
 import { View, Text, StyleSheet, TouchableOpacity, Animated, Platform } from 'react-native'
 import React, { useState, useEffect, useRef } from 'react'
 import { Icon } from 'react-native-elements'
-import { SafeAreaView } from 'react-native-safe-area-context'
 
 const Metronomy = () => {
-  //TODO: re-styling, remove inline styling
-  //MIGHT NEED TO CHANGE THE LOGIC FOR MS COUNTER
-
   const { infoPanel, infoPanelMargin, infoPanelText, container, msInfoContainer, hitMeButton, msText,
     w100JCAI, w100h100JCAI, resetButton } = styles
   const COLOR_PALETTE_1 = ["FEF9A7", "FAC213", "F77E21", "D61C4E", "990000", "FF5B00", "D4D925", "FFEE63"]
@@ -70,13 +66,9 @@ const Metronomy = () => {
     bounceAnimation()
   }, [time])
 
-  const createTime = () => {      // create current time in milliseconds
-    let now = new Date().getTime()
-    return now
-  }
+  const createTime = () => new Date().getTime()
 
   const calc = () => {            // calculate the time difference
-    // animations for hitting the button
     Animated.timing(scaleAnim, {
       toValue: 0.95,
       duration: 75,
@@ -97,8 +89,10 @@ const Metronomy = () => {
     }
 
     setTime(diff)
+
     if (previousTime == 0) setPreviousTime(now)
     else setPreviousTime(currentTime)
+  
     setCurrentTime(now)
     setTimeArray(old => [...old, diff])
 
@@ -130,7 +124,6 @@ const Metronomy = () => {
       }).start()
 
     } else {
-
       Animated.timing(topAnimDependingOnInfoContainer, {  //ms container top margin closin anim
         toValue: 75,
         duration: 450,

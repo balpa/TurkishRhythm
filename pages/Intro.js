@@ -7,7 +7,7 @@ const Intro = ({ setShowIntroPage }) => {
   let scaleAnim = useRef(new Animated.Value(1)).current
   let zIndexAnim = useRef(new Animated.Value(0)).current
 
-  useEffect(() => { //zoom out animation for intro page
+  useEffect(() => {
     setTimeout(() => {
       Animated.spring(scaleAnim, {
         toValue: 0,
@@ -16,7 +16,7 @@ const Intro = ({ setShowIntroPage }) => {
         useNativeDriver: false
       }).start();
     }, 2000)
-    setTimeout(() => { setShowIntroPage(false) }, 2500)    //set into comp's state to false
+    setTimeout(() => { setShowIntroPage(false) }, 2500)
   }, [])
 
   return (

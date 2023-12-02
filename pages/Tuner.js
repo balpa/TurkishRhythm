@@ -1,5 +1,5 @@
 import { View, Text } from 'react-native'
-import React, {useState, useEffect} from 'react'
+import React from 'react'
 
 const Tuner = () => {
   return (

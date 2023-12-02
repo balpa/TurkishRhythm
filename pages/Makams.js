@@ -6,7 +6,7 @@ import { MAKAMS } from '../data/data'
 const Makams = () => {
   const COLOR_PALETTE_1 = useRef([])
 
-  useEffect(() => {        // create randomized color arr at 1st render
+  useEffect(() => {
     COLOR_PALETTE_1.current = [
       "FEF9A7", "FAC213",
       "F77E21", "D61C4E",
@@ -15,7 +15,7 @@ const Makams = () => {
   }, [])
 
   return (
-    <View style={[styles.container, { backgroundColor: '#F0DBDB' }]}>
+    <View style={styles.container}>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <MakamCard
           makamName={MAKAMS.hicaz.makamName}
@@ -113,9 +113,6 @@ const Makams = () => {
           imageURI={require("../assets/makams/muhayyer.jpg")}
           color={COLOR_PALETTE_1.current[6]}
         />
-
-
-
       </ScrollView>
     </View>
   )
@@ -125,6 +122,7 @@ export default Makams
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: '#F0DBDB',
     width: '100%',
     height: '100%',
     paddingTop: 10

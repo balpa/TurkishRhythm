@@ -7,7 +7,7 @@ const Rhythms = () => {
 
   const COLOR_PALETTE_1 = useRef([])
 
-  useEffect(() => { // random color
+  useEffect(() => {
     COLOR_PALETTE_1.current = [
       "FEF9A7", "FAC213",
       "F77E21", "D61C4E",

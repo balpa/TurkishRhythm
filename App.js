@@ -4,28 +4,19 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import Metronomy from './pages/Metronomy';
 import Rhythms from './pages/Rhythms';
 import Makams from './pages/Makams';
-import Settings from './pages/Settings';
 import Intro from './pages/Intro'
+import Notes from './pages/Notes';
 import { Icon } from 'react-native-elements'
 import { NavigationContainer } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { registerCustomIconType } from 'react-native-elements';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
-
-
-registerCustomIconType('font-awesome-5', FontAwesome5) // font awesome 5 not registered by def
+registerCustomIconType('font-awesome-5', FontAwesome5)
 
 const Tab = createMaterialTopTabNavigator()
 
-// SAFE AREA - COLORS - BORDER FOR MAKAMS/RHYTHMS
-
 const App = () => {
-
-  const COLOR_PALETTE_1 = ["FEF9A7", "FAC213", "F77E21", "D61C4E", "990000", "FF5B00", "D4D925", "FFEE63"]
-  const DARK_MODE_PALETTE = ['#4c3a51', '#774360', '#b25068', '#e7ab79']
-
-  const [tabBarIndicatorColor, setTabBarIndicatorColor] = useState('white')
   const [showIntroPage, setShowIntroPage] = useState(true)
 
   const tabNavigatorScreenOpts = {
@@ -39,10 +30,6 @@ const App = () => {
       height: 5
     }
   }
-
-  useEffect(() => {     // set random tab bar indicator color at first render
-    setTabBarIndicatorColor(COLOR_PALETTE_1[Math.floor(Math.random() * COLOR_PALETTE_1.length)])
-  }, [])
 
   return (
     <>
@@ -76,6 +63,17 @@ const App = () => {
                 />
             }} />
           <Tab.Screen
+            name="Notes"
+            children={() => <Notes />}
+            options={{
+              tabBarIcon: () =>
+                <Icon
+                  name="scroll"
+                  type='font-awesome-5'
+                  color={'black'}
+                />
+            }} />
+          <Tab.Screen
             name="Metronomy"
             children={() => <Metronomy />}
             options={{
@@ -87,15 +85,6 @@ const App = () => {
                   style={{ transform: [{ scale: 0.85 }] }}
                 />
             }} />
-          {/* {Platform.OS == 'ios' && <Tab.Screen 
-          name="Settings" 
-          children={()=> <Settings language={languageFromCache} theme={themeFromCache}/>}
-          options={{
-            tabBarIcon: () => 
-              <Icon 
-                name="settings" 
-                color={themeFromCache == 'Dark' ? 'wheat' : 'black'} 
-              />}} />} */}
         </Tab.Navigator>
         <StatusBar style='dark' />
       </NavigationContainer>
