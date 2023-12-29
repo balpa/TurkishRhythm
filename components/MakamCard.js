@@ -35,7 +35,6 @@ const MakamCard = ({ makamName, color, imageURI, makamInfo }) => {
         }).start()
       }, 900)
 
-
       Animated.timing(yAnim, {        // opening animation
         toValue: 400,
         duration: 200,

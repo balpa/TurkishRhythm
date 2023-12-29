@@ -4,7 +4,6 @@ import RhythmCard from '../components/RhythmCard'
 import { RHYTHMS } from '../data/data'
 
 const Rhythms = () => {
-
   const COLOR_PALETTE_1 = useRef([])
 
   useEffect(() => {
