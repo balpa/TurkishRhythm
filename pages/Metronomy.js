@@ -7,16 +7,22 @@ const Metronomy = () => {
     w100JCAI, w100h100JCAI, resetButton } = styles
   const COLOR_PALETTE_1 = ["FEF9A7", "FAC213", "F77E21", "D61C4E", "990000", "FF5B00", "D4D925", "FFEE63"]
 
+  const { green, yellow, red } = {
+    green: 'green',
+    yellow: '#b7ec09',
+    red: '#f00',
+
+  }
   const MILLISECONDS_TEXT = 'milisaniye'
   const BETWEEN_TAPS_TEXT = 'vuruşlar arası'
   const HIT_BUTTON_TEXT = 'dokun'
-  const RESET_BUTTON_TEXT = 'reset'
+  const RESET_BUTTON_TEXT = 'sıfırla'
   const infoText = `Bu uygulamanın amacı, butona her basışınızda,
   bir önceki basışınız arasındaki farkı hesaplayıp milisaniye cinsinden
   ekrana yazdırarak ritim duyunuzun performansını göstermek ve pratik yaparak
   gelişmesine katkıda bulunmaktır.`
 
-  const [time, setTime] = useState(0)
+  const [time, setTime] = useState('başla')
   const [isOn, setisOn] = useState(false)
   const [timeArray, setTimeArray] = useState([])
   const [previousTime, setPreviousTime] = useState(0)
@@ -32,7 +38,8 @@ const Metronomy = () => {
   const topAnimDependingOnInfoContainer = useRef(new Animated.Value(75)).current
   const msContainerScaleAnim = useRef(new Animated.Value(1)).current
 
-  useEffect(() => {           // animations on first render
+  // animations on first render
+  useEffect(() => {
     setTimeout(() => {
       Animated.spring(yAnim, {
         toValue: 0,
@@ -50,25 +57,36 @@ const Metronomy = () => {
     }, 1000)
   }, [])
 
-  useEffect(() => {           // change color of text depending on time difference. its done to show if user is doing okay
-    if (timeArray[timeArray.length - 1] - timeArray[timeArray.length - 2] < 50) { setMsColor('green'); setScore(score + 1) }
-    else if (timeArray[timeArray.length - 1] - timeArray[timeArray.length - 2] < 75) { setMsColor('#b7ec09'); setScore(score - 1) }
-    else { setMsColor('red'); setScore(score - 2) }
+  // change color of text depending on time difference. its done to show if user is doing okay
+  useEffect(() => {
+    if (timeArray[timeArray.length - 1] - timeArray[timeArray.length - 2] < 50) {
+      setMsColor(green);
+      setScore(score + 1)
+    } else if (timeArray[timeArray.length - 1] - timeArray[timeArray.length - 2] < 75) {
+      setMsColor(yellow);
+      setScore(score - 1)
+    } else {
+      setMsColor(red);
+      setScore(score - 2)
+    }
   }, [currentTime])
 
-  useEffect(() => {         // if timearray size is bigger than 20, set the array to last 10 elements. IDK why 20 :)
+  // if timearray size is bigger than 20, set the array to last 5 elements. IDK why 20 :)
+  useEffect(() => {
     if (timeArray.length > 50) {
       setTimeArray(timeArray.slice(45, 50))
     }
   }, [timeArray])
 
-  useEffect(() => {           // bounce animation for ms container
+  // bounce animation for ms container
+  useEffect(() => {
     bounceAnimation()
   }, [time])
 
   const createTime = () => new Date().getTime()
 
-  const calc = () => {            // calculate the time difference
+  //TODO: for the first couple of hits, ms logic not working properly
+  const calculateTimeDifference = () => {            
     Animated.timing(scaleAnim, {
       toValue: 0.95,
       duration: 75,
@@ -82,24 +100,23 @@ const Metronomy = () => {
     })
 
     let now = createTime()
-    let diff = parseInt((now - previousTime) / 2)
-
-    if (diff.toString().length > 7) {      // if number is so big which means it's in milliseconds, reduce to 3 digits
+    let diff = previousTime !== 0 ? parseInt((now - previousTime) / 2) : 0
+    
+    if (diff.toString().length > 7) {      // if number is so big, reduce to 3 digits
       diff = diff.toString().slice(0, 3)
     }
 
     setTime(diff)
 
-    if (previousTime == 0) setPreviousTime(now)
+    if (previousTime === 0) setPreviousTime(now)
     else setPreviousTime(currentTime)
   
     setCurrentTime(now)
     setTimeArray(old => [...old, diff])
-
   }
 
-  const reset = () => {           // reset all 
-    setTime(0)
+  const reset = () => {            
+    setTime('başla')
     setCurrentTime(0)
     setPreviousTime(0)
     setisOn(false)
@@ -199,9 +216,9 @@ const Metronomy = () => {
         { transform: [{ scale: msContainerScaleAnim }] },
         { top: topAnimDependingOnInfoContainer }]}>
         <Text
-          style={[msText, { color: msColor }]}>{time}{"\n"}
-          <Text style={{ fontSize: 20 }}>{MILLISECONDS_TEXT}{'\n'}</Text>
-          <Text style={{ fontSize: 14 }}>{BETWEEN_TAPS_TEXT}</Text>
+          style={[msText, { color: msColor }]}>{ time }{"\n"}
+          <Text style={{ fontSize: 20 }}>{ MILLISECONDS_TEXT }{'\n'}</Text>
+          <Text style={{ fontSize: 14 }}>{ BETWEEN_TAPS_TEXT }</Text>
         </Text>
       </Animated.View>
       <Animated.View style={[
@@ -210,7 +227,7 @@ const Metronomy = () => {
         { transform: [{ scale: scaleAnim }] }]}>
         <TouchableOpacity
           style={w100h100JCAI}
-          onPress={() => calc()}>
+          onPress={() => calculateTimeDifference()}>
           <Text style={{ fontSize: 40, color: '#b25068', fontWeight: '900' }}
           >{HIT_BUTTON_TEXT}</Text>
         </TouchableOpacity>
