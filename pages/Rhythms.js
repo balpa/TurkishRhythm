@@ -27,7 +27,7 @@ const Rhythms = () => {
   const rhythmList = [
     { key: 'nimsofyan', name: 'Nim Sofyan', time: '2/4', img: require("../assets/nimsofyan.png") },
     { key: 'semai', name: 'Semai', time: '3/4', img: require("../assets/semai.png") },
-    { key: 'sofyan', name: 'Sofyan', time: '4/8', img: require("../assets/sofyan.png") },
+    { key: 'sofyan', name: 'Sofyan', time: '4/4', img: require("../assets/sofyan.png") },
     { key: 'turkaksagi', name: 'Türk Aksağı', time: '5/4', img: require("../assets/turkaksagi.png") },
     { key: 'yuruksemai', name: 'Yürük Semai', time: '6/4', img: require("../assets/yuruksemai.png") },
     { key: 'devrihindi', name: 'Devr-i Hindi', time: '7/8', img: require("../assets/devrihindi.png") },
@@ -35,7 +35,7 @@ const Rhythms = () => {
     { key: 'musemmen', name: 'Müsemmen', time: '8/8', img: require("../assets/musemmen.png") },
     { key: 'aksak', name: 'Aksak', time: '9/4', img: require("../assets/aksak.png") },
     { key: 'raksaksagi', name: 'Raks Aksağı', time: '9/8', img: require("../assets/raksaksagi.png") },
-    { key: 'curcuna', name: 'Curcuna', time: '10/16', img: require("../assets/curcuna.png") },
+    { key: 'curcuna', name: 'Curcuna', time: '10/8', img: require("../assets/curcuna.png") },
   ]
 
   return (

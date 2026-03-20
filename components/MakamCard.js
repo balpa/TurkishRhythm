@@ -7,7 +7,7 @@ const MakamCard = ({ makamName, color, imageURI, makamInfo }) => {
   const heightAnim = useRef(new Animated.Value(0)).current
   const contentOpacity = useRef(new Animated.Value(0)).current
   const scaleAnim = useRef(new Animated.Value(1)).current
-  const letterSpacingAnim = useRef(new Animated.Value(1)).current
+  // letterSpacingAnim removed
   const glowAnim = useRef(new Animated.Value(0.3)).current
 
   useEffect(() => {
@@ -27,18 +27,38 @@ const MakamCard = ({ makamName, color, imageURI, makamInfo }) => {
 
     if (!isOpen) {
       setIsOpen(true)
-      Animated.timing(letterSpacingAnim, { toValue: 5, duration: 600, useNativeDriver: false }).start()
       Animated.spring(heightAnim, { toValue: 420, friction: 8, tension: 40, useNativeDriver: false }).start()
       setTimeout(() => {
         Animated.timing(contentOpacity, { toValue: 1, duration: 300, useNativeDriver: false }).start()
       }, 250)
     } else {
-      Animated.timing(letterSpacingAnim, { toValue: 1, duration: 300, useNativeDriver: false }).start()
       Animated.timing(contentOpacity, { toValue: 0, duration: 150, useNativeDriver: false }).start(() => {
         Animated.spring(heightAnim, { toValue: 0, friction: 10, tension: 50, useNativeDriver: false }).start()
       })
       setTimeout(() => setIsOpen(false), 500)
     }
+  }
+
+  const renderFormattedInfo = (info, accentColor) => {
+    const sections = info.split('*').filter(s => s.trim())
+    return sections.map((section, i) => {
+      const colonIdx = section.indexOf(':')
+      if (colonIdx === -1) return <Text key={i} style={styles.infoBody}>{section.trim()}</Text>
+
+      const label = section.slice(0, colonIdx).trim()
+      const body = section.slice(colonIdx + 1).trim()
+
+      return (
+        <View key={i} style={styles.infoSection}>
+          <View style={styles.labelRow}>
+            <View style={[styles.labelDot, { backgroundColor: accentColor }]} />
+            <Text style={styles.infoLabel}>{label}</Text>
+          </View>
+          <Text style={styles.infoBody}>{body}</Text>
+          {i < sections.length - 1 && <View style={styles.divider} />}
+        </View>
+      )
+    })
   }
 
   return (
@@ -52,12 +72,6 @@ const MakamCard = ({ makamName, color, imageURI, makamInfo }) => {
         }
       ]}>
 
-      {/* top decorative stripe */}
-      <View style={styles.topStripe}>
-        <View style={[styles.stripeLine, { backgroundColor: 'rgba(255,255,255,0.12)' }]} />
-        <View style={[styles.stripeLine, { backgroundColor: 'rgba(255,255,255,0.06)' }]} />
-      </View>
-
       <TouchableOpacity activeOpacity={0.85} onPress={toggleCard}>
         <View style={styles.headerRow}>
           {/* decorative geometric cluster */}
@@ -69,9 +83,9 @@ const MakamCard = ({ makamName, color, imageURI, makamInfo }) => {
           </View>
 
           <View style={styles.titleBlock}>
-            <Animated.Text style={[styles.nameText, { letterSpacing: letterSpacingAnim }]}>
+            <Text style={styles.nameText}>
               {makamName}
-            </Animated.Text>
+            </Text>
           </View>
 
           <View style={styles.chevronWrap}>
@@ -88,7 +102,7 @@ const MakamCard = ({ makamName, color, imageURI, makamInfo }) => {
             </View>
             <View style={styles.scrollWrap}>
               <ScrollView nestedScrollEnabled={true} showsVerticalScrollIndicator={false}>
-                <Text style={styles.infoText}>{makamInfo}</Text>
+                {renderFormattedInfo(makamInfo, color)}
               </ScrollView>
             </View>
           </Animated.View>
@@ -111,21 +125,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.35,
     shadowRadius: 14,
     elevation: 8,
-  },
-  topStripe: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    height: 4,
-    borderTopLeftRadius: 18,
-    borderTopRightRadius: 18,
-    flexDirection: 'row',
-    overflow: 'hidden',
-  },
-  stripeLine: {
-    flex: 1,
-    height: 4,
   },
   headerRow: {
     flexDirection: 'row',
@@ -215,10 +214,36 @@ const styles = StyleSheet.create({
     aspectRatio: 2.7,
     borderRadius: 8,
   },
-  infoText: {
+  infoSection: {
+    marginBottom: 4,
+  },
+  labelRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 4,
+  },
+  labelDot: {
+    width: 5,
+    height: 5,
+    borderRadius: 3,
+    marginRight: 8,
+  },
+  infoLabel: {
+    fontSize: 15,
+    fontWeight: '900',
+    letterSpacing: 0.5,
+    color: '#fff',
+  },
+  infoBody: {
+    color: 'rgba(255,255,255,0.82)',
+    lineHeight: 21,
+    fontSize: 13.5,
     fontWeight: '500',
-    color: 'rgba(255,255,255,0.85)',
-    lineHeight: 22,
-    fontSize: 14,
+    paddingLeft: 13,
+  },
+  divider: {
+    height: 1,
+    backgroundColor: 'rgba(255,255,255,0.08)',
+    marginVertical: 8,
   },
 })

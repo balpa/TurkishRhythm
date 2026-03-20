@@ -8,7 +8,7 @@ const RhythmCard = ({ rhythmName, rhythmTime, color, imageURI, infoText }) => {
   const heightAnim = useRef(new Animated.Value(0)).current
   const contentOpacity = useRef(new Animated.Value(0)).current
   const scaleAnim = useRef(new Animated.Value(1)).current
-  const letterSpacingAnim = useRef(new Animated.Value(1)).current
+  // letterSpacingAnim removed
   const badgeScale = useRef(new Animated.Value(1)).current
 
   useEffect(() => {
@@ -28,18 +28,26 @@ const RhythmCard = ({ rhythmName, rhythmTime, color, imageURI, infoText }) => {
 
     if (!isOpen) {
       setIsOpen(true)
-      Animated.timing(letterSpacingAnim, { toValue: 5, duration: 600, useNativeDriver: false }).start()
       Animated.spring(heightAnim, { toValue: 320, friction: 8, tension: 40, useNativeDriver: false }).start()
       setTimeout(() => {
         Animated.timing(contentOpacity, { toValue: 1, duration: 300, useNativeDriver: false }).start()
       }, 250)
     } else {
-      Animated.timing(letterSpacingAnim, { toValue: 1, duration: 300, useNativeDriver: false }).start()
       Animated.timing(contentOpacity, { toValue: 0, duration: 150, useNativeDriver: false }).start(() => {
         Animated.spring(heightAnim, { toValue: 0, friction: 10, tension: 50, useNativeDriver: false }).start()
       })
       setTimeout(() => setIsOpen(false), 500)
     }
+  }
+
+  const renderBullets = (text, accentColor) => {
+    const items = text.split('*').filter(s => s.trim())
+    return items.map((item, i) => (
+      <View key={i} style={styles.bulletRow}>
+        <View style={[styles.bulletDot, { backgroundColor: accentColor }]} />
+        <Text style={styles.bulletText}>{item.trim()}</Text>
+      </View>
+    ))
   }
 
   return (
@@ -53,28 +61,22 @@ const RhythmCard = ({ rhythmName, rhythmTime, color, imageURI, infoText }) => {
         }
       ]}>
 
-      <View style={styles.topStripe}>
-        <View style={[styles.stripeLine, { backgroundColor: 'rgba(255,255,255,0.12)' }]} />
-        <View style={[styles.stripeLine, { backgroundColor: 'rgba(255,255,255,0.06)' }]} />
-      </View>
-
       <TouchableOpacity activeOpacity={0.85} onPress={toggleCard}>
         <View style={styles.headerRow}>
-          {/* 3D time badge */}
+          {/* time badge */}
           <Animated.View style={[
             styles.badgeOuter,
             { transform: [{ scale: badgeScale }] }
           ]}>
-            <View style={styles.badgeHighlight} />
             <Text style={styles.timeText}>{rhythmTime}</Text>
           </Animated.View>
 
           <View style={styles.titleBlock}>
-            <Animated.Text
+            <Text
               numberOfLines={1}
-              style={[styles.nameText, { letterSpacing: letterSpacingAnim }]}>
+              style={styles.nameText}>
               {rhythmName}
-            </Animated.Text>
+            </Text>
           </View>
 
           <View style={styles.chevronWrap}>
@@ -91,7 +93,7 @@ const RhythmCard = ({ rhythmName, rhythmTime, color, imageURI, infoText }) => {
             </View>
             <View style={styles.scrollWrap}>
               <ScrollView nestedScrollEnabled={true} showsVerticalScrollIndicator={false}>
-                <Text style={styles.infoText}>{infoText}</Text>
+                {renderBullets(infoText, color)}
               </ScrollView>
             </View>
           </Animated.View>
@@ -115,21 +117,6 @@ const styles = StyleSheet.create({
     shadowRadius: 14,
     elevation: 8,
   },
-  topStripe: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    height: 4,
-    borderTopLeftRadius: 18,
-    borderTopRightRadius: 18,
-    flexDirection: 'row',
-    overflow: 'hidden',
-  },
-  stripeLine: {
-    flex: 1,
-    height: 4,
-  },
   headerRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -137,28 +124,16 @@ const styles = StyleSheet.create({
   badgeOuter: {
     width: 54,
     height: 54,
-    borderRadius: 14,
+    borderRadius: 16,
     marginRight: 16,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.25)',
-    overflow: 'hidden',
-  },
-  badgeHighlight: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    height: '45%',
-    backgroundColor: 'rgba(255,255,255,0.15)',
-    borderTopLeftRadius: 14,
-    borderTopRightRadius: 14,
+    backgroundColor: 'rgba(0,0,0,0.3)',
   },
   timeText: {
     fontSize: 17,
     fontWeight: '900',
     color: '#FFF5E6',
-    zIndex: 1,
     textShadowColor: 'rgba(0,0,0,0.3)',
     textShadowOffset: { width: 0, height: 1 },
     textShadowRadius: 2,
@@ -213,10 +188,24 @@ const styles = StyleSheet.create({
     aspectRatio: 2.7,
     borderRadius: 8,
   },
-  infoText: {
-    fontWeight: '500',
+  bulletRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginBottom: 8,
+  },
+  bulletDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    marginTop: 6,
+    marginRight: 10,
+    opacity: 0.7,
+  },
+  bulletText: {
+    flex: 1,
     color: 'rgba(255,255,255,0.85)',
-    lineHeight: 22,
-    fontSize: 14,
+    lineHeight: 21,
+    fontSize: 13.5,
+    fontWeight: '500',
   },
 })
