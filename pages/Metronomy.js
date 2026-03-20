@@ -2,35 +2,33 @@ import { View, Text, StyleSheet, TouchableOpacity, Animated, Platform } from 're
 import React, { useState, useEffect, useRef } from 'react'
 import { Icon } from 'react-native-elements'
 
+const COLORS = {
+  bg: '#1B1B2F',
+  surface: '#262640',
+  accent: '#E45A84',
+  gold: '#C9B458',
+  border: '#3A3A5C',
+  text: '#F0E6D3',
+  textDim: '#9090B0',
+  cardBg: '#1F1F38',
+}
+
 const Metronomy = () => {
-  const { infoPanel, infoPanelMargin, infoPanelText, container, msInfoContainer, hitMeButton, msText,
-    w100JCAI, w100h100JCAI, resetButton } = styles
-  const COLOR_PALETTE_1 = ["FEF9A7", "FAC213", "F77E21", "D61C4E", "990000", "FF5B00", "D4D925", "FFEE63"]
-
-  const { green, yellow, red } = {
-    green: 'green',
-    yellow: '#b7ec09',
-    red: '#f00',
-
-  }
   const MILLISECONDS_TEXT = 'milisaniye'
   const BETWEEN_TAPS_TEXT = 'vuruşlar arası'
   const HIT_BUTTON_TEXT = 'dokun'
   const RESET_BUTTON_TEXT = 'sıfırla'
-  const infoText = `Bu uygulamanın amacı, butona her basışınızda,
-  bir önceki basışınız arasındaki farkı hesaplayıp milisaniye cinsinden
-  ekrana yazdırarak ritim duyunuzun performansını göstermek ve pratik yaparak
-  gelişmesine katkıda bulunmaktır.`
+  const infoText = `Bu uygulamanın amacı, butona her basışınızda, bir önceki basışınız arasındaki farkı hesaplayıp milisaniye cinsinden ekrana yazdırarak ritim duyunuzun performansını göstermek ve pratik yaparak gelişmesine katkıda bulunmaktır.`
 
   const [time, setTime] = useState('başla')
-  const [isOn, setisOn] = useState(false)
   const [timeArray, setTimeArray] = useState([])
   const [previousTime, setPreviousTime] = useState(0)
-  const [currentTime, setCurrentTime] = useState(0)
-  const [msColor, setMsColor] = useState('black')
-  const [shadowOptions, setShadowOptions] = useState({})
+  const [msColor, setMsColor] = useState(COLORS.text)
   const [openInfoPanel, setOpenInfoPanel] = useState(false)
   const [score, setScore] = useState(0)
+  const [tapCount, setTapCount] = useState(0)
+
+  const previousTimeRef = useRef(0)
 
   const yAnim = useRef(new Animated.Value(500)).current
   const scaleAnim = useRef(new Animated.Value(0)).current
@@ -38,7 +36,6 @@ const Metronomy = () => {
   const topAnimDependingOnInfoContainer = useRef(new Animated.Value(75)).current
   const msContainerScaleAnim = useRef(new Animated.Value(1)).current
 
-  // animations on first render
   useEffect(() => {
     setTimeout(() => {
       Animated.spring(yAnim, {
@@ -54,39 +51,43 @@ const Metronomy = () => {
         tension: 5,
         useNativeDriver: false
       }).start()
-    }, 1000)
+    }, 500)
   }, [])
 
-  // change color of text depending on time difference. its done to show if user is doing okay
+  // color feedback based on consistency between consecutive intervals
   useEffect(() => {
-    if (timeArray[timeArray.length - 1] - timeArray[timeArray.length - 2] < 50) {
-      setMsColor(green);
-      setScore(score + 1)
-    } else if (timeArray[timeArray.length - 1] - timeArray[timeArray.length - 2] < 75) {
-      setMsColor(yellow);
-      setScore(score - 1)
-    } else {
-      setMsColor(red);
-      setScore(score - 2)
-    }
-  }, [currentTime])
+    if (timeArray.length < 2) return
+    const lastDiff = timeArray[timeArray.length - 1]
+    const prevDiff = timeArray[timeArray.length - 2]
+    const variance = Math.abs(lastDiff - prevDiff)
 
-  // if timearray size is bigger than 20, set the array to last 5 elements. IDK why 20 :)
+    if (variance < 30) {
+      setMsColor('#4ADE80')
+      setScore(s => s + 2)
+    } else if (variance < 60) {
+      setMsColor(COLORS.gold)
+      setScore(s => s + 1)
+    } else if (variance < 100) {
+      setMsColor('#FB923C')
+      setScore(s => Math.max(0, s - 1))
+    } else {
+      setMsColor(COLORS.accent)
+      setScore(s => Math.max(0, s - 2))
+    }
+  }, [timeArray.length])
+
+  // trim array to prevent memory growth
   useEffect(() => {
     if (timeArray.length > 50) {
-      setTimeArray(timeArray.slice(45, 50))
+      setTimeArray(prev => prev.slice(-10))
     }
-  }, [timeArray])
+  }, [timeArray.length])
 
-  // bounce animation for ms container
   useEffect(() => {
     bounceAnimation()
   }, [time])
 
-  const createTime = () => new Date().getTime()
-
-  //TODO: for the first couple of hits, ms logic not working properly
-  const calculateTimeDifference = () => {            
+  const calculateTimeDifference = () => {
     Animated.timing(scaleAnim, {
       toValue: 0.95,
       duration: 75,
@@ -99,64 +100,60 @@ const Metronomy = () => {
       }).start()
     })
 
-    let now = createTime()
-    let diff = previousTime !== 0 ? parseInt((now - previousTime) / 2) : 0
-    
-    if (diff.toString().length > 7) {      // if number is so big, reduce to 3 digits
-      diff = diff.toString().slice(0, 3)
+    const now = Date.now()
+
+    if (previousTimeRef.current === 0) {
+      previousTimeRef.current = now
+      setPreviousTime(now)
+      setTapCount(1)
+      return
     }
 
-    setTime(diff)
+    const diff = now - previousTimeRef.current
+    previousTimeRef.current = now
+    setPreviousTime(now)
 
-    if (previousTime === 0) setPreviousTime(now)
-    else setPreviousTime(currentTime)
-  
-    setCurrentTime(now)
+    setTime(diff)
+    setTapCount(c => c + 1)
     setTimeArray(old => [...old, diff])
   }
 
-  const reset = () => {            
+  const reset = () => {
     setTime('başla')
-    setCurrentTime(0)
     setPreviousTime(0)
-    setisOn(false)
+    previousTimeRef.current = 0
     setTimeArray([])
     setScore(0)
+    setTapCount(0)
+    setMsColor(COLORS.text)
   }
 
   const expandInfoPanel = () => {
-    if (openInfoPanel == false) {
+    if (!openInfoPanel) {
       setOpenInfoPanel(true)
-
-      Animated.timing(topAnimDependingOnInfoContainer, {  //ms container top margin cloisng anim
+      Animated.timing(topAnimDependingOnInfoContainer, {
         toValue: 150,
         duration: 450,
         useNativeDriver: false
       }).start()
-
-      Animated.timing(infoPanelPositionAnim, { //info panel position opening anim
+      Animated.timing(infoPanelPositionAnim, {
         toValue: 0,
         duration: 400,
         useNativeDriver: false
       }).start()
-
     } else {
-      Animated.timing(topAnimDependingOnInfoContainer, {  //ms container top margin closin anim
+      Animated.timing(topAnimDependingOnInfoContainer, {
         toValue: 75,
         duration: 450,
         useNativeDriver: false
       }).start()
-
-      Animated.timing(infoPanelPositionAnim, { //info panel position closing anim
+      Animated.timing(infoPanelPositionAnim, {
         toValue: -200,
         duration: 400,
         useNativeDriver: false
       }).start()
-
       setTimeout(() => { setOpenInfoPanel(false) }, 450)
     }
-
-
   }
 
   const bounceAnimation = () => {
@@ -179,65 +176,72 @@ const Metronomy = () => {
     })
   }
 
-  const InfoPanel = () => {
-    return (
-      <Animated.View style={infoPanelMargin}>
-        <Text style={infoPanelText}>
-          {infoText}
-        </Text>
-      </Animated.View>
-    )
+  const getScoreLabel = () => {
+    if (tapCount < 3) return ''
+    if (score > 15) return 'Mükemmel!'
+    if (score > 8) return 'Harika'
+    if (score > 3) return 'İyi'
+    return 'Pratik yap'
   }
 
   return (
-    <View style={[container, { backgroundColor: '#F0DBDB' }]}>
+    <View style={styles.container}>
       <TouchableOpacity
         onPress={() => expandInfoPanel()}
-        style={{
-          position: 'absolute',
-          right: 0,
-          width: '10%',
-          height: 50,
-          justifyContent: 'center',
-          alignItems: 'center',
-          zIndex: 10
-        }}>
-        <Icon name={openInfoPanel == true ? 'close' : 'info'} color={'black'} />
+        style={styles.infoButton}>
+        <Icon
+          name={openInfoPanel ? 'close' : 'info-outline'}
+          color={COLORS.textDim}
+          size={22}
+        />
       </TouchableOpacity>
+
       <Animated.View
         style={[
-          { width: '80%', marginTop: 10 },
+          { width: '85%', marginTop: 10 },
           { transform: [{ translateY: infoPanelPositionAnim }] }
         ]}>
-        {openInfoPanel && <InfoPanel />}
+        {openInfoPanel && (
+          <View style={styles.infoPanelCard}>
+            <Text style={styles.infoPanelText}>{infoText}</Text>
+          </View>
+        )}
       </Animated.View>
+
       <Animated.View style={[
-        msInfoContainer,
+        styles.msInfoContainer,
         { transform: [{ scale: msContainerScaleAnim }] },
         { top: topAnimDependingOnInfoContainer }]}>
-        <Text
-          style={[msText, { color: msColor }]}>{ time }{"\n"}
-          <Text style={{ fontSize: 20 }}>{ MILLISECONDS_TEXT }{'\n'}</Text>
-          <Text style={{ fontSize: 14 }}>{ BETWEEN_TAPS_TEXT }</Text>
+        <Text style={[styles.msText, { color: msColor }]}>
+          {time}{"\n"}
+          <Text style={styles.msLabel}>{MILLISECONDS_TEXT}{'\n'}</Text>
+          <Text style={styles.msSubLabel}>{BETWEEN_TAPS_TEXT}</Text>
         </Text>
+        {tapCount >= 3 && (
+          <View style={styles.scoreContainer}>
+            <Text style={[styles.scoreText, { color: msColor }]}>
+              {getScoreLabel()} ({score})
+            </Text>
+          </View>
+        )}
       </Animated.View>
+
       <Animated.View style={[
-        hitMeButton,
-        shadowOptions,
+        styles.hitMeButton,
         { transform: [{ scale: scaleAnim }] }]}>
         <TouchableOpacity
-          style={w100h100JCAI}
+          style={styles.fullCenter}
+          activeOpacity={0.7}
           onPress={() => calculateTimeDifference()}>
-          <Text style={{ fontSize: 40, color: '#b25068', fontWeight: '900' }}
-          >{HIT_BUTTON_TEXT}</Text>
+          <Text style={styles.hitMeText}>{HIT_BUTTON_TEXT}</Text>
         </TouchableOpacity>
       </Animated.View>
+
       <Animated.View style={[
-        resetButton,
-        Platform.OS == 'android' ? { borderBottomLeftRadius: 25, borderBottomRightRadius: 25 } : {},
+        styles.resetButton,
         { transform: [{ translateY: yAnim }] }]}>
-        <TouchableOpacity style={w100JCAI} onPress={() => reset()}>
-          <Text style={{ fontSize: 40, color: 'wheat', fontWeight: '900' }}>{RESET_BUTTON_TEXT}</Text>
+        <TouchableOpacity style={styles.resetTouchable} activeOpacity={0.7} onPress={() => reset()}>
+          <Text style={styles.resetText}>{RESET_BUTTON_TEXT}</Text>
         </TouchableOpacity>
       </Animated.View>
     </View>
@@ -252,44 +256,34 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: "100%",
     width: "100%",
+    backgroundColor: COLORS.bg,
   },
-  resetButton: {
+  infoButton: {
     position: 'absolute',
-    bottom: 20,
-    borderWidth: 3,
-    borderColor: 'black',
-    backgroundColor: '#b25068',
-    width: '90%',
-    height: 100,
-    alignItems: 'center',
+    right: 12,
+    top: 8,
+    width: 40,
+    height: 40,
     justifyContent: 'center',
-    borderBottomRightRadius: 40,
-    borderBottomLeftRadius: 40,
-    borderTopLeftRadius: 25,
-    borderTopRightRadius: 25
-  },
-  hitMeButton: {
-    width: 300,
-    height: 100,
-    backgroundColor: '#FBFACD',
-    borderRadius: 25,
-    position: 'absolute',
-    bottom: 250,
-    borderWidth: 3,
-    borderColor: 'black',
     alignItems: 'center',
-    justifyContent: 'center',
-    // shadowColor: '#171717',
-    // shadowOffset: {width: -1, height: 3},
-    // shadowOpacity: 0.4,
-    // shadowRadius: 5,
-
+    zIndex: 10,
+    borderRadius: 20,
+    backgroundColor: COLORS.surface,
   },
-  infoPanelMargin: {
-    marginBottom: 10
+  infoPanelCard: {
+    backgroundColor: COLORS.surface,
+    borderRadius: 16,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: COLORS.border,
   },
-  infoPanel: {
-    top: 25,
+  infoPanelText: {
+    textAlign: 'center',
+    fontSize: 14,
+    fontWeight: '500',
+    color: COLORS.textDim,
+    lineHeight: 20,
+    letterSpacing: 0.3,
   },
   msInfoContainer: {
     position: 'absolute',
@@ -297,51 +291,88 @@ const styles = StyleSheet.create({
     height: 200,
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 3,
-    borderRadius: 20,
-    backgroundColor: 'white',
-    borderColor: 'black'
+    borderWidth: 1,
+    borderRadius: 24,
+    backgroundColor: COLORS.surface,
+    borderColor: COLORS.border,
   },
   msText: {
     padding: 1,
-    fontSize: 100,
-    textShadowColor: 'black',
-    textShadowRadius: 0.5,
-    textShadowOffset: { width: 0.1, height: 0.1 },
+    fontSize: 80,
     fontWeight: "900",
     textAlign: 'center',
     position: 'absolute',
-    paddingBottom: 25
+    paddingBottom: 25,
   },
-  w100h100JCAI: {
-    width: '100%',
-    height: '100%',
-    justifyContent: 'center',
-    alignItems: 'center'
+  msLabel: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: COLORS.textDim,
   },
-  w100JCAI: {
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center'
+  msSubLabel: {
+    fontSize: 13,
+    fontWeight: '500',
+    color: COLORS.textDim,
   },
   scoreContainer: {
     position: 'absolute',
-    width: '100%',
-    height: 50,
-    justifyContent: 'center',
+    bottom: 12,
     alignItems: 'center',
-    left: 0
   },
   scoreText: {
-    fontSize: 16,
-    fontWeight: '800',
-    color: 'wheat'
-  },
-  infoPanelText: {
-    textAlign: 'center',
     fontSize: 14,
     fontWeight: '700',
-    color: 'black',
-    letterSpacing: 0.3
-  }
+    letterSpacing: 0.5,
+  },
+  hitMeButton: {
+    width: '75%',
+    height: 90,
+    backgroundColor: COLORS.accent,
+    borderRadius: 20,
+    position: 'absolute',
+    bottom: 200,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: COLORS.accent,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 12,
+    elevation: 8,
+  },
+  hitMeText: {
+    fontSize: 36,
+    color: '#fff',
+    fontWeight: '900',
+    letterSpacing: 2,
+    textTransform: 'uppercase',
+  },
+  resetButton: {
+    position: 'absolute',
+    bottom: 30,
+    backgroundColor: COLORS.surface,
+    width: '75%',
+    height: 70,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 18,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+  },
+  resetTouchable: {
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  resetText: {
+    fontSize: 28,
+    color: COLORS.textDim,
+    fontWeight: '800',
+    letterSpacing: 1,
+  },
+  fullCenter: {
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 })

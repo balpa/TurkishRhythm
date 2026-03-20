@@ -1,136 +1,96 @@
 import { View, Text, StyleSheet, Animated, Image, TouchableOpacity, ScrollView } from 'react-native'
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 
 const MakamCard = ({ makamName, color, imageURI, makamInfo }) => {
   const [isOpen, setIsOpen] = useState(false)
 
-  const yAnim = useRef(new Animated.Value(0)).current
-  const borderRadiusAnim = useRef(new Animated.Value(0)).current
-  const marginAnim = useRef(new Animated.Value(0)).current
-  const opacityAnim = useRef(new Animated.Value(0)).current
-  const scaleAnimOnClick = useRef(new Animated.Value(1)).current
-  const letterSpacingAnim = useRef(new Animated.Value(0)).current
+  const heightAnim = useRef(new Animated.Value(0)).current
+  const contentOpacity = useRef(new Animated.Value(0)).current
+  const scaleAnim = useRef(new Animated.Value(1)).current
+  const letterSpacingAnim = useRef(new Animated.Value(1)).current
+  const glowAnim = useRef(new Animated.Value(0.3)).current
 
-  function showInfoPanel() {
-    Animated.timing(scaleAnimOnClick, {
-      toValue: 0.98,
-      duration: 100,
-      useNativeDriver: false
-    }).start(() => {
-      Animated.timing(scaleAnimOnClick, {
-        toValue: 1,
-        duration: 100,
-        useNativeDriver: false
-      }).start()
-    })
+  useEffect(() => {
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(glowAnim, { toValue: 0.7, duration: 2200, useNativeDriver: false }),
+        Animated.timing(glowAnim, { toValue: 0.3, duration: 2200, useNativeDriver: false }),
+      ])
+    ).start()
+  }, [])
+
+  function toggleCard() {
+    Animated.sequence([
+      Animated.timing(scaleAnim, { toValue: 0.96, duration: 80, useNativeDriver: false }),
+      Animated.spring(scaleAnim, { toValue: 1, friction: 4, useNativeDriver: false }),
+    ]).start()
 
     if (!isOpen) {
       setIsOpen(true)
-
-      setTimeout(() => {    // letter spacing anim on opening the comp
-        Animated.timing(letterSpacingAnim, {
-          toValue: 2,
-          duration: 200,
-          useNativeDriver: false
-        }).start()
-      }, 900)
-
-      Animated.timing(yAnim, {        // opening animation
-        toValue: 400,
-        duration: 200,
-        useNativeDriver: false
-      }).start(() => {
-        Animated.timing(borderRadiusAnim, {
-          toValue: 20,
-          duration: 200,
-          useNativeDriver: false
-        }).start(() => {
-          Animated.timing(marginAnim, {
-            toValue: 20,
-            duration: 200,
-            useNativeDriver: false
-          }).start(() => {
-            Animated.timing(opacityAnim, {
-              toValue: 1,
-              duration: 200,
-              useNativeDriver: false
-            }).start()
-          })
-        })
-      })
+      Animated.timing(letterSpacingAnim, { toValue: 5, duration: 600, useNativeDriver: false }).start()
+      Animated.spring(heightAnim, { toValue: 420, friction: 8, tension: 40, useNativeDriver: false }).start()
+      setTimeout(() => {
+        Animated.timing(contentOpacity, { toValue: 1, duration: 300, useNativeDriver: false }).start()
+      }, 250)
     } else {
-      setTimeout(() => {    // letter spacing anim on closing the comp
-        Animated.timing(letterSpacingAnim, {
-          toValue: 0,
-          duration: 200,
-          useNativeDriver: false
-        }).start()
-      }, 900)
-
-      Animated.timing(opacityAnim, {    // closing animation
-        toValue: 0,
-        duration: 200,
-        useNativeDriver: false
-      }).start(() => {
-        Animated.timing(marginAnim, {
-          toValue: 0,
-          duration: 200,
-          useNativeDriver: false
-        }).start(() => {
-          Animated.timing(borderRadiusAnim, {
-            toValue: 0,
-            duration: 200,
-            useNativeDriver: false
-          }).start(() => {
-            Animated.timing(yAnim, {
-              toValue: 0,
-              duration: 200,
-              useNativeDriver: false
-            }).start()
-          })
-        })
+      Animated.timing(letterSpacingAnim, { toValue: 1, duration: 300, useNativeDriver: false }).start()
+      Animated.timing(contentOpacity, { toValue: 0, duration: 150, useNativeDriver: false }).start(() => {
+        Animated.spring(heightAnim, { toValue: 0, friction: 10, tension: 50, useNativeDriver: false }).start()
       })
-      setTimeout(() => {          // timeout for waiting the closing animation to finish
-        setIsOpen(false)
-      }, 800)
+      setTimeout(() => setIsOpen(false), 500)
     }
   }
 
   return (
     <Animated.View
       style={[
-        styles.makamCardContainer,
-        { backgroundColor: `#${color}` },
-        { transform: [{ scale: scaleAnimOnClick }] }
+        styles.card,
+        {
+          backgroundColor: color,
+          transform: [{ scale: scaleAnim }],
+          shadowColor: color,
+        }
       ]}>
-      <TouchableOpacity style={{ width: '100%' }} onPress={() => showInfoPanel()}>
-        <View style={styles.W100_FLEXROW_AI_JC}>
-          <Animated.Text style={[
-            styles.makamNameText,
-            { letterSpacing: letterSpacingAnim }
-          ]}>
-            {makamName}
-          </Animated.Text>
+
+      {/* top decorative stripe */}
+      <View style={styles.topStripe}>
+        <View style={[styles.stripeLine, { backgroundColor: 'rgba(255,255,255,0.12)' }]} />
+        <View style={[styles.stripeLine, { backgroundColor: 'rgba(255,255,255,0.06)' }]} />
+      </View>
+
+      <TouchableOpacity activeOpacity={0.85} onPress={toggleCard}>
+        <View style={styles.headerRow}>
+          {/* decorative geometric cluster */}
+          <View style={styles.decoWrap}>
+            <Animated.View style={[styles.decoRingOuter, { borderColor: 'rgba(255,255,255,0.25)', opacity: glowAnim }]} />
+            <View style={[styles.decoFill, { backgroundColor: 'rgba(255,255,255,0.2)' }]} />
+            <View style={[styles.decoDiamond, { backgroundColor: 'rgba(255,255,255,0.3)' }]} />
+            <View style={styles.decoCenter} />
+          </View>
+
+          <View style={styles.titleBlock}>
+            <Animated.Text style={[styles.nameText, { letterSpacing: letterSpacingAnim }]}>
+              {makamName}
+            </Animated.Text>
+          </View>
+
+          <View style={styles.chevronWrap}>
+            <Text style={styles.chevron}>{isOpen ? '−' : '+'}</Text>
+          </View>
         </View>
       </TouchableOpacity>
-      {isOpen &&
-        <Animated.View
-          style={[
-            styles.rhythmInfoContainer,
-            { height: yAnim, borderRadius: borderRadiusAnim, margin: marginAnim }]}>
-          <Animated.View
-            style={[
-              styles.imageContainer,
-              { opacity: opacityAnim }]}>
-            <Image source={imageURI} style={styles.makamImageStyle} />
-          </Animated.View>
 
-          <Animated.View style={[styles.infoScrollContainer, { opacity: opacityAnim }]}>
-            <ScrollView nestedScrollEnabled={true}>
-              <Text style={styles.infoText}>
-                {makamInfo}
-              </Text>
-            </ScrollView>
+      {isOpen &&
+        <Animated.View style={[styles.expandArea, { height: heightAnim }]}>
+          <Animated.View style={[styles.expandInner, { opacity: contentOpacity }]}>
+            <View style={styles.imageWrap}>
+              <Image source={imageURI} style={styles.image} />
+            </View>
+            <View style={styles.scrollWrap}>
+              <ScrollView nestedScrollEnabled={true} showsVerticalScrollIndicator={false}>
+                <Text style={styles.infoText}>{makamInfo}</Text>
+              </ScrollView>
+            </View>
           </Animated.View>
         </Animated.View>
       }
@@ -140,63 +100,125 @@ const MakamCard = ({ makamName, color, imageURI, makamInfo }) => {
 
 export default MakamCard
 
-
 const styles = StyleSheet.create({
-  makamCardContainer: {
-    width: "90%",
-    margin: 10,
-    borderRadius: 12,
-    borderColor: 'black',
-    borderWidth: 3,
-    padding: 10,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
+  card: {
+    width: '92%',
+    marginVertical: 7,
+    borderRadius: 18,
     alignSelf: 'center',
+    padding: 18,
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.35,
+    shadowRadius: 14,
+    elevation: 8,
   },
-  shadow: {
-    shadowColor: '#171717',
-    shadowOffset: { width: -1, height: 3 },
-    shadowOpacity: 0.4,
-    shadowRadius: 5,
+  topStripe: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 4,
+    borderTopLeftRadius: 18,
+    borderTopRightRadius: 18,
+    flexDirection: 'row',
+    overflow: 'hidden',
   },
-  rhythmInfoContainer: {
-    width: '100%',
-    height: 300,
-    backgroundColor: 'white',
-    borderWidth: 3,
-    padding: 10,
-    flexDirection: 'column',
-    justifyContent: 'space-evenly',
-
+  stripeLine: {
+    flex: 1,
+    height: 4,
   },
-  imageContainer: {
-    width: '100%',
-    height: '40%',
-    marginBottom: 10
-  },
-  infoScrollContainer: {
-    flex: 1
-  },
-  W100_FLEXROW_AI_JC: {
-    width: '100%',
+  headerRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center'
   },
-  makamNameText: {
-    fontSize: 25,
-    fontWeight: "700",
-    width: '75%',
-    textAlign: 'center'
+  decoWrap: {
+    width: 48,
+    height: 48,
+    marginRight: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  makamImageStyle: {
+  decoRingOuter: {
+    position: 'absolute',
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    borderWidth: 2,
+  },
+  decoFill: {
+    position: 'absolute',
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+  },
+  decoDiamond: {
+    position: 'absolute',
+    width: 16,
+    height: 16,
+    borderRadius: 3,
+    transform: [{ rotate: '45deg' }],
+  },
+  decoCenter: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: 'rgba(255,255,255,0.85)',
+  },
+  titleBlock: {
+    flex: 1,
+  },
+  nameText: {
+    fontSize: 21,
+    fontWeight: '800',
+    color: '#FFF5E6',
+    textShadowColor: 'rgba(0,0,0,0.3)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 2,
+  },
+  chevronWrap: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    backgroundColor: 'rgba(0,0,0,0.2)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  chevron: {
+    fontSize: 18,
+    fontWeight: '800',
+    color: 'rgba(255,255,255,0.8)',
+    marginTop: -1,
+  },
+  expandArea: {
+    width: '100%',
+    overflow: 'hidden',
+    marginTop: 14,
+  },
+  expandInner: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.25)',
+    borderRadius: 14,
+    padding: 14,
+  },
+  imageWrap: {
+    height: '38%',
+    marginBottom: 10,
+    justifyContent: 'center',
+  },
+  scrollWrap: {
+    flex: 1,
+  },
+  image: {
     height: undefined,
-    width: '90%',
+    width: '92%',
     alignSelf: 'center',
-    aspectRatio: 2.7
+    aspectRatio: 2.7,
+    borderRadius: 8,
   },
   infoText: {
-    fontWeight: '700'
-  }
+    fontWeight: '500',
+    color: 'rgba(255,255,255,0.85)',
+    lineHeight: 22,
+    fontSize: 14,
+  },
 })

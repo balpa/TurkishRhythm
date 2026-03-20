@@ -3,86 +3,54 @@ import React, { useEffect, useRef } from 'react'
 import RhythmCard from '../components/RhythmCard'
 import { RHYTHMS } from '../data/data'
 
+const RETRO_PALETTE = [
+  '#B5364E', // cherry red
+  '#2D8B84', // vintage teal
+  '#CC7A3A', // burnt orange
+  '#6B4C8A', // deep plum
+  '#3A7D6E', // seafoam
+  '#B8872B', // antique gold
+  '#C15540', // terracotta
+  '#2E6B7E', // slate teal
+  '#8B5E3C', // saddle brown
+  '#7A4460', // wine
+  '#5B6E8A', // steel blue
+]
+
 const Rhythms = () => {
-  const COLOR_PALETTE_1 = useRef([])
+  const colors = useRef([...RETRO_PALETTE])
 
   useEffect(() => {
-    COLOR_PALETTE_1.current = [
-      "FEF9A7", "FAC213",
-      "F77E21", "D61C4E",
-      "990000", "FF5B00",
-      "D4D925", "FFEE63"].sort(() => Math.random() - 0.5)
+    colors.current = [...RETRO_PALETTE].sort(() => Math.random() - 0.5)
   }, [])
+
+  const rhythmList = [
+    { key: 'nimsofyan', name: 'Nim Sofyan', time: '2/4', img: require("../assets/nimsofyan.png") },
+    { key: 'semai', name: 'Semai', time: '3/4', img: require("../assets/semai.png") },
+    { key: 'sofyan', name: 'Sofyan', time: '4/8', img: require("../assets/sofyan.png") },
+    { key: 'turkaksagi', name: 'Türk Aksağı', time: '5/4', img: require("../assets/turkaksagi.png") },
+    { key: 'yuruksemai', name: 'Yürük Semai', time: '6/4', img: require("../assets/yuruksemai.png") },
+    { key: 'devrihindi', name: 'Devr-i Hindi', time: '7/8', img: require("../assets/devrihindi.png") },
+    { key: 'duyek', name: 'Düyek', time: '8/8', img: require("../assets/duyek.png") },
+    { key: 'musemmen', name: 'Müsemmen', time: '8/8', img: require("../assets/musemmen.png") },
+    { key: 'aksak', name: 'Aksak', time: '9/4', img: require("../assets/aksak.png") },
+    { key: 'raksaksagi', name: 'Raks Aksağı', time: '9/8', img: require("../assets/raksaksagi.png") },
+    { key: 'curcuna', name: 'Curcuna', time: '10/16', img: require("../assets/curcuna.png") },
+  ]
 
   return (
     <View style={styles.container}>
-      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-        <RhythmCard
-          infoText={RHYTHMS.nimsofyan}
-          rhythmName={'Nim Sofyan'}
-          imageURI={require("../assets/nimsofyan.png")}
-          rhythmTime={"2/4"}
-          color={COLOR_PALETTE_1.current[0]} />
-        <RhythmCard
-          infoText={RHYTHMS.semai}
-          rhythmName={'Semai'}
-          imageURI={require("../assets/semai.png")}
-          rhythmTime={'3/4'}
-          color={COLOR_PALETTE_1.current[1]} />
-        <RhythmCard
-          infoText={RHYTHMS.sofyan}
-          rhythmName={'Sofyan'}
-          imageURI={require("../assets/sofyan.png")}
-          rhythmTime={'4/8'}
-          color={COLOR_PALETTE_1.current[2]} />
-        <RhythmCard
-          infoText={RHYTHMS.turkaksagi}
-          rhythmName={'Türk Aksağı'}
-          imageURI={require("../assets/turkaksagi.png")}
-          rhythmTime={'5/4'}
-          color={COLOR_PALETTE_1.current[3]} />
-        <RhythmCard
-          infoText={RHYTHMS.yuruksemai}
-          rhythmName={'Yürük Semai'}
-          imageURI={require("../assets/yuruksemai.png")}
-          rhythmTime={'6/4'}
-          color={COLOR_PALETTE_1.current[4]} />
-        <RhythmCard
-          infoText={RHYTHMS.devrihindi}
-          rhythmName={'Devr-i Hindi'}
-          imageURI={require("../assets/devrihindi.png")}
-          rhythmTime={'7/8'}
-          color={COLOR_PALETTE_1.current[5]} />
-        <RhythmCard
-          infoText={RHYTHMS.duyek}
-          rhythmName={'Düyek'}
-          imageURI={require("../assets/duyek.png")}
-          rhythmTime={'8/8'}
-          color={COLOR_PALETTE_1.current[6]} />
-        <RhythmCard
-          infoText={RHYTHMS.musemmen}
-          rhythmName={'Müsemmen'}
-          imageURI={require("../assets/musemmen.png")}
-          rhythmTime={'8/8'}
-          color={COLOR_PALETTE_1.current[7]} />
-        <RhythmCard
-          infoText={RHYTHMS.aksak}
-          rhythmName={'Aksak'}
-          imageURI={require("../assets/aksak.png")}
-          rhythmTime={'9/4'}
-          color={COLOR_PALETTE_1.current[0]} />
-        <RhythmCard
-          infoText={RHYTHMS.raksaksagi}
-          rhythmName={'Raks Aksağı'}
-          imageURI={require("../assets/raksaksagi.png")}
-          rhythmTime={'9/8'}
-          color={COLOR_PALETTE_1.current[1]} />
-        <RhythmCard
-          infoText={RHYTHMS.curcuna}
-          rhythmName={'Curcuna'}
-          imageURI={require("../assets/curcuna.png")}
-          rhythmTime={'10/16'}
-          color={COLOR_PALETTE_1.current[2]} />
+      <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: 20 }}>
+        {rhythmList.map((r, i) => (
+          <RhythmCard
+            key={r.key}
+            infoText={RHYTHMS[r.key]}
+            rhythmName={r.name}
+            imageURI={r.img}
+            rhythmTime={r.time}
+            color={colors.current[i % colors.current.length]}
+          />
+        ))}
       </ScrollView>
     </View>
   )
@@ -94,21 +62,7 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     height: '100%',
-    backgroundColor: '#F0DBDB',
-    paddingTop: 10
+    backgroundColor: '#1B1B2F',
+    paddingTop: 10,
   },
-  ritimTextContainer: {
-    width: '100%',
-    height: 40,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  ritimText: {
-    textAlign: 'center',
-    color: 'black',
-    fontWeight: '800',
-    letterSpacing: 2,
-    fontSize: 20,
-  }
 })

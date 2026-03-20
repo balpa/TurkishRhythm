@@ -4,12 +4,11 @@ import React from 'react'
 const Notes = () => {
   return (
     <View style={styles.container}>
-        <View style={styles.existingNotesWrapper}></View>
-        <View style={styles.uploadNoteWrapper}>
-          <View style={styles.uploadButton}>
-            <Text>Upload</Text>
-          </View>
-        </View>
+      <View style={styles.emptyState}>
+        <Text style={styles.emptyIcon}>{'🎵'}</Text>
+        <Text style={styles.emptyTitle}>Notalar</Text>
+        <Text style={styles.emptySubtitle}>Yakında burada notalarınızı görüntüleyebileceksiniz</Text>
+      </View>
     </View>
   )
 }
@@ -20,32 +19,28 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     height: '100%',
-    backgroundColor: '#F0DBDB',
-    paddingTop: 10
-  },
-  optionLabel: {
-    width: '90%',
-    height: 40,
-    backgroundColor: 'crimson',
-    borderRadius: 10,
-    marginBottom: 5,
-    marginTop: 5
-  },
-  existingNotesWrapper: {
-    width: '100%',
-    height: '90%',
-    backgroundColor: 'red'
-  },
-  uploadNoteWrapper: {
-    width: '100%',
-    height: '10%',
-    backgroundColor: 'green',
+    backgroundColor: '#1B1B2F',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
-  uploadButton: {
-    width: '5px',
-    height: '50px',
-    backgroundColor: 'yellow'
-  }
+  emptyState: {
+    alignItems: 'center',
+    paddingHorizontal: 40,
+  },
+  emptyIcon: {
+    fontSize: 48,
+    marginBottom: 16,
+  },
+  emptyTitle: {
+    fontSize: 24,
+    fontWeight: '700',
+    color: '#F0E6D3',
+    marginBottom: 8,
+  },
+  emptySubtitle: {
+    fontSize: 15,
+    color: '#9090B0',
+    textAlign: 'center',
+    lineHeight: 22,
+  },
 })

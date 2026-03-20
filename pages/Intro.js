@@ -2,10 +2,7 @@ import { View, StyleSheet, Image, Animated, ActivityIndicator } from 'react-nati
 import React, { useEffect, useRef } from 'react'
 
 const Intro = ({ setShowIntroPage }) => {
-  const { container, logoContainer, activityIndicator, logo } = styles
-
   let scaleAnim = useRef(new Animated.Value(1)).current
-  let zIndexAnim = useRef(new Animated.Value(0)).current
 
   useEffect(() => {
     setTimeout(() => {
@@ -22,15 +19,14 @@ const Intro = ({ setShowIntroPage }) => {
   return (
     <Animated.View
       style={[
-        container,
+        styles.container,
         { transform: [{ scale: scaleAnim }] },
-        { zIndex: zIndexAnim }
       ]}>
-      <View style={logoContainer}>
-        <Image source={require('../assets/logo/logo-low-res.png')} style={logo} />
+      <View style={styles.logoContainer}>
+        <Image source={require('../assets/logo/logo-low-res.png')} style={styles.logo} />
       </View>
-      <View style={activityIndicator}>
-        <ActivityIndicator size='large' />
+      <View style={styles.activityIndicator}>
+        <ActivityIndicator size='large' color='#E45A84' />
       </View>
     </Animated.View>
   )
@@ -46,23 +42,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     height: '100%',
-    backgroundColor: '#2c1a31',
+    backgroundColor: '#1B1B2F',
   },
   logoContainer: {
     position: 'absolute',
     width: '50%',
   },
   logo: {
-    height: undefined,
     width: 200,
     height: 200,
     alignSelf: 'center',
     aspectRatio: 1,
-    borderRadius: 200 / 2
+    borderRadius: 100,
   },
   activityIndicator: {
     width: 50,
     height: 50,
-    marginTop: 500
-  }
+    marginTop: 500,
+  },
 })

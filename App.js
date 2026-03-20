@@ -9,12 +9,20 @@ import Notes from './pages/Notes';
 import { Icon } from 'react-native-elements'
 import { NavigationContainer } from '@react-navigation/native';
 import React, { useState } from 'react';
-import { registerCustomIconType } from 'react-native-elements';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-
-registerCustomIconType('font-awesome-5', FontAwesome5)
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 const Tab = createMaterialTopTabNavigator()
+
+const COLORS = {
+  bg: '#1B1B2F',
+  surface: '#262640',
+  accent: '#E45A84',
+  gold: '#C9B458',
+  border: '#3A3A5C',
+  text: '#F0E6D3',
+  textDim: '#9090B0',
+  tabBar: '#15152A',
+}
 
 const App = () => {
   const [showIntroPage, setShowIntroPage] = useState(true)
@@ -22,83 +30,79 @@ const App = () => {
   const tabNavigatorScreenOpts = {
     tabBarShowLabel: false,
     tabBarStyle: {
-      backgroundColor: '#F0DBDB',
-      paddingTop: 50
+      backgroundColor: COLORS.tabBar,
+      paddingTop: Platform.OS === 'ios' ? 50 : 35,
+      borderBottomWidth: 1,
+      borderBottomColor: COLORS.border,
+      elevation: 0,
+      shadowOpacity: 0,
     },
     tabBarIndicatorStyle: {
-      backgroundColor: `black`,
-      height: 5
-    }
+      backgroundColor: COLORS.accent,
+      height: 3,
+      borderRadius: 2,
+    },
+    tabBarPressColor: COLORS.surface,
   }
 
   return (
-    <>
+    <GestureHandlerRootView style={{ flex: 1, backgroundColor: COLORS.bg }}>
       <NavigationContainer>
-        {Platform.OS == 'android' && <StatusBar
-          backgroundColor={'#F0DBDB'}
-          style={themeFromCache == 'Light' ? 'dark' : 'light'}
-        />}
+        <StatusBar style='light' backgroundColor={COLORS.tabBar} />
         <Tab.Navigator
           screenOptions={({ route }) => (tabNavigatorScreenOpts)}>
           <Tab.Screen
             name="Makams"
             children={() => <Makams />}
             options={{
-              tabBarIcon: () =>
+              tabBarIcon: ({ focused }) =>
                 <Icon
                   name='music'
                   type='font-awesome'
-                  color={'black'}
+                  color={focused ? COLORS.accent : COLORS.textDim}
+                  size={20}
                 />
             }} />
           <Tab.Screen
             name="Rhythms"
             children={() => <Rhythms />}
             options={{
-              tabBarIcon: () =>
+              tabBarIcon: ({ focused }) =>
                 <Icon
                   name="drum"
                   type='font-awesome-5'
-                  color={'black'}
+                  color={focused ? COLORS.accent : COLORS.textDim}
+                  size={20}
                 />
             }} />
           <Tab.Screen
             name="Notes"
             children={() => <Notes />}
             options={{
-              tabBarIcon: () =>
+              tabBarIcon: ({ focused }) =>
                 <Icon
                   name="scroll"
                   type='font-awesome-5'
-                  color={'black'}
+                  color={focused ? COLORS.accent : COLORS.textDim}
+                  size={20}
                 />
             }} />
           <Tab.Screen
             name="Metronomy"
             children={() => <Metronomy />}
             options={{
-              tabBarIcon: () =>
+              tabBarIcon: ({ focused }) =>
                 <Icon
                   name='play'
                   type='font-awesome-5'
-                  color={'black'}
-                  style={{ transform: [{ scale: 0.85 }] }}
+                  color={focused ? COLORS.accent : COLORS.textDim}
+                  size={18}
                 />
             }} />
         </Tab.Navigator>
-        <StatusBar style='dark' />
       </NavigationContainer>
       {showIntroPage && <Intro setShowIntroPage={setShowIntroPage} />}
-    </>)
+    </GestureHandlerRootView>)
 }
 
 export default App
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

@@ -3,116 +3,64 @@ import React, { useEffect, useRef } from 'react'
 import MakamCard from '../components/MakamCard'
 import { MAKAMS } from '../data/data'
 
+// retro american sign palette — warm, saturated, vintage feel
+const RETRO_PALETTE = [
+  '#B5364E', // cherry red
+  '#2D8B84', // vintage teal
+  '#CC7A3A', // burnt orange
+  '#8B5E3C', // saddle brown
+  '#C4566A', // dusty rose
+  '#3A7D6E', // seafoam
+  '#B8872B', // antique gold
+  '#6B4C8A', // deep plum
+  '#C15540', // terracotta
+  '#2E6B7E', // slate teal
+  '#9B6B2F', // bourbon
+  '#7A4460', // wine
+  '#3D8A5C', // forest sage
+  '#A04B3A', // rust
+  '#5B6E8A', // steel blue
+  '#8E6B3E', // caramel
+]
+
 const Makams = () => {
-  const COLOR_PALETTE_1 = useRef([])
+  const colors = useRef([...RETRO_PALETTE])
 
   useEffect(() => {
-    COLOR_PALETTE_1.current = [
-      "FEF9A7", "FAC213",
-      "F77E21", "D61C4E",
-      "990000", "FF5B00",
-      "D4D925", "FFEE63"].sort(() => Math.random() - 0.5)
+    colors.current = [...RETRO_PALETTE].sort(() => Math.random() - 0.5)
   }, [])
+
+  const makamList = [
+    { key: 'hicaz', img: require("../assets/makams/hicaz.jpg") },
+    { key: 'nihavend', img: require("../assets/makams/nihavend.jpg") },
+    { key: 'ussak', img: require("../assets/makams/ussak.jpg") },
+    { key: 'kurdi', img: require("../assets/makams/kurdi.jpg") },
+    { key: 'rast', img: require("../assets/makams/rast.jpg") },
+    { key: 'karcigar', img: require("../assets/makams/karcigar.jpg") },
+    { key: 'kurdilihicazkar', img: require("../assets/makams/kurdilihicazkar.jpg") },
+    { key: 'segah', img: require("../assets/makams/segah.jpg") },
+    { key: 'huzzam', img: require("../assets/makams/huzzam.jpg") },
+    { key: 'huseyni', img: require("../assets/makams/huseyni.jpg") },
+    { key: 'sehnaz', img: require("../assets/makams/sehnaz.jpg") },
+    { key: 'evic', img: require("../assets/makams/evic.jpg") },
+    { key: 'cargah', img: require("../assets/makams/cargah.jpg") },
+    { key: 'buselik', img: require("../assets/makams/buselik.jpg") },
+    { key: 'beyati', img: require("../assets/makams/beyati.jpg") },
+    { key: 'muhayyer', img: require("../assets/makams/muhayyer.jpg") },
+  ]
 
   return (
     <View style={styles.container}>
-      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-        <MakamCard
-          makamName={MAKAMS.hicaz.makamName}
-          makamInfo={MAKAMS.hicaz.info}
-          imageURI={require("../assets/makams/hicaz.jpg")}
-          color={COLOR_PALETTE_1.current[0]}
-        />
-        <MakamCard
-          makamName={MAKAMS.nihavend.makamName}
-          makamInfo={MAKAMS.nihavend.info}
-          imageURI={require("../assets/makams/nihavend.jpg")}
-          color={COLOR_PALETTE_1.current[1]}
-        />
-        <MakamCard
-          makamName={MAKAMS.ussak.makamName}
-          makamInfo={MAKAMS.ussak.info}
-          imageURI={require("../assets/makams/ussak.jpg")}
-          color={COLOR_PALETTE_1.current[2]}
-        />
-        <MakamCard
-          makamName={MAKAMS.kurdi.makamName}
-          makamInfo={MAKAMS.kurdi.info}
-          imageURI={require("../assets/makams/kurdi.jpg")}
-          color={COLOR_PALETTE_1.current[3]}
-        />
-        <MakamCard
-          makamName={MAKAMS.rast.makamName}
-          makamInfo={MAKAMS.rast.info}
-          imageURI={require("../assets/makams/rast.jpg")}
-          color={COLOR_PALETTE_1.current[4]}
-        />
-        <MakamCard
-          makamName={MAKAMS.karcigar.makamName}
-          makamInfo={MAKAMS.karcigar.info}
-          imageURI={require("../assets/makams/karcigar.jpg")}
-          color={COLOR_PALETTE_1.current[5]}
-        />
-        <MakamCard
-          makamName={MAKAMS.kurdilihicazkar.makamName}
-          makamInfo={MAKAMS.kurdilihicazkar.info}
-          imageURI={require("../assets/makams/kurdilihicazkar.jpg")}
-          color={COLOR_PALETTE_1.current[6]}
-        />
-        <MakamCard
-          makamName={MAKAMS.segah.makamName}
-          makamInfo={MAKAMS.segah.info}
-          imageURI={require("../assets/makams/segah.jpg")}
-          color={COLOR_PALETTE_1.current[7]}
-        />
-        <MakamCard
-          makamName={MAKAMS.huzzam.makamName}
-          makamInfo={MAKAMS.huzzam.info}
-          imageURI={require("../assets/makams/huzzam.jpg")}
-          color={COLOR_PALETTE_1.current[0]}
-        />
-        <MakamCard
-          makamName={MAKAMS.huseyni.makamName}
-          makamInfo={MAKAMS.huseyni.info}
-          imageURI={require("../assets/makams/huseyni.jpg")}
-          color={COLOR_PALETTE_1.current[6]}
-        />
-        <MakamCard
-          makamName={MAKAMS.sehnaz.makamName}
-          makamInfo={MAKAMS.sehnaz.info}
-          imageURI={require("../assets/makams/sehnaz.jpg")}
-          color={COLOR_PALETTE_1.current[1]}
-        />
-        <MakamCard
-          makamName={MAKAMS.evic.makamName}
-          makamInfo={MAKAMS.evic.info}
-          imageURI={require("../assets/makams/evic.jpg")}
-          color={COLOR_PALETTE_1.current[2]}
-        />
-        <MakamCard
-          makamName={MAKAMS.cargah.makamName}
-          makamInfo={MAKAMS.cargah.info}
-          imageURI={require("../assets/makams/cargah.jpg")}
-          color={COLOR_PALETTE_1.current[3]}
-        />
-        <MakamCard
-          makamName={MAKAMS.buselik.makamName}
-          makamInfo={MAKAMS.buselik.info}
-          imageURI={require("../assets/makams/buselik.jpg")}
-          color={COLOR_PALETTE_1.current[4]}
-        />
-        <MakamCard
-          makamName={MAKAMS.beyati.makamName}
-          makamInfo={MAKAMS.beyati.info}
-          imageURI={require("../assets/makams/beyati.jpg")}
-          color={COLOR_PALETTE_1.current[5]}
-        />
-        <MakamCard
-          makamName={MAKAMS.muhayyer.makamName}
-          makamInfo={MAKAMS.muhayyer.info}
-          imageURI={require("../assets/makams/muhayyer.jpg")}
-          color={COLOR_PALETTE_1.current[6]}
-        />
+      <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: 20 }}>
+        {makamList.map((m, i) => (
+          <MakamCard
+            key={m.key}
+            makamName={MAKAMS[m.key].makamName}
+            makamInfo={MAKAMS[m.key].info}
+            imageURI={m.img}
+            color={colors.current[i % colors.current.length]}
+          />
+        ))}
       </ScrollView>
     </View>
   )
@@ -122,31 +70,9 @@ export default Makams
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#F0DBDB',
+    backgroundColor: '#1B1B2F',
     width: '100%',
     height: '100%',
-    paddingTop: 10
+    paddingTop: 10,
   },
-  optionLabel: {
-    width: '90%',
-    height: 40,
-    backgroundColor: 'crimson',
-    borderRadius: 10,
-    marginBottom: 5,
-    marginTop: 5
-  },
-  makamTextContainer: {
-    width: '100%',
-    height: 40,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  makamText: {
-    textAlign: 'center',
-    color: 'black',
-    letterSpacing: 2,
-    fontSize: 20,
-  }
-
 })
