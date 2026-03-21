@@ -148,6 +148,15 @@ const Metronomy = () => {
     }
 
     const diff = now - previousTimeRef.current
+
+    // Auto-reset if more than 10 seconds between taps
+    if (diff > 10000) {
+      reset()
+      previousTimeRef.current = now
+      setTapCount(1)
+      return
+    }
+
     previousTimeRef.current = now
     setTime(diff)
     setBpm(Math.round(60000 / diff))

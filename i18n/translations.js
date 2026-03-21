@@ -47,6 +47,48 @@ const translations = {
       logout: 'Çıkış Yap',
     },
 
+    // Chorus page
+    chorus: {
+      title: 'Korolarım',
+      empty: 'Henüz bir koronuz yok',
+      emptyDesc: 'Bir koroya katıldığınızda burada görünecek',
+      createChorus: 'Koro Oluştur',
+      createChorusDesc: 'Yeni bir koro oluşturun ve üyeleri yönetin',
+      chorusName: 'Koro adı',
+      chorusDescription: 'Açıklama (opsiyonel)',
+      create: 'Oluştur',
+      cancel: 'İptal',
+      created: 'Koro başarıyla oluşturuldu!',
+      noPermission: 'Koro oluşturma yetkiniz bulunmamaktadır',
+      fillName: 'Lütfen koro adını girin',
+    },
+
+    // Chorus detail page
+    chorusDetail: {
+      members: 'üye',
+      memberList: 'Üyeler',
+      noMembers: 'Henüz üye yok',
+      tab_notes: 'Notalar',
+      tab_bulletin: 'Duyurular',
+      tab_members: 'Üyeler',
+      notesEmpty: 'Henüz nota yok',
+      notesEmptyDesc: 'Koroya eklenen notalar burada görünecek',
+      bulletinEmpty: 'Henüz duyuru yok',
+      bulletinEmptyDesc: 'Koro duyuruları burada görünecek',
+      deleteTitle: 'Notayı Sil',
+      cancel: 'İptal',
+      delete: 'Sil',
+    },
+
+    // Create note page
+    createNote: {
+      title: 'Nota Ekle',
+      upload: 'Yükle',
+      pickFile: 'Dosya Seç',
+      formats: 'PDF, PNG, JPEG, JPG',
+      errorTitle: 'Yükleme Hatası',
+    },
+
     // Settings page
     settings: {
       title: 'Ayarlar',
@@ -104,6 +146,45 @@ const translations = {
       fillFields: 'Please fill in all fields',
       checkEmail: 'Registration successful! Check your email.',
       logout: 'Sign Out',
+    },
+
+    chorus: {
+      title: 'My Choruses',
+      empty: 'No choruses yet',
+      emptyDesc: 'When you join a chorus, it will appear here',
+      createChorus: 'Create Chorus',
+      createChorusDesc: 'Create a new chorus and manage members',
+      chorusName: 'Chorus name',
+      chorusDescription: 'Description (optional)',
+      create: 'Create',
+      cancel: 'Cancel',
+      created: 'Chorus created successfully!',
+      noPermission: 'You do not have permission to create a chorus',
+      fillName: 'Please enter a chorus name',
+    },
+
+    chorusDetail: {
+      members: 'members',
+      memberList: 'Members',
+      noMembers: 'No members yet',
+      tab_notes: 'Notes',
+      tab_bulletin: 'Bulletin',
+      tab_members: 'Members',
+      notesEmpty: 'No notes yet',
+      notesEmptyDesc: 'Notes added to the chorus will appear here',
+      bulletinEmpty: 'No bulletins yet',
+      bulletinEmptyDesc: 'Chorus announcements will appear here',
+      deleteTitle: 'Delete Note',
+      cancel: 'Cancel',
+      delete: 'Delete',
+    },
+
+    createNote: {
+      title: 'Add Note',
+      upload: 'Upload',
+      pickFile: 'Select File',
+      formats: 'PDF, PNG, JPEG, JPG',
+      errorTitle: 'Upload Error',
     },
 
     settings: {

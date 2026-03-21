@@ -6,7 +6,7 @@ import Metronomy from './pages/Metronomy';
 import Rhythms from './pages/Rhythms';
 import Makams from './pages/Makams';
 import Intro from './pages/Intro'
-import Notes from './pages/Notes';
+import Choruses from './pages/Choruses';
 import Settings from './pages/Settings';
 import Login from './pages/Login';
 import { Icon } from 'react-native-elements'
@@ -38,7 +38,7 @@ const COLORS = {
 const TAB_ICONS = [
   { name: 'queue-music', type: 'material' },
   { name: 'graphic-eq', type: 'material' },
-  { name: 'description', type: 'material' },
+  { name: 'groups', type: 'material' },
   { name: 'timer', type: 'material' },
   { name: 'settings', type: 'material' },
 ]
@@ -180,7 +180,7 @@ const App = () => {
         >
           <Tab.Screen name="Makams" children={() => <Makams />} />
           <Tab.Screen name="Rhythms" children={() => <Rhythms />} />
-          <Tab.Screen name="Notes" children={() => <Notes />} />
+          <Tab.Screen name="Choruses" children={() => <Choruses />} />
           <Tab.Screen name="Metronomy" children={() => <Metronomy />} />
           <Tab.Screen name="Settings" children={() => <Settings onLogout={handleLogout} />} />
         </Tab.Navigator>
