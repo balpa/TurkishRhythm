@@ -1,4 +1,4 @@
-# TurkishRhythm
+# Koma
 
 A React Native / Expo educational app for learning Turkish classical music — makams (melodic modes), rhythms (usul), and rhythm training via a metronome.
 

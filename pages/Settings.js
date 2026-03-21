@@ -13,7 +13,7 @@ const COLORS = {
   textDim: '#9090B0',
 }
 
-const Settings = () => {
+const Settings = ({ onLogout }) => {
   const { language, changeLanguage } = useLanguage()
 
   return (
@@ -79,6 +79,12 @@ const Settings = () => {
             </View>
           </View>
         </View>
+
+        {/* Logout */}
+        <TouchableOpacity style={styles.logoutButton} activeOpacity={0.7} onPress={onLogout}>
+          <Icon name="logout" color={COLORS.accent} size={20} style={{ marginRight: 8 }} />
+          <Text style={styles.logoutText}>{t(language, 'login.logout')}</Text>
+        </TouchableOpacity>
       </ScrollView>
     </View>
   )
@@ -190,5 +196,22 @@ const styles = StyleSheet.create({
     height: 1,
     backgroundColor: COLORS.border,
     marginHorizontal: 16,
+  },
+  logoutButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: COLORS.surface,
+    paddingVertical: 16,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: COLORS.accent + '40',
+    marginTop: 8,
+  },
+  logoutText: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: COLORS.accent,
+    letterSpacing: 0.3,
   },
 })

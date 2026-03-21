@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { View, Animated, TouchableOpacity, StyleSheet, Platform, Dimensions, StatusBar as RNStatusBar } from 'react-native';
+import { View, Animated, TouchableOpacity, StyleSheet, Platform, Dimensions } from 'react-native';
 import Constants from 'expo-constants';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Metronomy from './pages/Metronomy';
@@ -8,12 +8,14 @@ import Makams from './pages/Makams';
 import Intro from './pages/Intro'
 import Notes from './pages/Notes';
 import Settings from './pages/Settings';
+import Login from './pages/Login';
 import { Icon } from 'react-native-elements'
 import { NavigationContainer } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Svg, { Path } from 'react-native-svg';
 import { LanguageProvider } from './i18n/LanguageContext';
+import { supabase } from './lib/supabase';
 
 const Tab = createMaterialTopTabNavigator()
 const { width: SCREEN_WIDTH } = Dimensions.get('window')
@@ -44,7 +46,6 @@ const TAB_ICONS = [
 const FluidTabBar = ({ state, navigation, position }) => {
   const routes = state.routes
 
-  // curve translateX
   const curveTranslateX = position.interpolate({
     inputRange: routes.map((_, i) => i),
     outputRange: routes.map((_, i) => i * TAB_WIDTH + TAB_WIDTH / 2 - CURVE_WIDTH / 2),
@@ -53,7 +54,6 @@ const FluidTabBar = ({ state, navigation, position }) => {
 
   return (
     <View style={styles.wrapper}>
-      {/* SVG curve — dark shape extending above bar */}
       <Animated.View style={[styles.curveContainer, { transform: [{ translateX: curveTranslateX }] }]}>
         <Svg width={CURVE_WIDTH} height={CURVE_HEIGHT} viewBox="0 0 202.9 45.5" preserveAspectRatio="none">
           <Path
@@ -65,33 +65,28 @@ const FluidTabBar = ({ state, navigation, position }) => {
         </Svg>
       </Animated.View>
 
-      {/* Bar background */}
       <View style={styles.bar}>
         {routes.map((route, index) => {
           const icon = TAB_ICONS[index]
 
-          // per-icon translateY: active rises up, others stay in bar
           const iconTranslateY = position.interpolate({
             inputRange: routes.map((_, i) => i),
             outputRange: routes.map((_, i) => i === index ? -ICON_RISE : 0),
             extrapolate: 'clamp',
           })
 
-          // accent circle scale: 1 when active, 0 when not
           const circleScale = position.interpolate({
             inputRange: routes.map((_, i) => i),
             outputRange: routes.map((_, i) => i === index ? 1 : 0),
             extrapolate: 'clamp',
           })
 
-          // icon opacity: full when active, dimmed when not
           const iconOpacity = position.interpolate({
             inputRange: routes.map((_, i) => i),
             outputRange: routes.map((_, i) => i === index ? 1 : 0.45),
             extrapolate: 'clamp',
           })
 
-          // icon scale: slightly larger when active
           const iconScale = position.interpolate({
             inputRange: routes.map((_, i) => i),
             outputRange: routes.map((_, i) => i === index ? 1.15 : 1),
@@ -107,7 +102,6 @@ const FluidTabBar = ({ state, navigation, position }) => {
               <Animated.View style={[styles.iconContainer, {
                 transform: [{ translateY: iconTranslateY }, { scale: iconScale }],
               }]}>
-                {/* Accent circle behind icon */}
                 <Animated.View style={[styles.activeCircle, {
                   transform: [{ scale: circleScale }],
                   opacity: circleScale,
@@ -121,7 +115,6 @@ const FluidTabBar = ({ state, navigation, position }) => {
         })}
       </View>
 
-      {/* Safe area fill */}
       <View style={styles.safeArea} />
     </View>
   )
@@ -129,6 +122,47 @@ const FluidTabBar = ({ state, navigation, position }) => {
 
 const App = () => {
   const [showIntroPage, setShowIntroPage] = useState(true)
+  const [session, setSession] = useState(null)
+  const [authLoading, setAuthLoading] = useState(true)
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session)
+      setAuthLoading(false)
+    })
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session)
+    })
+
+    return () => subscription.unsubscribe()
+  }, [])
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut()
+    setSession(null)
+  }
+
+  if (authLoading) {
+    return (
+      <LanguageProvider>
+        <View style={{ flex: 1, backgroundColor: COLORS.bg }}>
+          {showIntroPage && <Intro setShowIntroPage={setShowIntroPage} />}
+        </View>
+      </LanguageProvider>
+    )
+  }
+
+  if (!session) {
+    return (
+      <LanguageProvider>
+        <View style={{ flex: 1, backgroundColor: COLORS.bg }}>
+          <StatusBar style='light' backgroundColor={COLORS.bg} />
+          <Login onLogin={(s) => setSession(s)} />
+        </View>
+      </LanguageProvider>
+    )
+  }
 
   return (
     <LanguageProvider>
@@ -148,7 +182,7 @@ const App = () => {
           <Tab.Screen name="Rhythms" children={() => <Rhythms />} />
           <Tab.Screen name="Notes" children={() => <Notes />} />
           <Tab.Screen name="Metronomy" children={() => <Metronomy />} />
-          <Tab.Screen name="Settings" children={() => <Settings />} />
+          <Tab.Screen name="Settings" children={() => <Settings onLogout={handleLogout} />} />
         </Tab.Navigator>
       </NavigationContainer>
       </View>

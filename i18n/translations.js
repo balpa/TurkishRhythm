@@ -32,6 +32,21 @@ const translations = {
       legendPractice: '> 100ms fark — Pratik yap',
     },
 
+    // Login page
+    login: {
+      subtitle: 'Türk müziği eğitim uygulaması',
+      signIn: 'Giriş Yap',
+      signUp: 'Kayıt Ol',
+      email: 'E-posta',
+      password: 'Şifre',
+      createAccount: 'Hesap Oluştur',
+      hasAccount: 'Zaten hesabınız var mı?',
+      noAccount: 'Hesabınız yok mu?',
+      fillFields: 'Lütfen tüm alanları doldurun',
+      checkEmail: 'Kayıt başarılı! E-postanızı kontrol edin.',
+      logout: 'Çıkış Yap',
+    },
+
     // Settings page
     settings: {
       title: 'Ayarlar',
@@ -75,6 +90,20 @@ const translations = {
       legendGood: '< 60ms variance — Good',
       legendMedium: '< 100ms variance — Medium',
       legendPractice: '> 100ms variance — Keep practicing',
+    },
+
+    login: {
+      subtitle: 'Turkish music education app',
+      signIn: 'Sign In',
+      signUp: 'Sign Up',
+      email: 'Email',
+      password: 'Password',
+      createAccount: 'Create Account',
+      hasAccount: 'Already have an account?',
+      noAccount: "Don't have an account?",
+      fillFields: 'Please fill in all fields',
+      checkEmail: 'Registration successful! Check your email.',
+      logout: 'Sign Out',
     },
 
     settings: {
