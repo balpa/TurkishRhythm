@@ -7,22 +7,24 @@ import Rhythms from './pages/Rhythms';
 import Makams from './pages/Makams';
 import Intro from './pages/Intro'
 import Notes from './pages/Notes';
+import Settings from './pages/Settings';
 import { Icon } from 'react-native-elements'
 import { NavigationContainer } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Svg, { Path } from 'react-native-svg';
+import { LanguageProvider } from './i18n/LanguageContext';
 
 const Tab = createMaterialTopTabNavigator()
 const { width: SCREEN_WIDTH } = Dimensions.get('window')
 
-const TAB_COUNT = 4
+const TAB_COUNT = 5
 const TAB_WIDTH = SCREEN_WIDTH / TAB_COUNT
 const BAR_HEIGHT = 40
 const SAFE_BOTTOM = Platform.OS === 'ios' ? 28 : 12
 const CURVE_WIDTH = TAB_WIDTH * 2
 const CURVE_HEIGHT = 40
-const CIRCLE_SIZE = 50
+const CIRCLE_SIZE = 46
 const ICON_RISE = 10
 
 const COLORS = {
@@ -36,6 +38,7 @@ const TAB_ICONS = [
   { name: 'graphic-eq', type: 'material' },
   { name: 'description', type: 'material' },
   { name: 'timer', type: 'material' },
+  { name: 'settings', type: 'material' },
 ]
 
 const FluidTabBar = ({ state, navigation, position }) => {
@@ -110,7 +113,7 @@ const FluidTabBar = ({ state, navigation, position }) => {
                   opacity: circleScale,
                 }]} />
                 <Animated.View style={[styles.iconInner, { opacity: iconOpacity }]}>
-                  <Icon name={icon.name} type={icon.type} color="#fff" size={24} />
+                  <Icon name={icon.name} type={icon.type} color="#fff" size={22} />
                 </Animated.View>
               </Animated.View>
             </TouchableOpacity>
@@ -128,6 +131,7 @@ const App = () => {
   const [showIntroPage, setShowIntroPage] = useState(true)
 
   return (
+    <LanguageProvider>
     <GestureHandlerRootView style={{ flex: 1, backgroundColor: COLORS.bg }}>
       <View style={{ flex: 1, paddingTop: Constants.statusBarHeight, backgroundColor: COLORS.bg }}>
       <NavigationContainer>
@@ -144,11 +148,13 @@ const App = () => {
           <Tab.Screen name="Rhythms" children={() => <Rhythms />} />
           <Tab.Screen name="Notes" children={() => <Notes />} />
           <Tab.Screen name="Metronomy" children={() => <Metronomy />} />
+          <Tab.Screen name="Settings" children={() => <Settings />} />
         </Tab.Navigator>
       </NavigationContainer>
       </View>
       {showIntroPage && <Intro setShowIntroPage={setShowIntroPage} />}
     </GestureHandlerRootView>
+    </LanguageProvider>
   )
 }
 
