@@ -9,6 +9,13 @@ const translations = {
       settings: 'Ayarlar',
     },
 
+    // Feed page
+    feed: {
+      title: 'Akış',
+      empty: 'Henüz duyuru yok',
+      emptyDesc: 'Korolardan paylaşılan herkese açık duyurular burada görünecek',
+    },
+
     // Notes page
     notes: {
       title: 'Notalar',
@@ -61,6 +68,7 @@ const translations = {
       created: 'Koro başarıyla oluşturuldu!',
       noPermission: 'Koro oluşturma yetkiniz bulunmamaktadır',
       fillName: 'Lütfen koro adını girin',
+      maxLimit: 'En fazla 5 koro oluşturabilirsiniz',
     },
 
     // Chorus detail page
@@ -75,9 +83,43 @@ const translations = {
       notesEmptyDesc: 'Koroya eklenen notalar burada görünecek',
       bulletinEmpty: 'Henüz duyuru yok',
       bulletinEmptyDesc: 'Koro duyuruları burada görünecek',
-      deleteTitle: 'Notayı Sil',
+      roleAdmin: 'Yönetici',
+      roleMember: 'Üye',
+      deleteNoteTitle: 'Notayı Sil',
+      deleteBulletinTitle: 'Duyuruyu Sil',
+      deleteMemberTitle: 'Üyeyi Çıkar',
       cancel: 'İptal',
       delete: 'Sil',
+    },
+
+    // Add member page
+    addMember: {
+      title: 'Üye Ekle',
+      placeholder: 'E-posta ile ara...',
+      minChars: 'En az 3 karakter girin',
+      noResults: 'Kullanıcı bulunamadı',
+      added: 'Üye başarıyla eklendi!',
+    },
+
+    // Bulletin
+    bulletin: {
+      createTitle: 'Duyuru Oluştur',
+      titlePlaceholder: 'Duyuru başlığı',
+      contentPlaceholder: 'Duyuru içeriği...',
+      create: 'Oluştur',
+      fillFields: 'Lütfen başlık ve içerik girin',
+      public: 'Herkese Açık',
+      private: 'Üyelere Özel',
+      publicHint: 'Bu duyuru tüm kullanıcılar tarafından görülebilir',
+      privateHint: 'Bu duyuru sadece koro üyeleri tarafından görülebilir',
+      eventToggle: 'Etkinlik / Konser',
+      eventToggleDesc: 'Tarih ve konum bilgisi ekleyin',
+      eventDate: 'Tarih',
+      eventTime: 'Saat',
+      eventLocationPlaceholder: 'Konum girin...',
+      fillLocation: 'Lütfen etkinlik konumunu girin',
+      done: 'Tamam',
+      concert: 'Konser',
     },
 
     // Create note page
@@ -111,6 +153,12 @@ const translations = {
       notes: 'Notes',
       metronome: 'Metronome',
       settings: 'Settings',
+    },
+
+    feed: {
+      title: 'Feed',
+      empty: 'No bulletins yet',
+      emptyDesc: 'Public announcements from choruses will appear here',
     },
 
     notes: {
@@ -161,6 +209,7 @@ const translations = {
       created: 'Chorus created successfully!',
       noPermission: 'You do not have permission to create a chorus',
       fillName: 'Please enter a chorus name',
+      maxLimit: 'You can create a maximum of 5 choruses',
     },
 
     chorusDetail: {
@@ -174,9 +223,41 @@ const translations = {
       notesEmptyDesc: 'Notes added to the chorus will appear here',
       bulletinEmpty: 'No bulletins yet',
       bulletinEmptyDesc: 'Chorus announcements will appear here',
-      deleteTitle: 'Delete Note',
+      roleAdmin: 'Admin',
+      roleMember: 'Member',
+      deleteNoteTitle: 'Delete Note',
+      deleteBulletinTitle: 'Delete Bulletin',
+      deleteMemberTitle: 'Remove Member',
       cancel: 'Cancel',
       delete: 'Delete',
+    },
+
+    addMember: {
+      title: 'Add Member',
+      placeholder: 'Search by email...',
+      minChars: 'Type at least 3 characters',
+      noResults: 'No users found',
+      added: 'Member added successfully!',
+    },
+
+    bulletin: {
+      createTitle: 'Create Bulletin',
+      titlePlaceholder: 'Bulletin title',
+      contentPlaceholder: 'Bulletin content...',
+      create: 'Create',
+      fillFields: 'Please enter a title and content',
+      public: 'Public',
+      private: 'Private',
+      publicHint: 'This bulletin will be visible to all users',
+      privateHint: 'This bulletin will only be visible to chorus members',
+      eventToggle: 'Event / Concert',
+      eventToggleDesc: 'Add date and location details',
+      eventDate: 'Date',
+      eventTime: 'Time',
+      eventLocationPlaceholder: 'Enter location...',
+      fillLocation: 'Please enter the event location',
+      done: 'Done',
+      concert: 'Concert',
     },
 
     createNote: {

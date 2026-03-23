@@ -17,6 +17,9 @@
       "versionCode": 2
     },
     "web": {},
-    "newArchEnabled": true
+    "newArchEnabled": true,
+    "plugins": [
+      "@react-native-community/datetimepicker"
+    ]
   }
 }

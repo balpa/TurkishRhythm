@@ -7,6 +7,7 @@ import Rhythms from './pages/Rhythms';
 import Makams from './pages/Makams';
 import Intro from './pages/Intro'
 import Choruses from './pages/Choruses';
+import Feed from './pages/Feed';
 import Settings from './pages/Settings';
 import Login from './pages/Login';
 import { Icon } from 'react-native-elements'
@@ -20,12 +21,12 @@ import { supabase } from './lib/supabase';
 const Tab = createMaterialTopTabNavigator()
 const { width: SCREEN_WIDTH } = Dimensions.get('window')
 
-const TAB_COUNT = 5
+const TAB_COUNT = 6
 const TAB_WIDTH = SCREEN_WIDTH / TAB_COUNT
 const BAR_HEIGHT = 40
 const SAFE_BOTTOM = Platform.OS === 'ios' ? 28 : 12
 const CURVE_WIDTH = TAB_WIDTH * 2
-const CURVE_HEIGHT = 40
+const CURVE_HEIGHT = 30
 const CIRCLE_SIZE = 46
 const ICON_RISE = 10
 
@@ -36,6 +37,7 @@ const COLORS = {
 }
 
 const TAB_ICONS = [
+  { name: 'dynamic-feed', type: 'material' },
   { name: 'queue-music', type: 'material' },
   { name: 'graphic-eq', type: 'material' },
   { name: 'groups', type: 'material' },
@@ -178,6 +180,7 @@ const App = () => {
             animationEnabled: true,
           }}
         >
+          <Tab.Screen name="Feed" children={() => <Feed />} />
           <Tab.Screen name="Makams" children={() => <Makams />} />
           <Tab.Screen name="Rhythms" children={() => <Rhythms />} />
           <Tab.Screen name="Choruses" children={() => <Choruses />} />

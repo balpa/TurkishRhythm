@@ -76,6 +76,27 @@ const Settings = ({ onLogout }) => {
 
     const { data: { user } } = await supabase.auth.getUser()
 
+    // Check admin chorus limit (max 5)
+    const { count, error: countError } = await supabase
+      .from('chorus_members')
+      .select('*', { count: 'exact', head: true })
+      .eq('user_id', user.id)
+      .eq('role', 'admin')
+
+    if (countError) {
+      setCreating(false)
+      setMessage(countError.message)
+      setMessageType('error')
+      return
+    }
+
+    if (count >= 5) {
+      setCreating(false)
+      setMessage(t(language, 'chorus.maxLimit'))
+      setMessageType('error')
+      return
+    }
+
     const { data: chorus, error: chorusError } = await supabase
       .from('choruses')
       .insert({ name: chorusName.trim(), description: chorusDesc.trim() || null, created_by: user.id })

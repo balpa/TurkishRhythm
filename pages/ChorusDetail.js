@@ -18,7 +18,16 @@ const COLORS = {
 }
 
 const TABS = ['notes', 'bulletin', 'members']
-const SwipeableNoteCard = ({ note, language, onPress, onDelete }) => {
+
+const renderDeleteAction = (onDelete) => () => (
+  <View style={styles.deleteActionWrapper}>
+    <TouchableOpacity style={styles.deleteAction} activeOpacity={0.7} onPress={onDelete}>
+      <Icon name="delete" color="#fff" size={20} />
+    </TouchableOpacity>
+  </View>
+)
+
+const SwipeableNoteCard = ({ note, language, onPress, onDelete, isAdmin }) => {
   const swipeRef = useRef(null)
 
   const isImage = note.file_type?.startsWith('image/')
@@ -33,39 +42,128 @@ const SwipeableNoteCard = ({ note, language, onPress, onDelete }) => {
     onDelete(note)
   }
 
-  const renderRightActions = () => (
-    <TouchableOpacity style={styles.deleteAction} activeOpacity={0.7} onPress={handleDelete}>
-      <Icon name="delete" color="#fff" size={22} />
+  const card = (
+    <TouchableOpacity style={styles.noteCard} activeOpacity={0.8} onPress={onPress}>
+      {isImage ? (
+        <Image source={{ uri: note.file_url }} style={styles.noteImage} />
+      ) : (
+        <View style={styles.noteFileIcon}>
+          <Icon name="picture-as-pdf" color={COLORS.accent} size={28} />
+        </View>
+      )}
+      <View style={styles.noteInfo}>
+        <Text style={styles.noteFileName} numberOfLines={1}>{note.file_name}</Text>
+        <Text style={styles.noteMeta}>{uploaderEmail} • {date}</Text>
+      </View>
     </TouchableOpacity>
   )
+
+  if (!isAdmin) {
+    return <View style={styles.swipeContainer}>{card}</View>
+  }
 
   return (
     <View style={styles.swipeContainer}>
       <Swipeable
         ref={swipeRef}
-        renderRightActions={renderRightActions}
+        renderRightActions={renderDeleteAction(handleDelete)}
         overshootRight={false}
         rightThreshold={40}
       >
-        <TouchableOpacity style={styles.noteCard} activeOpacity={0.8} onPress={onPress}>
-          {isImage ? (
-            <Image source={{ uri: note.file_url }} style={styles.noteImage} />
-          ) : (
-            <View style={styles.noteFileIcon}>
-              <Icon name="picture-as-pdf" color={COLORS.accent} size={28} />
-            </View>
-          )}
-          <View style={styles.noteInfo}>
-            <Text style={styles.noteFileName} numberOfLines={1}>{note.file_name}</Text>
-            <Text style={styles.noteMeta}>{uploaderEmail} • {date}</Text>
-          </View>
-        </TouchableOpacity>
+        {card}
       </Swipeable>
     </View>
   )
 }
 
-const MemberItem = ({ member, index }) => {
+const SwipeableBulletinCard = ({ bulletin, language, onDelete, isAdmin }) => {
+  const swipeRef = useRef(null)
+
+  const isPublic = bulletin.visibility === 'public'
+  const authorEmail = bulletin.profiles?.email || bulletin.created_by?.substring(0, 8) + '...'
+  const date = new Date(bulletin.created_at).toLocaleDateString(
+    language === 'tr' ? 'tr-TR' : 'en-US',
+    { day: 'numeric', month: 'short', year: 'numeric' }
+  )
+  const eventDateFormatted = bulletin.event_date
+    ? new Date(bulletin.event_date).toLocaleDateString(
+        language === 'tr' ? 'tr-TR' : 'en-US',
+        { day: 'numeric', month: 'long', year: 'numeric' }
+      )
+    : null
+  const eventTimeFormatted = bulletin.event_date
+    ? new Date(bulletin.event_date).toLocaleTimeString(
+        language === 'tr' ? 'tr-TR' : 'en-US',
+        { hour: '2-digit', minute: '2-digit' }
+      )
+    : null
+
+  const handleDelete = () => {
+    swipeRef.current?.close()
+    onDelete(bulletin)
+  }
+
+  const card = (
+    <View style={styles.bulletinCard}>
+      <View style={styles.bulletinHeader}>
+        <View style={styles.bulletinBadges}>
+          <View style={[styles.visibilityBadge, { backgroundColor: isPublic ? COLORS.green + '20' : COLORS.gold + '20' }]}>
+            <Icon name={isPublic ? 'public' : 'lock'} color={isPublic ? COLORS.green : COLORS.gold} size={14} />
+            <Text style={[styles.visibilityLabel, { color: isPublic ? COLORS.green : COLORS.gold }]}>
+              {isPublic ? t(language, 'bulletin.public') : t(language, 'bulletin.private')}
+            </Text>
+          </View>
+          {bulletin.is_event && (
+            <View style={[styles.visibilityBadge, { backgroundColor: COLORS.accent + '20' }]}>
+              <Icon name="event" color={COLORS.accent} size={14} />
+              <Text style={[styles.visibilityLabel, { color: COLORS.accent }]}>
+                {t(language, 'bulletin.concert')}
+              </Text>
+            </View>
+          )}
+        </View>
+        <Text style={styles.bulletinDate}>{date}</Text>
+      </View>
+      <Text style={styles.bulletinTitle}>{bulletin.title}</Text>
+      <Text style={styles.bulletinContent}>{bulletin.content}</Text>
+      {bulletin.is_event && (
+        <View style={styles.eventInfo}>
+          <View style={styles.eventInfoRow}>
+            <Icon name="calendar-today" color={COLORS.accent} size={15} />
+            <Text style={styles.eventInfoText}>{eventDateFormatted} — {eventTimeFormatted}</Text>
+          </View>
+          {bulletin.event_location && (
+            <View style={styles.eventInfoRow}>
+              <Icon name="location-on" color={COLORS.accent} size={15} />
+              <Text style={styles.eventInfoText}>{bulletin.event_location}</Text>
+            </View>
+          )}
+        </View>
+      )}
+      <Text style={styles.bulletinAuthor}>{authorEmail}</Text>
+    </View>
+  )
+
+  if (!isAdmin) {
+    return <View style={styles.swipeContainer}>{card}</View>
+  }
+
+  return (
+    <View style={styles.swipeContainer}>
+      <Swipeable
+        ref={swipeRef}
+        renderRightActions={renderDeleteAction(handleDelete)}
+        overshootRight={false}
+        rightThreshold={40}
+      >
+        {card}
+      </Swipeable>
+    </View>
+  )
+}
+
+const SwipeableMemberItem = ({ member, index, language, onDelete, isAdmin }) => {
+  const swipeRef = useRef(null)
   const fadeAnim = useRef(new Animated.Value(0)).current
 
   useEffect(() => {
@@ -79,34 +177,75 @@ const MemberItem = ({ member, index }) => {
 
   const roleColor = member.role === 'admin' ? COLORS.gold : COLORS.green
   const initial = (member.email || '?')[0].toUpperCase()
+  const canDelete = isAdmin && member.role !== 'admin'
 
-  return (
-    <Animated.View style={[styles.memberRow, { opacity: fadeAnim }]}>
+  const handleDelete = () => {
+    swipeRef.current?.close()
+    onDelete(member)
+  }
+
+  if (!canDelete) {
+    return (
+      <Animated.View style={[styles.memberRow, { opacity: fadeAnim }]}>
+        <View style={styles.avatar}>
+          <Text style={styles.avatarText}>{initial}</Text>
+        </View>
+        <View style={styles.memberInfo}>
+          <Text style={styles.memberEmail} numberOfLines={1}>{member.email}</Text>
+          <Text style={[styles.memberRole, { color: roleColor }]}>
+            {member.role === 'admin' ? t(language, 'chorusDetail.roleAdmin') : t(language, 'chorusDetail.roleMember')}
+          </Text>
+        </View>
+      </Animated.View>
+    )
+  }
+
+  const card = (
+    <Animated.View style={[styles.memberRow, { opacity: fadeAnim, marginBottom: 0 }]}>
       <View style={styles.avatar}>
         <Text style={styles.avatarText}>{initial}</Text>
       </View>
       <View style={styles.memberInfo}>
         <Text style={styles.memberEmail} numberOfLines={1}>{member.email}</Text>
         <Text style={[styles.memberRole, { color: roleColor }]}>
-          {member.role === 'admin' ? 'Admin' : 'Member'}
+          {member.role === 'admin' ? t(language, 'chorusDetail.roleAdmin') : t(language, 'chorusDetail.roleMember')}
         </Text>
       </View>
     </Animated.View>
+  )
+
+  return (
+    <View style={styles.swipeContainer}>
+      <Swipeable
+        ref={swipeRef}
+        renderRightActions={renderDeleteAction(handleDelete)}
+        overshootRight={false}
+        rightThreshold={40}
+      >
+        {card}
+      </Swipeable>
+    </View>
   )
 }
 
 const ChorusDetail = ({ route, navigation }) => {
   const { language } = useLanguage()
   const { chorus } = route.params
+  const isAdmin = chorus.role === 'admin'
   const [members, setMembers] = useState([])
   const [notes, setNotes] = useState([])
+  const [bulletins, setBulletins] = useState([])
   const [loading, setLoading] = useState(true)
   const [notesLoading, setNotesLoading] = useState(true)
+  const [bulletinsLoading, setBulletinsLoading] = useState(true)
   const [activeTab, setActiveTab] = useState('notes')
   const [tabBarWidth, setTabBarWidth] = useState(0)
 
   const headerAnim = useRef(new Animated.Value(0)).current
   const tabIndicatorAnim = useRef(new Animated.Value(0)).current
+
+  // deleteModal: { type: 'note'|'bulletin'|'member', item: ... }
+  const [deleteModal, setDeleteModal] = useState(null)
 
   useEffect(() => {
     Animated.timing(headerAnim, {
@@ -165,36 +304,79 @@ const ChorusDetail = ({ route, navigation }) => {
     setNotesLoading(false)
   }, [chorus.id])
 
+  const fetchBulletins = useCallback(async () => {
+    setBulletinsLoading(true)
+    const { data, error } = await supabase
+      .from('bulletins')
+      .select('id, title, content, visibility, is_event, event_date, event_location, created_at, created_by, profiles(email)')
+      .eq('chorus_id', chorus.id)
+      .order('created_at', { ascending: false })
+
+    if (error) {
+      console.log('Fetch bulletins error:', error.message)
+    }
+    if (!error && data) {
+      setBulletins(data)
+    }
+    setBulletinsLoading(false)
+  }, [chorus.id])
+
   useEffect(() => {
     fetchMembers()
     fetchNotes()
-  }, [fetchMembers, fetchNotes])
+    fetchBulletins()
+  }, [fetchMembers, fetchNotes, fetchBulletins])
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       fetchNotes()
+      fetchMembers()
+      fetchBulletins()
     })
     return unsubscribe
-  }, [navigation, fetchNotes])
-
-  const [deleteModal, setDeleteModal] = useState(null)
-
-  const handleDeleteNote = async (note) => {
-    setDeleteModal(note)
-  }
+  }, [navigation, fetchNotes, fetchMembers, fetchBulletins])
 
   const confirmDelete = async () => {
     if (!deleteModal) return
-    const filePath = deleteModal.file_url.split('/notes/')[1]
+    const { type, item } = deleteModal
 
-    const { error: storageError } = await supabase.storage.from('notes').remove([filePath])
-    if (storageError) console.log('Storage delete error:', storageError.message)
+    if (type === 'note') {
+      const filePath = item.file_url.split('/notes/')[1]
+      const { error: storageError } = await supabase.storage.from('notes').remove([filePath])
+      if (storageError) console.log('Storage delete error:', storageError.message)
+      const { error: dbError } = await supabase.from('notes').delete().eq('id', item.id)
+      if (dbError) console.log('DB delete error:', dbError.message)
+      setDeleteModal(null)
+      fetchNotes()
+    } else if (type === 'bulletin') {
+      const { error } = await supabase.from('bulletins').delete().eq('id', item.id)
+      if (error) console.log('Bulletin delete error:', error.message)
+      setDeleteModal(null)
+      fetchBulletins()
+    } else if (type === 'member') {
+      const { error } = await supabase
+        .from('chorus_members')
+        .delete()
+        .eq('chorus_id', chorus.id)
+        .eq('user_id', item.id)
+      if (error) console.log('Member delete error:', error.message)
+      setDeleteModal(null)
+      fetchMembers()
+    }
+  }
 
-    const { error: dbError } = await supabase.from('notes').delete().eq('id', deleteModal.id)
-    if (dbError) console.log('DB delete error:', dbError.message)
+  const getDeleteModalTitle = () => {
+    if (!deleteModal) return ''
+    if (deleteModal.type === 'note') return t(language, 'chorusDetail.deleteNoteTitle')
+    if (deleteModal.type === 'bulletin') return t(language, 'chorusDetail.deleteBulletinTitle')
+    return t(language, 'chorusDetail.deleteMemberTitle')
+  }
 
-    setDeleteModal(null)
-    fetchNotes()
+  const getDeleteModalDesc = () => {
+    if (!deleteModal) return ''
+    if (deleteModal.type === 'note') return deleteModal.item.file_name
+    if (deleteModal.type === 'bulletin') return deleteModal.item.title
+    return deleteModal.item.email
   }
 
   const formattedDate = new Date(chorus.created_at).toLocaleDateString(
@@ -222,7 +404,14 @@ const ChorusDetail = ({ route, navigation }) => {
         <Text style={styles.emptyText}>{t(language, 'chorusDetail.noMembers')}</Text>
       ) : (
         members.map((member, index) => (
-          <MemberItem key={member.id} member={member} index={index} />
+          <SwipeableMemberItem
+            key={member.id}
+            member={member}
+            index={index}
+            language={language}
+            isAdmin={isAdmin}
+            onDelete={(m) => setDeleteModal({ type: 'member', item: m })}
+          />
         ))
       )
     }
@@ -249,20 +438,39 @@ const ChorusDetail = ({ route, navigation }) => {
           key={note.id}
           note={note}
           language={language}
+          isAdmin={isAdmin}
           onPress={() => navigation.navigate('NoteViewer', { note })}
-          onDelete={handleDeleteNote}
+          onDelete={(n) => setDeleteModal({ type: 'note', item: n })}
         />
       ))
     }
 
     if (activeTab === 'bulletin') {
-      return (
-        <View style={styles.emptyTabState}>
-          <Icon name="campaign" color={COLORS.border} size={48} />
-          <Text style={styles.emptyTabTitle}>{t(language, 'chorusDetail.bulletinEmpty')}</Text>
-          <Text style={styles.emptyTabDesc}>{t(language, 'chorusDetail.bulletinEmptyDesc')}</Text>
-        </View>
-      )
+      if (bulletinsLoading) {
+        return (
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="small" color={COLORS.accent} />
+          </View>
+        )
+      }
+      if (bulletins.length === 0) {
+        return (
+          <View style={styles.emptyTabState}>
+            <Icon name="campaign" color={COLORS.border} size={48} />
+            <Text style={styles.emptyTabTitle}>{t(language, 'chorusDetail.bulletinEmpty')}</Text>
+            <Text style={styles.emptyTabDesc}>{t(language, 'chorusDetail.bulletinEmptyDesc')}</Text>
+          </View>
+        )
+      }
+      return bulletins.map((bulletin) => (
+        <SwipeableBulletinCard
+          key={bulletin.id}
+          bulletin={bulletin}
+          language={language}
+          isAdmin={isAdmin}
+          onDelete={(b) => setDeleteModal({ type: 'bulletin', item: b })}
+        />
+      ))
     }
   }
 
@@ -301,9 +509,9 @@ const ChorusDetail = ({ route, navigation }) => {
                 {loading ? '...' : `${members.length} ${t(language, 'chorusDetail.members')}`}
               </Text>
             </View>
-            <View style={[styles.roleBadge, { borderColor: chorus.role === 'admin' ? COLORS.gold : COLORS.green }]}>
-              <Text style={[styles.roleText, { color: chorus.role === 'admin' ? COLORS.gold : COLORS.green }]}>
-                {chorus.role === 'admin' ? 'Admin' : 'Member'}
+            <View style={[styles.roleBadge, { borderColor: isAdmin ? COLORS.gold : COLORS.green }]}>
+              <Text style={[styles.roleText, { color: isAdmin ? COLORS.gold : COLORS.green }]}>
+                {isAdmin ? t(language, 'chorusDetail.roleAdmin') : t(language, 'chorusDetail.roleMember')}
               </Text>
             </View>
           </View>
@@ -314,7 +522,6 @@ const ChorusDetail = ({ route, navigation }) => {
           style={styles.tabBar}
           onLayout={(e) => setTabBarWidth(e.nativeEvent.layout.width)}
         >
-          {/* Animated indicator */}
           {tabBarWidth > 0 && (
             <Animated.View style={[styles.tabIndicator, {
               width: (tabBarWidth - 8) / 3,
@@ -352,26 +559,27 @@ const ChorusDetail = ({ route, navigation }) => {
         </View>
       </ScrollView>
 
-      {/* Floating + button for notes and bulletin tabs */}
-      {(activeTab === 'notes' || activeTab === 'bulletin') && (
+      {/* Floating + button (admin only for members, everyone for notes/bulletin) */}
+      {(isAdmin || activeTab !== 'members') && (
         <TouchableOpacity
           style={styles.fab}
           activeOpacity={0.8}
           onPress={() => {
-            const screen = activeTab === 'notes' ? 'CreateNote' : 'CreateBulletin'
-            navigation.navigate(screen, { chorus })
+            const screens = { notes: 'CreateNote', bulletin: 'CreateBulletin', members: 'AddMember' }
+            navigation.navigate(screens[activeTab], { chorus })
           }}
         >
-          <Icon name="add" color="#fff" size={22} />
+          <Icon name={activeTab === 'members' ? 'person-add' : 'add'} color="#fff" size={22} />
         </TouchableOpacity>
       )}
+
       {/* Delete confirmation modal */}
       <Modal visible={deleteModal !== null} transparent animationType="fade">
         <View style={styles.modalOverlay}>
           <View style={styles.modalCard}>
             <Icon name="delete-outline" color={COLORS.accent} size={36} />
-            <Text style={styles.modalTitle}>{t(language, 'chorusDetail.deleteTitle')}</Text>
-            <Text style={styles.modalDesc}>{deleteModal?.file_name}</Text>
+            <Text style={styles.modalTitle}>{getDeleteModalTitle()}</Text>
+            <Text style={styles.modalDesc}>{getDeleteModalDesc()}</Text>
             <View style={styles.modalButtons}>
               <TouchableOpacity
                 style={styles.modalCancelBtn}
@@ -640,6 +848,77 @@ const styles = StyleSheet.create({
     color: COLORS.textDim,
     marginTop: 3,
   },
+  // Bulletins
+  bulletinCard: {
+    backgroundColor: COLORS.surface,
+    borderRadius: 14,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+  },
+  bulletinHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 10,
+  },
+  visibilityBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 8,
+  },
+  visibilityLabel: {
+    fontSize: 11,
+    fontWeight: '700',
+    textTransform: 'uppercase',
+    letterSpacing: 0.3,
+  },
+  bulletinDate: {
+    fontSize: 11,
+    color: COLORS.textDim,
+    fontWeight: '600',
+  },
+  bulletinTitle: {
+    fontSize: 16,
+    fontWeight: '800',
+    color: COLORS.text,
+    marginBottom: 6,
+  },
+  bulletinContent: {
+    fontSize: 14,
+    color: COLORS.textDim,
+    lineHeight: 20,
+    marginBottom: 10,
+  },
+  bulletinBadges: {
+    flexDirection: 'row',
+    gap: 6,
+  },
+  eventInfo: {
+    backgroundColor: COLORS.bg,
+    borderRadius: 10,
+    padding: 12,
+    marginBottom: 10,
+    gap: 8,
+  },
+  eventInfoRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  eventInfoText: {
+    fontSize: 13,
+    color: COLORS.text,
+    fontWeight: '600',
+  },
+  bulletinAuthor: {
+    fontSize: 11,
+    color: COLORS.textDim,
+    fontWeight: '600',
+  },
   fab: {
     position: 'absolute',
     bottom: 10,
@@ -656,18 +935,22 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 8,
   },
-  // Swipeable note
+  // Swipeable
   swipeContainer: {
     position: 'relative',
     marginBottom: 8,
   },
+  deleteActionWrapper: {
+    justifyContent: 'center',
+    marginLeft: 8,
+  },
   deleteAction: {
-    width: 70,
+    width: 56,
+    height: '100%',
     backgroundColor: '#D9534F',
     borderRadius: 14,
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: 8,
   },
   // Delete modal
   modalOverlay: {

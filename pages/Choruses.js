@@ -8,26 +8,11 @@ import { t } from '../i18n/translations'
 import ChorusDetail from './ChorusDetail'
 import CreateNote from './CreateNote'
 import NoteViewer from './NoteViewer'
+import AddMember from './AddMember'
+import CreateBulletin from './CreateBulletin'
 
 const Stack = createNativeStackNavigator()
 
-
-const CreateBulletinPlaceholder = ({ route, navigation }) => {
-  const { chorus } = route.params
-  return (
-    <View style={{ flex: 1, backgroundColor: '#1B1B2F', justifyContent: 'center', alignItems: 'center', padding: 20 }}>
-      <TouchableOpacity
-        style={{ position: 'absolute', top: 12, left: 16, width: 38, height: 38, borderRadius: 12, backgroundColor: '#262640', justifyContent: 'center', alignItems: 'center' }}
-        onPress={() => navigation.goBack()}
-      >
-        <Icon name="arrow-back" color="#F0E6D3" size={22} />
-      </TouchableOpacity>
-      <Icon name="campaign" color="#3A3A5C" size={64} />
-      <Text style={{ color: '#F0E6D3', fontSize: 20, fontWeight: '700', marginTop: 16 }}>Create Bulletin</Text>
-      <Text style={{ color: '#9090B0', fontSize: 14, marginTop: 8, textAlign: 'center' }}>Coming soon for {chorus.name}</Text>
-    </View>
-  )
-}
 
 const COLORS = {
   bg: '#1B1B2F',
@@ -40,7 +25,7 @@ const COLORS = {
   gold: '#C9B458',
 }
 
-const ChorusCard = ({ chorus, index, onPress }) => {
+const ChorusCard = ({ chorus, index, onPress, language }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current
   const slideAnim = useRef(new Animated.Value(30)).current
 
@@ -63,7 +48,7 @@ const ChorusCard = ({ chorus, index, onPress }) => {
   }, [])
 
   const roleColor = chorus.role === 'admin' ? COLORS.gold : COLORS.green
-  const roleLabel = chorus.role === 'admin' ? 'Admin' : 'Member'
+  const roleLabel = chorus.role === 'admin' ? t(language, 'chorusDetail.roleAdmin') : t(language, 'chorusDetail.roleMember')
 
   return (
     <TouchableOpacity activeOpacity={0.7} onPress={onPress}>
@@ -163,6 +148,7 @@ const ChorusList = ({ navigation }) => {
             <ChorusCard
               chorus={item}
               index={index}
+              language={language}
               onPress={() => navigation.navigate('ChorusDetail', { chorus: item })}
             />
           )}
@@ -183,7 +169,8 @@ const Choruses = () => {
       <Stack.Screen name="ChorusDetail" component={ChorusDetail} />
       <Stack.Screen name="CreateNote" component={CreateNote} />
       <Stack.Screen name="NoteViewer" component={NoteViewer} />
-      <Stack.Screen name="CreateBulletin" component={CreateBulletinPlaceholder} />
+      <Stack.Screen name="CreateBulletin" component={CreateBulletin} />
+      <Stack.Screen name="AddMember" component={AddMember} />
     </Stack.Navigator>
   )
 }
