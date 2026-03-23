@@ -19,13 +19,16 @@ const COLORS = {
 
 const CreateBulletin = ({ route, navigation }) => {
   const { language } = useLanguage()
-  const { chorus } = route.params
-  const [title, setTitle] = useState('')
-  const [content, setContent] = useState('')
-  const [visibility, setVisibility] = useState('private')
-  const [isEvent, setIsEvent] = useState(false)
-  const [eventDate, setEventDate] = useState(new Date())
-  const [eventLocation, setEventLocation] = useState('')
+  const { chorus, bulletin: existingBulletin } = route.params
+  const isEditing = !!existingBulletin
+  const [title, setTitle] = useState(existingBulletin?.title || '')
+  const [content, setContent] = useState(existingBulletin?.content || '')
+  const [visibility, setVisibility] = useState(existingBulletin?.visibility || 'private')
+  const [isEvent, setIsEvent] = useState(existingBulletin?.is_event || false)
+  const [eventDate, setEventDate] = useState(existingBulletin?.event_date ? new Date(existingBulletin.event_date) : new Date())
+  const [eventLocation, setEventLocation] = useState(existingBulletin?.event_location || '')
+  const [isFree, setIsFree] = useState(!existingBulletin?.event_price || existingBulletin?.event_price === 'free')
+  const [eventPrice, setEventPrice] = useState(existingBulletin?.event_price && existingBulletin.event_price !== 'free' ? existingBulletin.event_price : '')
   const [showDatePicker, setShowDatePicker] = useState(false)
   const [showTimePicker, setShowTimePicker] = useState(false)
   const [creating, setCreating] = useState(false)
@@ -59,7 +62,7 @@ const CreateBulletin = ({ route, navigation }) => {
     { hour: '2-digit', minute: '2-digit' }
   )
 
-  const handleCreate = async () => {
+  const handleSubmit = async () => {
     if (!title.trim() || !content.trim()) {
       setMessage(t(language, 'bulletin.fillFields'))
       return
@@ -73,25 +76,30 @@ const CreateBulletin = ({ route, navigation }) => {
     setCreating(true)
     setMessage('')
 
-    const { data: { user } } = await supabase.auth.getUser()
-
-    const insertData = {
-      chorus_id: chorus.id,
+    const payload = {
       title: title.trim(),
       content: content.trim(),
       visibility,
-      created_by: user.id,
       is_event: isEvent,
+      event_date: isEvent ? eventDate.toISOString() : null,
+      event_location: isEvent ? eventLocation.trim() : null,
+      event_price: isEvent ? (isFree ? 'free' : eventPrice.trim()) : null,
     }
 
-    if (isEvent) {
-      insertData.event_date = eventDate.toISOString()
-      insertData.event_location = eventLocation.trim()
+    let error
+    if (isEditing) {
+      ({ error } = await supabase
+        .from('bulletins')
+        .update(payload)
+        .eq('id', existingBulletin.id))
+    } else {
+      const { data: { user } } = await supabase.auth.getUser()
+      payload.chorus_id = chorus.id
+      payload.created_by = user.id
+      ;({ error } = await supabase
+        .from('bulletins')
+        .insert(payload))
     }
-
-    const { error } = await supabase
-      .from('bulletins')
-      .insert(insertData)
 
     if (error) {
       setMessage(error.message)
@@ -114,7 +122,7 @@ const CreateBulletin = ({ route, navigation }) => {
         <TouchableOpacity style={styles.backButton} activeOpacity={0.7} onPress={() => navigation.goBack()}>
           <Icon name="arrow-back" color={COLORS.text} size={22} />
         </TouchableOpacity>
-        <Text style={styles.topBarTitle}>{t(language, 'bulletin.createTitle')}</Text>
+        <Text style={styles.topBarTitle}>{t(language, isEditing ? 'bulletin.editTitle' : 'bulletin.createTitle')}</Text>
         <View style={{ width: 38 }} />
       </View>
 
@@ -250,6 +258,34 @@ const CreateBulletin = ({ route, navigation }) => {
                 onChangeText={setEventLocation}
               />
             </View>
+
+            {/* Price row */}
+            <View style={styles.priceRow}>
+              <Icon name="confirmation-number" color={COLORS.accent} size={20} />
+              <Text style={styles.priceLabel}>{t(language, 'bulletin.eventPrice')}</Text>
+              <View style={styles.priceRight}>
+                <TouchableOpacity
+                  style={[styles.freeCheckbox, isFree && styles.freeCheckboxActive]}
+                  activeOpacity={0.7}
+                  onPress={() => { setIsFree(!isFree); if (!isFree) setEventPrice('') }}
+                >
+                  {isFree && <Icon name="check" color="#fff" size={14} />}
+                </TouchableOpacity>
+                <Text style={[styles.freeLabel, isFree && styles.freeLabelActive]}>
+                  {t(language, 'bulletin.free')}
+                </Text>
+                {!isFree && (
+                  <TextInput
+                    style={styles.priceInput}
+                    placeholder="0"
+                    placeholderTextColor={COLORS.textDim}
+                    value={eventPrice}
+                    onChangeText={setEventPrice}
+                    keyboardType="numeric"
+                  />
+                )}
+              </View>
+            </View>
           </View>
         )}
 
@@ -282,13 +318,13 @@ const CreateBulletin = ({ route, navigation }) => {
         <TouchableOpacity
           style={[styles.createButton, !isValid && styles.createButtonDisabled]}
           activeOpacity={0.7}
-          onPress={handleCreate}
+          onPress={handleSubmit}
           disabled={creating || !isValid}
         >
           {creating ? (
             <ActivityIndicator size="small" color="#fff" />
           ) : (
-            <Text style={styles.createButtonText}>{t(language, 'bulletin.create')}</Text>
+            <Text style={styles.createButtonText}>{t(language, isEditing ? 'bulletin.save' : 'bulletin.create')}</Text>
           )}
         </TouchableOpacity>
 
@@ -482,6 +518,57 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: COLORS.text,
     paddingVertical: 14,
+  },
+  // Price
+  priceRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 14,
+    gap: 12,
+  },
+  priceLabel: {
+    fontSize: 12,
+    color: COLORS.textDim,
+    fontWeight: '600',
+  },
+  priceRight: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    gap: 8,
+  },
+  freeCheckbox: {
+    width: 22,
+    height: 22,
+    borderRadius: 6,
+    borderWidth: 2,
+    borderColor: COLORS.border,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  freeCheckboxActive: {
+    backgroundColor: COLORS.green,
+    borderColor: COLORS.green,
+  },
+  freeLabel: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: COLORS.textDim,
+  },
+  freeLabelActive: {
+    color: COLORS.green,
+  },
+  priceInput: {
+    backgroundColor: COLORS.bg,
+    borderRadius: 10,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    fontSize: 15,
+    fontWeight: '700',
+    color: COLORS.text,
+    minWidth: 80,
+    textAlign: 'right',
   },
   // Form inputs
   titleInput: {

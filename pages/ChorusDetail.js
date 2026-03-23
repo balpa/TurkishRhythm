@@ -76,7 +76,7 @@ const SwipeableNoteCard = ({ note, language, onPress, onDelete, isAdmin }) => {
   )
 }
 
-const SwipeableBulletinCard = ({ bulletin, language, onDelete, isAdmin }) => {
+const SwipeableBulletinCard = ({ bulletin, language, onDelete, onEdit, isAdmin }) => {
   const swipeRef = useRef(null)
 
   const isPublic = bulletin.visibility === 'public'
@@ -102,6 +102,22 @@ const SwipeableBulletinCard = ({ bulletin, language, onDelete, isAdmin }) => {
     swipeRef.current?.close()
     onDelete(bulletin)
   }
+
+  const handleEdit = () => {
+    swipeRef.current?.close()
+    onEdit(bulletin)
+  }
+
+  const renderActions = () => (
+    <View style={styles.swipeActions}>
+      <TouchableOpacity style={styles.editAction} activeOpacity={0.7} onPress={handleEdit}>
+        <Icon name="edit" color="#fff" size={20} />
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.deleteActionBtn} activeOpacity={0.7} onPress={handleDelete}>
+        <Icon name="delete" color="#fff" size={20} />
+      </TouchableOpacity>
+    </View>
+  )
 
   const card = (
     <View style={styles.bulletinCard}>
@@ -138,6 +154,16 @@ const SwipeableBulletinCard = ({ bulletin, language, onDelete, isAdmin }) => {
               <Text style={styles.eventInfoText}>{bulletin.event_location}</Text>
             </View>
           )}
+          {bulletin.event_price != null && (
+            <View style={styles.eventInfoRow}>
+              <Icon name="confirmation-number" color={COLORS.accent} size={15} />
+              <Text style={styles.eventInfoText}>
+                {bulletin.event_price === 'free'
+                  ? t(language, 'bulletin.free')
+                  : `${bulletin.event_price} ₺`}
+              </Text>
+            </View>
+          )}
         </View>
       )}
       <Text style={styles.bulletinAuthor}>{authorEmail}</Text>
@@ -152,7 +178,7 @@ const SwipeableBulletinCard = ({ bulletin, language, onDelete, isAdmin }) => {
     <View style={styles.swipeContainer}>
       <Swipeable
         ref={swipeRef}
-        renderRightActions={renderDeleteAction(handleDelete)}
+        renderRightActions={renderActions}
         overshootRight={false}
         rightThreshold={40}
       >
@@ -308,7 +334,7 @@ const ChorusDetail = ({ route, navigation }) => {
     setBulletinsLoading(true)
     const { data, error } = await supabase
       .from('bulletins')
-      .select('id, title, content, visibility, is_event, event_date, event_location, created_at, created_by, profiles(email)')
+      .select('id, title, content, visibility, is_event, event_date, event_location, event_price, created_at, created_by, profiles(email)')
       .eq('chorus_id', chorus.id)
       .order('created_at', { ascending: false })
 
@@ -469,6 +495,7 @@ const ChorusDetail = ({ route, navigation }) => {
           language={language}
           isAdmin={isAdmin}
           onDelete={(b) => setDeleteModal({ type: 'bulletin', item: b })}
+          onEdit={(b) => navigation.navigate('CreateBulletin', { chorus, bulletin: b })}
         />
       ))
     }
@@ -939,6 +966,28 @@ const styles = StyleSheet.create({
   swipeContainer: {
     position: 'relative',
     marginBottom: 8,
+  },
+  swipeActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    marginLeft: 8,
+  },
+  editAction: {
+    width: 48,
+    height: '100%',
+    backgroundColor: COLORS.gold,
+    borderRadius: 14,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  deleteActionBtn: {
+    width: 48,
+    height: '100%',
+    backgroundColor: '#D9534F',
+    borderRadius: 14,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   deleteActionWrapper: {
     justifyContent: 'center',

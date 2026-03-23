@@ -95,6 +95,16 @@ const BulletinCard = memo(({ item, language }) => {
               <Text style={styles.eventInfoText}>{item.event_location}</Text>
             </View>
           )}
+          {item.event_price != null && (
+            <View style={styles.eventInfoRow}>
+              <Icon name="confirmation-number" color={COLORS.accent} size={14} />
+              <Text style={styles.eventInfoText}>
+                {item.event_price === 'free'
+                  ? t(language, 'bulletin.free')
+                  : `${item.event_price} ₺`}
+              </Text>
+            </View>
+          )}
         </View>
       )}
 
@@ -125,7 +135,7 @@ const Feed = () => {
 
     const { data, error } = await supabase
       .from('bulletins')
-      .select('id, title, content, visibility, is_event, event_date, event_location, created_at, created_by, profiles(email), choruses(name)')
+      .select('id, title, content, visibility, is_event, event_date, event_location, event_price, created_at, created_by, profiles(email), choruses(name)')
       .eq('visibility', 'public')
       .order('created_at', { ascending: false })
       .range(offset, offset + PAGE_SIZE - 1)

@@ -88,9 +88,11 @@ const RhythmCard = ({ rhythmName, rhythmTime, color, imageURI, infoText }) => {
       {isOpen &&
         <Animated.View style={[styles.expandArea, { height: heightAnim }]}>
           <Animated.View style={[styles.expandInner, { opacity: contentOpacity }]}>
+            {imageURI && (
             <View style={styles.imageWrap}>
               <Image source={imageURI} style={styles.image} />
             </View>
+            )}
             <View style={styles.scrollWrap}>
               <ScrollView nestedScrollEnabled={true} showsVerticalScrollIndicator={false}>
                 {renderBullets(infoText, color)}

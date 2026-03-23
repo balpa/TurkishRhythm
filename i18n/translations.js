@@ -57,6 +57,12 @@ const translations = {
     // Chorus page
     chorus: {
       title: 'Korolarım',
+      pageTitle: 'Korolar',
+      tab_explore: 'Keşfet',
+      tab_my: 'Korolarım',
+      yourRating: 'Puanınız',
+      searchPlaceholder: 'Koro ara...',
+      noResults: 'Koro bulunamadı',
       empty: 'Henüz bir koronuz yok',
       emptyDesc: 'Bir koroya katıldığınızda burada görünecek',
       createChorus: 'Koro Oluştur',
@@ -120,6 +126,10 @@ const translations = {
       fillLocation: 'Lütfen etkinlik konumunu girin',
       done: 'Tamam',
       concert: 'Konser',
+      eventPrice: 'Ücret',
+      free: 'Ücretsiz',
+      editTitle: 'Duyuruyu Düzenle',
+      save: 'Kaydet',
     },
 
     // Create note page
@@ -129,6 +139,33 @@ const translations = {
       pickFile: 'Dosya Seç',
       formats: 'PDF, PNG, JPEG, JPG',
       errorTitle: 'Yükleme Hatası',
+    },
+
+    // Chorus info page
+    chorusInfo: {
+      since: 'Kuruluş:',
+      description: 'Açıklama',
+      descriptionPlaceholder: 'Koro hakkında bilgi yazın...',
+      rehearsal: 'Prova Bilgileri',
+      rehearsalDays: 'Prova Günleri',
+      rehearsalDaysPlaceholder: 'Örn: Pazartesi, Çarşamba',
+      rehearsalTime: 'Prova Saati',
+      rehearsalTimePlaceholder: 'Örn: 19:00 - 21:00',
+      rehearsalLocation: 'Prova Yeri',
+      rehearsalLocationPlaceholder: 'Prova yapılan yer...',
+      contact: 'İletişim',
+      contactEmail: 'E-posta',
+      contactEmailPlaceholder: 'İletişim e-postası',
+      contactPhone: 'Telefon',
+      contactPhonePlaceholder: 'İletişim telefonu',
+      website: 'Web Sitesi',
+      websitePlaceholder: 'Web sitesi adresi',
+      general: 'Genel',
+      foundedYear: 'Kuruluş Yılı',
+      foundedYearPlaceholder: 'Örn: 2020',
+      emptyHint: 'Koro bilgilerini düzenlemek için sağ üstteki düzenle butonuna dokunun',
+      error: 'Hata',
+      notFound: 'Koro bulunamadı',
     },
 
     // Settings page
@@ -198,6 +235,12 @@ const translations = {
 
     chorus: {
       title: 'My Choruses',
+      pageTitle: 'Choruses',
+      tab_explore: 'Explore',
+      tab_my: 'My Choruses',
+      yourRating: 'Your Rating',
+      searchPlaceholder: 'Search choruses...',
+      noResults: 'No choruses found',
       empty: 'No choruses yet',
       emptyDesc: 'When you join a chorus, it will appear here',
       createChorus: 'Create Chorus',
@@ -258,6 +301,10 @@ const translations = {
       fillLocation: 'Please enter the event location',
       done: 'Done',
       concert: 'Concert',
+      eventPrice: 'Price',
+      free: 'Free',
+      editTitle: 'Edit Bulletin',
+      save: 'Save',
     },
 
     createNote: {
@@ -266,6 +313,32 @@ const translations = {
       pickFile: 'Select File',
       formats: 'PDF, PNG, JPEG, JPG',
       errorTitle: 'Upload Error',
+    },
+
+    chorusInfo: {
+      since: 'Since:',
+      description: 'Description',
+      descriptionPlaceholder: 'Write about the chorus...',
+      rehearsal: 'Rehearsal Info',
+      rehearsalDays: 'Rehearsal Days',
+      rehearsalDaysPlaceholder: 'E.g. Monday, Wednesday',
+      rehearsalTime: 'Rehearsal Time',
+      rehearsalTimePlaceholder: 'E.g. 19:00 - 21:00',
+      rehearsalLocation: 'Rehearsal Location',
+      rehearsalLocationPlaceholder: 'Rehearsal venue...',
+      contact: 'Contact',
+      contactEmail: 'Email',
+      contactEmailPlaceholder: 'Contact email',
+      contactPhone: 'Phone',
+      contactPhonePlaceholder: 'Contact phone',
+      website: 'Website',
+      websitePlaceholder: 'Website address',
+      general: 'General',
+      foundedYear: 'Founded Year',
+      foundedYearPlaceholder: 'E.g. 2020',
+      emptyHint: 'Tap the edit button in the top right to add chorus information',
+      error: 'Error',
+      notFound: 'Chorus not found',
     },
 
     settings: {

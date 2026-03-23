@@ -298,6 +298,234 @@ genişlemiş kısımda; Tiz Segâh, Tiz Çargâh, Tiz Nevâ, Tiz Hüseyni’dir.
 *Genişlemesi: Durak üzerinde bulunan Hüseyni beşlisi simetrik olarak tiz durağın üst tarafına göçürülür ki, başat (c) maddesinde inceledik.
 
 *Dizinin Seyri: Tiz durak Muhayyer perdesi civârından seyre başlanır. Muhayyer perdesi üzerindeki tiz bölgede gezinildikten sonra, Muhayyer perdesinde yarım karar yapılır. Daha sonra, ikinci mertebe güçlü olan Hüseyni perdesindeki asma kararı gösterilir. Bu arada, gerekli yerlerde gerekli asma kararlar da yapılır. Nihâyet karışık gezinerek Dügâh perdesinde Hüseyni dizisiyle tam karar yapılır.`
+    },
+    saba: {
+        makamName: 'Saba',
+        info: `*Durağı: Dügâh perdesidir.
+
+*Seyri: Çıkıcıdır.
+
+*Dizisi: Yerinde Saba dörtlüsüne Çargâh perdesinde Hicaz beşlisinin eklenmesinden meydana gelmiştir. Saba dörtlüsü kendine özgü bir dörtlüdür ve makama karakteristik rengini verir.
+
+*Güçlüsü: Çargâh perdesidir. Üzerinde Hicaz çeşnisiyle yarım karar yapılır.
+
+*Yedeni: 2.çizgideki sol Rast perdesidir.
+
+*Donanımı: Si için koma bemolü donanıma yazılır. Gerekli değişiklikler eser içinde gösterilir.
+Perdelerin isimleri: Dügâh, Segâh, Çargâh, Nim Hicaz, Nevâ, Hüseyni, Eviç, Gerdâniye'dir.
+
+*Dizinin Seyri: Saba makamının seyrine Durak sesi civarından başlanır. Saba dörtlüsünün kendine özgü sesleri kullanılarak Çargâh perdesine çıkılır ve güçlü perdesi olan Çargâh'ta Hicaz çeşnisiyle asma kalış yapılır. Dizinin üst tarafındaki Hicaz beşlisinin seslerinde dolaşılır. Tekrar güçlü perdesine inilerek asma kalış gösterilir. Saba dörtlüsünün sesleri kullanılarak Dügâh perdesinde karar verilir.
+
+*Makamın Özelliği: Saba makamı Türk müziğinin en karakteristik makamlarından biridir. Saba dörtlüsündeki Segâh perdesinin özel kullanımı makama hüzünlü ve derin bir ifade kazandırır. Dinî müzikte çok sık kullanılmıştır.`
+    },
+    suzinak: {
+        makamName: 'Suzinak',
+        info: `*Durağı: Rast perdesidir.
+
+*Seyri: İnici-çıkıcıdır.
+
+*Dizisi: Yerinde Rast beşlisine Nevâ perdesinde Hicaz dörtlüsünün eklenmesinden meydana gelmiştir.
+
+*Güçlüsü: Nevâ perdesidir. Üzerinde Hicaz çeşnisiyle yarım karar yapılır.
+
+*Yedeni: Irak perdesidir.
+
+*Donanımı: Si için koma bemolü, fa için bakiye diyezi donanıma yazılır. Gerekli değişiklikler eser içinde gösterilir.
+Perdelerin isimleri: Rast, Dügâh, Segâh, Çargâh, Nevâ, Nim Hicaz veya Hisâr, Eviç, Gerdâniye'dir.
+
+*Dizinin Seyri: Suzinak makamının seyrine güçlü perdesi civarından başlanır. Rast beşlisinin seslerinde dolaşılarak Nevâ perdesinde asma kalış yapılır. Güçlü perdesi üzerindeki Hicaz dörtlüsünün seslerine geçilir. Tiz durağa kadar çıkılır. Tekrar güçlü perdesine inilir ve Nevâ'da Hicaz çeşnisiyle asma kalış gösterilir. Rast beşlisinin sesleri kullanılarak Rast perdesinde karar verilir.
+
+*Makamın Özelliği: Suzinak makamı, Rast makamının güçlü perdesi üzerinde Hicaz dörtlüsü bulunan şeklidir. Bu nedenle Rast'a göre daha parlak ve canlı bir ifadeye sahiptir.`
+    },
+    mahur: {
+        makamName: 'Mahur',
+        info: `*Durağı: Rast perdesidir.
+
+*Seyri: İnicidir.
+
+*Dizisi: Yerinde Çargâh beşlisine Nevâ perdesinde Çargâh dörtlüsünün eklenmesinden meydana gelmiştir. Batı müziğinin Majör dizisine karşılık gelir.
+
+*Güçlüsü: Nevâ perdesidir. Üzerinde Çargâh çeşnisiyle yarım karar yapılır.
+
+*Yedeni: Irak perdesidir.
+
+*Donanımı: Fa için bakiye diyezi donanıma yazılır.
+Perdelerin isimleri: Rast, Dügâh, Bûselik, Çargâh, Nevâ, Hüseyni, Eviç, Gerdâniye'dir.
+
+*Dizinin Seyri: İnici bir seyre sahip olan Mahur makamının seyrine tiz durak civarından başlanır. Dizinin üst tarafındaki Çargâh dörtlüsünün sesleri kullanılarak güçlü olan Nevâ perdesinde asma kalış yapılır. Yerinde Çargâh beşlisinin seslerine inilerek Rast perdesinde karar verilir.
+
+*Makamın Özelliği: Mahur makamı Batı müziğindeki Majör dizinin Türk müziğindeki karşılığıdır. Parlak ve neşeli bir ifadeye sahiptir. Ancak Türk müziğinde seyir esnasında sıklıkla Rast, Nikriz ve Hicaz geçkileri yapılarak Batı Majör'ünden ayrılır.`
+    },
+    acemasiran: {
+        makamName: 'Acemaşiran',
+        info: `*Durağı: Acem Aşiran perdesidir.
+
+*Seyri: İnicidir.
+
+*Dizisi: Acem Aşiran perdesi üzerinde bir Çargâh beşlisine, Çargâh perdesinde Nikriz beşlisinin eklenmesinden meydana gelmiştir.
+
+*Güçlüsü: Çargâh perdesidir. Üzerinde Nikriz veya Çargâh çeşnisiyle yarım karar yapılır. Gerdaniye perdesi ikinci mertebe güçlüdür.
+
+*Yedeni: Kaba Nim Hicaz perdesidir.
+
+*Donanımı: Si için bakiye bemolü, fa için bakiye diyezi donanıma yazılır.
+Perdelerin isimleri: Acem Aşiran, Irak, Rast, Dügâh, Bûselik, Çargâh, Nevâ, Hüseyni, Eviç, Gerdâniye'dir.
+
+*Dizinin Seyri: İnici seyre sahip olan Acemaşiran makamının seyrine tiz durak veya güçlü civarından başlanır. Gerdaniye perdesi civarında Rast'lı nağmeler yapılır. Çargâh perdesinde asma kalış gösterilir. Dizinin alt tarafındaki Çargâh beşlisinin sesleri kullanılarak Acem Aşiran perdesinde karar verilir.
+
+*Makamın Özelliği: Acemaşiran makamı, zengin ve görkemli bir yapıya sahiptir. Büyük formlardaki eserlerde sıklıkla kullanılmıştır.`
+    },
+    sultaniyegah: {
+        makamName: 'Sultaniyegâh',
+        info: `*Durağı: Yegâh perdesidir.
+
+*Seyri: İnicidir.
+
+*Dizisi: Yegâh perdesi üzerinde bir Çargâh beşlisine, Çargâh perdesinde Bûselik beşlisinin eklenmesinden meydana gelmiştir.
+
+*Güçlüsü: Çargâh perdesidir. İkinci mertebe güçlü Nevâ perdesidir.
+
+*Yedeni: Kaba Nim Hicaz perdesidir.
+
+*Donanımı: Donanıma hiçbir işaret konulmaz. Gerekli değişiklikler eser içinde gösterilir.
+Perdelerin isimleri: Yegâh, Hüseyni Aşiran, Acem Aşiran, Rast, Dügâh, Bûselik, Çargâh, Nevâ, Hüseyni, Acem, Gerdâniye'dir.
+
+*Dizinin Seyri: İnici seyre sahip olan Sultaniyegâh makamının seyrine tiz durak civarından başlanır. Nevâ perdesinde Bûselik veya Kürdi çeşnisiyle asma kalış yapılır. Çargâh perdesinde kalış gösterildikten sonra alt taraftaki Çargâh beşlisinin sesleri kullanılarak Yegâh perdesinde karar verilir.
+
+*Makamın Özelliği: Sultaniyegâh makamı ağır başlı, vakur bir ifadeye sahiptir. Özellikle dinî mûsikîde ve büyük formlarda kullanılmıştır.`
+    },
+    tahir: {
+        makamName: 'Tahir',
+        info: `*Durağı: Dügâh perdesidir.
+
+*Seyri: İnici-çıkıcıdır.
+
+*Dizisi: Yerinde Uşşak dörtlüsüne Nevâ perdesinde Rast dörtlüsünün eklenmesinden meydana gelmiştir.
+
+*Güçlüsü: Nevâ perdesidir. Üzerinde Rast çeşnisiyle yarım karar yapılır.
+
+*Yedeni: 2.çizgideki sol Rast perdesidir.
+
+*Donanımı: Si için koma bemolü, fa için bakiye diyezi donanıma yazılır.
+Perdelerin isimleri: Dügâh, Segâh, Çargâh, Nevâ, Hüseyni, Eviç, Gerdâniye, Muhayyer'dir.
+
+*Dizinin Seyri: Tahir makamının seyrine güçlü Nevâ perdesi civarından başlanır. Rast dörtlüsünün sesleri kullanılarak tiz durağa çıkılır. Nevâ'da Rast çeşnisiyle asma kalış yapılır. Uşşak dörtlüsünün seslerine inilerek Dügâh perdesinde karar verilir.
+
+*Makamın Özelliği: Tahir makamı, Uşşak ve Bayâti makamlarına yakın bir yapıdadır. Halk müziğinde ve şarkı formunda sıklıkla kullanılmıştır. Neşeli ve canlı bir ifadeye sahiptir.`
+    },
+    ferahnak: {
+        makamName: 'Ferahnak',
+        info: `*Durağı: Segâh perdesidir.
+
+*Seyri: Çıkıcıdır.
+
+*Dizisi: Segâh perdesi üzerinde bir Ferahnak beşlisine, Nevâ perdesinde Bûselik dörtlüsünün eklenmesinden meydana gelmiştir.
+
+*Güçlüsü: Nevâ perdesidir.
+
+*Yedeni: Kürdi perdesidir.
+
+*Donanımı: Si ve mi için koma bemolü donanıma yazılır. Gerekli değişiklikler eser içinde gösterilir.
+Perdelerin isimleri: Segâh, Çargâh, Nevâ, Hüseyni, Acem, Gerdâniye'dir.
+
+*Dizinin Seyri: Ferahnak makamının seyrine durak sesi civarından başlanır. Ferahnak beşlisinin sesleri kullanılarak Nevâ perdesinde asma kalış yapılır. Üst taraftaki Bûselik dörtlüsünün seslerinde dolaşılır. Tekrar Nevâ'da asma kalış yapılarak Ferahnak beşlisinin sesleriyle Segâh perdesinde karar verilir.
+
+*Makamın Özelliği: Ferahnak makamı, Segâh makamına yakın bir yapıdadır ancak kendine özgü ferah ve parlak bir rengi vardır. Klasik eserlerde kullanılmıştır.`
+    },
+    nikriz: {
+        makamName: 'Nikriz',
+        info: `*Durağı: Rast perdesidir.
+
+*Seyri: Çıkıcıdır.
+
+*Dizisi: Rast perdesi üzerinde bir Nikriz beşlisine, Nevâ perdesinde Hicaz dörtlüsünün eklenmesinden meydana gelmiştir. Nikriz beşlisi, kendine özgü artık ikili aralığı ile çok karakteristik bir çeşnidir.
+
+*Güçlüsü: Nevâ perdesidir. Üzerinde Hicaz çeşnisiyle yarım karar yapılır.
+
+*Yedeni: Irak perdesidir.
+
+*Donanımı: Si için bakiye bemolü, fa ve do için bakiye diyezi donanıma yazılır.
+Perdelerin isimleri: Rast, Dügâh, Dik Kürdi, Çargâh, Nevâ, Nim Hicaz, Eviç, Gerdâniye'dir.
+
+*Dizinin Seyri: Nikriz makamının seyrine durak sesi civarından başlanır. Nikriz beşlisinin kendine has sesleri kullanılarak güçlü Nevâ perdesine çıkılır ve asma kalış yapılır. Hicaz dörtlüsünün seslerine geçilerek tiz durağa kadar çıkılır. Tekrar güçlü perdesine inilerek asma kalış gösterilir. Nikriz beşlisinin sesleri ile Rast perdesinde karar verilir.
+
+*Makamın Özelliği: Nikriz makamı, artık ikili aralığının verdiği egzotik ve çarpıcı etkisiyle tanınır. Peşrev ve saz eserlerinde sıklıkla kullanılmıştır.`
+    },
+    hicazkar: {
+        makamName: 'Hicazkâr',
+        info: `*Durağı: Rast perdesidir.
+
+*Seyri: İnicidir.
+
+*Dizisi: Yerinde Hicaz beşlisine Çargâh perdesinde Nikriz beşlisinin eklenmesinden meydana gelmiştir.
+
+*Güçlüsü: Gerdâniye perdesidir. İkinci mertebe güçlü Çargâh perdesidir.
+
+*Yedeni: Irak perdesidir.
+
+*Donanımı: Si için bakiye bemolü, do ve fa için bakiye diyezi donanıma yazılır.
+Perdelerin isimleri: Rast, Dügâh, Dik Kürdi, Nim Hicaz, Çargâh, Nevâ, Hüseyni, Eviç, Gerdâniye'dir.
+
+*Dizinin Seyri: İnici seyre sahip olan Hicazkâr makamının seyrine tiz durak Gerdâniye civarından başlanır. Dizinin üst bölgesinde dolaşılarak güçlü Gerdâniye perdesinde yarım karar yapılır. Çargâh perdesinde Nikriz çeşnisiyle asma kalış gösterilir. Hicaz beşlisinin sesleri kullanılarak Rast perdesinde karar verilir.
+
+*Makamın Özelliği: Hicazkâr makamı, Kürdilihicazkâr ile karıştırılmamalıdır. Hicazkâr, Hicaz beşlisi ve Nikriz beşlisinin birleşiminden oluşur ve çok görkemli, zengin bir ifadeye sahiptir. Büyük formlarda tercih edilmiştir.`
+    },
+    isfahan: {
+        makamName: 'Isfahan',
+        info: `*Durağı: Dügâh perdesidir.
+
+*Seyri: İnici-çıkıcıdır.
+
+*Dizisi: Yerinde Uşşak dörtlüsüne Nevâ perdesinde Rast beşlisinin eklenmesinden meydana gelmiştir. Ancak Isfahan makamının Uşşak'tan en önemli farkı, güçlü üzerindeki çeşni ve seyir tarzıdır.
+
+*Güçlüsü: Nevâ perdesidir. Üzerinde Rast çeşnisiyle yarım karar yapılır.
+
+*Yedeni: Rast perdesidir.
+
+*Donanımı: Si için koma bemolü, fa için bakiye diyezi donanıma yazılır.
+Perdelerin isimleri: Dügâh, Segâh, Çargâh, Nevâ, Hüseyni, Eviç, Gerdâniye, Muhayyer'dir.
+
+*Dizinin Seyri: Isfahan makamının seyrine güçlü Nevâ perdesi civarından başlanır. Rast beşlisinin sesleri kullanılarak tiz durağa çıkılır. Nevâ'da Rast çeşnisiyle asma kalış yapılır. Uşşak dörtlüsünün seslerine inilerek Dügâh perdesinde karar verilir.
+
+*Makamın Özelliği: Isfahan makamı, Uşşak ailesinden olmakla birlikte kendine has bir seyir ve ifade özelliğine sahiptir. Özellikle Tiz Segâh'ta Segâh çeşnisiyle yapılan geçkiler bu makama özgü bir renk katar. Şarkı formunda çok kullanılmıştır.`
+    },
+    bestenigar: {
+        makamName: 'Bestenigâr',
+        info: `*Durağı: Rast perdesidir.
+
+*Seyri: İnici-çıkıcıdır.
+
+*Dizisi: Yerinde Rast beşlisine Nevâ perdesinde Bûselik dörtlüsünün eklenmesinden meydana gelmiştir. Ancak dizinin ikinci sesi olan Dügâh perdesi seyir esnasında Segâh'a yaklaştırılarak Uşşak'ımsı bir etki yaratılır.
+
+*Güçlüsü: Nevâ perdesidir.
+
+*Yedeni: Irak perdesidir.
+
+*Donanımı: Si için koma bemolü, fa için bakiye diyezi donanıma yazılır.
+Perdelerin isimleri: Rast, Dügâh, Segâh, Çargâh, Nevâ, Hüseyni, Acem, Gerdâniye'dir.
+
+*Dizinin Seyri: Bestenigâr makamının seyrine güçlü veya tiz durak civarından başlanır. Dizinin üst bölgesinde dolaşılarak Nevâ perdesinde asma kalış yapılır. Rast beşlisinin sesleri kullanılarak Rast perdesinde karar verilir.
+
+*Makamın Özelliği: Bestenigâr makamı, zarif ve duygusal bir ifadeye sahiptir. Klasik bestelerde ve dinî mûsikîde yer almıştır.`
+    },
+    acemkurdi: {
+        makamName: 'Acem Kürdi',
+        info: `*Durağı: Çargâh perdesidir.
+
+*Seyri: Çıkıcıdır.
+
+*Dizisi: Çargâh perdesi üzerinde bir Kürdi dörtlüsüne, Gerdâniye perdesinde Bûselik beşlisinin eklenmesinden meydana gelmiştir. Batı müziğinin Doğal Minör dizisiyle aynıdır.
+
+*Güçlüsü: Gerdâniye perdesidir. Üzerinde Bûselik çeşnisiyle yarım karar yapılır.
+
+*Yedeni: Bûselik perdesidir.
+
+*Donanımı: Si, mi ve la için küçük mücenneb bemolü donanıma yazılır.
+Perdelerin isimleri: Çargâh, Nevâ, Hüseyni, Acem, Gerdâniye, Muhayyer, Tiz Bûselik, Tiz Çargâh'tır.
+
+*Dizinin Seyri: Acem Kürdi makamının seyrine durak sesi civarından başlanır. Kürdi dörtlüsünün sesleri kullanılarak güçlü Gerdâniye perdesine çıkılır ve asma kalış yapılır. Bûselik beşlisinin seslerinde dolaşılarak tiz durağa çıkılır. Tekrar güçlü perdesine inilerek asma kalış gösterilir. Kürdi dörtlüsünün sesleri ile Çargâh perdesinde karar verilir.
+
+*Makamın Özelliği: Acem Kürdi makamı, basit yapılı makamlardan biridir ve Batı müziğinin Doğal Minör dizisiyle özdeştir. Halk müziğinde ve modern Türk müziğinde yaygın olarak kullanılmıştır.`
     }
 
 }
@@ -397,5 +625,161 @@ export const RHYTHMS = {
 *Dü-üm 2 zamanlı, kuvvetli
 *Te-ek 2 zamanlı, yarı kuvvetli
 *Tek 1 zamanlı, zayıftır.
+    `,
+    agirduyek: `
+*Sekiz zamanlıdır.
+*Düyek usulünün ağır (yavaş) halidir.
+*8/4'lük değerde vurulur.
+*Düm 1 zamanlı, yarı kuvvetli
+*Te-ek 2 zamanlı, kuvvetli
+*Tek 1 zamanlı, yarı kuvvetli
+*Dü-üm 2 zamanlı, kuvvetli
+*Te-ek 2 zamanlı, zayıftır.
+*Ağır Düyek, Düyek usulünün büyütülmüş hali olup daha yavaş tempoda icra edilir. Özellikle peşrev ve kâr gibi büyük formlarda kullanılmıştır.
+    `,
+    senginsemai: `
+*Altı zamanlıdır.
+*İki Semai veya bir Nim Sofyan ve bir Sofyan'dan meydana gelir.
+*6/4'lük değerde vurulur.
+*Düm 1 zamanlı, kuvvetli
+*Tek 1 zamanlı, yarı kuvvetli
+*Tek 1 zamanlı, zayıf
+*Düm 1 zamanlı, zayıf
+*Te-ek 2 zamanlı, yarı kuvvetlidir.
+*Sengin Semai, Yürük Semai usulünün 6/4'lük (daha ağır) halidir. Ağır bestelerde ve saz eserlerinde sıklıkla kullanılmıştır.
+    `,
+    agiraksak: `
+*Dokuz zamanlıdır.
+*Aksak usulünün ağır (yavaş) halidir.
+*9/2'lik değerde vurulur.
+*Dü-üm 2 zamanlı, kuvvetli
+*Te 1 zamanlı, yarı kuvvetli
+*Ke 1 zamanlı, zayıf
+*Dü-üm 2 zamanlı, kuvvetli
+*Te-ek 2 zamanlı, yarı kuvvetli
+*Tek 1 zamanlı, zayıftır.
+*Ağır Aksak, Aksak usulünün büyütülmüş hali olup klasik Türk müziğinde çok yaygın kullanılmıştır. Özellikle şarkı, beste ve saz eseri formlarında tercih edilmiştir.
+    `,
+    agiraksaksemaisi: `
+*On zamanlıdır.
+*Curcuna usulünün ağır (yavaş) halidir.
+*10/2'lik değerde vurulur.
+*Dü-üm 2 zamanlı, kuvvetli
+*Te 1 zamanlı, zayıf
+*Ka-a 2 zamanlı, yarı kuvvetli
+*Dü-üm 2 zamanlı, kuvvetli
+*Te-ek 2 zamanlı, yarı kuvvetli
+*Tek 1 zamanlı, zayıftır.
+*Ağır Aksak Semai, büyük formlardaki eserlerde kullanılan yavaş tempolu bir usuldür. Beste formunda sıklıkla tercih edilmiştir.
+    `,
+    fer: `
+*Beş zamanlıdır.
+*5/8'lik değerde vurulur.
+*Dü-üm 2 zamanlı, kuvvetli
+*Te-e-ek 3 zamanlı, yarı kuvvetlidir.
+*Fer usulü, Türk Aksağı'na benzer ancak vurgu dağılımı farklıdır. Halk müziğinde ve bazı klasik eserlerde kullanılmıştır.
+    `,
+    evfer: `
+*Dokuz zamanlıdır.
+*9/4'lük değerde vurulur.
+*Dü-ü-üm 3 zamanlı, kuvvetli
+*Te 1 zamanlı, yarı kuvvetli
+*Ke 1 zamanlı, zayıf
+*Dü-üm 2 zamanlı, kuvvetli
+*Te-ek 2 zamanlı, zayıftır.
+*Evfer usulü, Aksak usulüne benzer yapıda ancak farklı vurgu dağılımına sahiptir. Şarkı ve saz eserlerinde kullanılmıştır.
+    `,
+    cifteduyek: `
+*On altı zamanlıdır.
+*İki Düyek usulünün birleşmesinden meydana gelir.
+*16/8'lik değerde vurulur.
+*Düm 1 zamanlı, yarı kuvvetli
+*Te-ek 2 zamanlı, kuvvetli
+*Tek 1 zamanlı, yarı kuvvetli
+*Dü-üm 2 zamanlı, kuvvetli
+*Te-ek 2 zamanlı, zayıf
+*Düm 1 zamanlı, yarı kuvvetli
+*Te-ek 2 zamanlı, kuvvetli
+*Tek 1 zamanlı, yarı kuvvetli
+*Dü-üm 2 zamanlı, kuvvetli
+*Te-ek 2 zamanlı, zayıftır.
+*Çifte Düyek, iki Düyek usulünün art arda gelmesiyle oluşur. Büyük formlardaki eserlerde kullanılmıştır.
+    `,
+    cenber: `
+*Yirmi dört zamanlıdır. Büyük usullerdendir.
+*24/4'lük değerde vurulur.
+*Altı Sofyan veya üç Düyek usulünün birleşmesiyle meydana gelir.
+*Düm 1 zamanlı, kuvvetli
+*Te-ek 2 zamanlı, yarı kuvvetli
+*Düm 1 zamanlı, kuvvetli
+*Tek 1 zamanlı, zayıf
+*Te-ek 2 zamanlı, yarı kuvvetli
+*Tek 1 zamanlı, zayıf
+*Dü-üm 2 zamanlı, kuvvetli
+*Te-ek 2 zamanlı, zayıf
+*Düm 1 zamanlı, yarı kuvvetli
+*Tek 1 zamanlı, zayıf
+*Te-ek 2 zamanlı, yarı kuvvetli
+*Dü-üm 2 zamanlı, kuvvetli
+*Te-ek 2 zamanlı, zayıf
+*Tek 1 zamanlı, zayıf
+*Dü-üm 2 zamanlı, zayıftır.
+*Cenber usulü, büyük usullerden biri olup özellikle kâr ve kârçe formlarında kullanılmıştır.
+    `,
+    devrikebir: `
+*Yirmi sekiz zamanlıdır. Büyük usullerdendir.
+*28/4'lük değerde vurulur.
+*Yedi Sofyan veya iki Cenber'in farklı birleşimiyle meydana gelir.
+*Düm 1 zamanlı, kuvvetli
+*Te-ek 2 zamanlı, yarı kuvvetli
+*Düm 1 zamanlı, kuvvetli
+*Tek 1 zamanlı, zayıf
+*Dü-üm 2 zamanlı, kuvvetli
+*Te-ek 2 zamanlı, zayıf
+*Tek 1 zamanlı, zayıf
+*Düm 1 zamanlı, yarı kuvvetli
+*Te-ek 2 zamanlı, yarı kuvvetli
+*Düm 1 zamanlı, kuvvetli
+*Te-ek 2 zamanlı, zayıf
+*Dü-üm 2 zamanlı, kuvvetli
+*Tek 1 zamanlı, zayıf
+*Te-ek 2 zamanlı, yarı kuvvetli
+*Düm 1 zamanlı, kuvvetli
+*Tek 1 zamanlı, zayıf
+*Dü-üm 2 zamanlı, zayıf
+*Te-ek 2 zamanlı, zayıftır.
+*Devr-i Kebir, en büyük usullerden biri olup özellikle peşrev formunda kullanılmıştır. Ağır ve görkemli bir yapıya sahiptir.
+    `,
+    berefsan: `
+*On altı zamanlıdır. Büyük usullerdendir.
+*16/4'lük değerde vurulur.
+*Dört Sofyan'ın birleşmesinden meydana gelir.
+*Düm 1 zamanlı, kuvvetli
+*Te-ek 2 zamanlı, yarı kuvvetli
+*Tek 1 zamanlı, zayıf
+*Dü-üm 2 zamanlı, kuvvetli
+*Te 1 zamanlı, yarı kuvvetli
+*Ke 1 zamanlı, zayıf
+*Düm 1 zamanlı, kuvvetli
+*Te-ek 2 zamanlı, yarı kuvvetli
+*Tek 1 zamanlı, zayıf
+*Dü-üm 2 zamanlı, kuvvetli
+*Te-ek 2 zamanlı, zayıftır.
+*Berefşan usulü, büyük usullerden biri olup peşrev ve kâr formlarında kullanılmıştır.
+    `,
+    frenkcin: `
+*On dört zamanlıdır.
+*İki Devr-i Hindi usulünün birleşmesiyle meydana gelir.
+*14/8'lik değerde vurulur.
+*Düm 2 zamanlı, kuvvetli
+*Tek 1 zamanlı, yarı kuvvetli
+*Tek 1 zamanlı, zayıf
+*Dü-üm 2 zamanlı, kuvvetli
+*Te-ek 2 zamanlı, zayıf
+*Düm 2 zamanlı, kuvvetli
+*Te 1 zamanlı, yarı kuvvetli
+*Ke 1 zamanlı, zayıf
+*Te-ek 2 zamanlı, zayıftır.
+*Frenkçin usulü, nispeten az kullanılmış bir usuldür. Bazı peşrevlerde ve saz eserlerinde görülür.
     `
 }
