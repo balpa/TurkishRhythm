@@ -1,5 +1,6 @@
 node_modules/
 .expo/
+.expo-shared/
 dist/
 npm-debug.*
 *.jks
@@ -13,6 +14,9 @@ web-build/
 # env
 .env
 .env.local
+
+# supabase CLI local state (contains project ref, pooler URL, etc.)
+supabase/.temp/
 
 # macOS
 .DS_Store
