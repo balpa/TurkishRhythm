@@ -19,6 +19,10 @@ const COLORS = {
 const DEBOUNCE_MS = 400
 const MIN_CHARS = 3
 
+const getUserDisplayName = (user) => {
+  return user.display_name || user.email || '-'
+}
+
 const UserRow = ({ user, onAdd, adding, alreadyMember, index }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current
 
@@ -32,7 +36,8 @@ const UserRow = ({ user, onAdd, adding, alreadyMember, index }) => {
     }).start()
   }, [])
 
-  const initial = (user.email || '?')[0].toUpperCase()
+  const displayName = getUserDisplayName(user)
+  const initial = (displayName || '?')[0].toUpperCase()
 
   return (
     <Animated.View style={[styles.userRow, { opacity: fadeAnim }]}>
@@ -40,7 +45,7 @@ const UserRow = ({ user, onAdd, adding, alreadyMember, index }) => {
         <Text style={styles.avatarText}>{initial}</Text>
       </View>
       <View style={styles.userInfo}>
-        <Text style={styles.userEmail} numberOfLines={1}>{user.email}</Text>
+        <Text style={styles.userEmail} numberOfLines={1}>{displayName}</Text>
       </View>
       {alreadyMember ? (
         <View style={styles.alreadyBadge}>
@@ -100,11 +105,22 @@ const AddMember = ({ route, navigation }) => {
 
     setSearching(true)
 
-    const { data, error } = await supabase
+    let { data, error } = await supabase
       .from('profiles')
-      .select('id, email')
-      .ilike('email', `%${text}%`)
+      .select('id, email, display_name')
+      .or(`email.ilike.%${text}%,display_name.ilike.%${text}%`)
       .limit(20)
+
+    if (error && error.code === '42703') {
+      const fallbackResult = await supabase
+        .from('profiles')
+        .select('id, email')
+        .ilike('email', `%${text}%`)
+        .limit(20)
+
+      data = fallbackResult.data
+      error = fallbackResult.error
+    }
 
     if (!error && data) {
       setResults(data)

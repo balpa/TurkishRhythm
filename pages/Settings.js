@@ -20,16 +20,29 @@ const Settings = ({ onLogout }) => {
   const { language, changeLanguage } = useLanguage()
   const [canCreateChorus, setCanCreateChorus] = useState(false)
   const [showCreateModal, setShowCreateModal] = useState(false)
+  const [showProfileModal, setShowProfileModal] = useState(false)
   const [chorusName, setChorusName] = useState('')
   const [chorusDesc, setChorusDesc] = useState('')
   const [creating, setCreating] = useState(false)
+  const [profileLoading, setProfileLoading] = useState(true)
+  const [profileSaving, setProfileSaving] = useState(false)
+  const [profileData, setProfileData] = useState(null)
+  const [displayName, setDisplayName] = useState('')
   const [message, setMessage] = useState('')
   const [messageType, setMessageType] = useState('')
   const modalAnim = useRef(new Animated.Value(0)).current
+  const profileModalAnim = useRef(new Animated.Value(0)).current
 
   useEffect(() => {
     checkPermission()
+    loadProfile()
   }, [])
+
+  const showFeedbackMessage = (text, type) => {
+    setMessage(text)
+    setMessageType(type)
+    setTimeout(() => setMessage(''), 3000)
+  }
 
   const checkPermission = async () => {
     const { data: { user } } = await supabase.auth.getUser()
@@ -44,11 +57,39 @@ const Settings = ({ onLogout }) => {
     if (data) setCanCreateChorus(data.can_create_chorus)
   }
 
+  const loadProfile = async () => {
+    setProfileLoading(true)
+
+    const { data: { user }, error: userError } = await supabase.auth.getUser()
+
+    if (userError || !user) {
+      setProfileData(null)
+      setDisplayName('')
+      setProfileLoading(false)
+      return
+    }
+
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', user.id)
+      .maybeSingle()
+
+    const metadata = user.user_metadata || {}
+    const nextDisplayName = profile?.display_name || metadata.display_name || metadata.full_name || ''
+
+    setProfileData({
+      email: profile?.email || user.email || '-',
+      createdAt: profile?.created_at || user.created_at,
+      userId: user.id,
+    })
+    setDisplayName(nextDisplayName)
+    setProfileLoading(false)
+  }
+
   const openCreateModal = () => {
     if (!canCreateChorus) {
-      setMessage(t(language, 'chorus.noPermission'))
-      setMessageType('error')
-      setTimeout(() => setMessage(''), 3000)
+      showFeedbackMessage(t(language, 'chorus.noPermission'), 'error')
       return
     }
     setShowCreateModal(true)
@@ -62,6 +103,69 @@ const Settings = ({ onLogout }) => {
     Animated.timing(modalAnim, { toValue: 0, duration: 200, useNativeDriver: true }).start(() => {
       setShowCreateModal(false)
     })
+  }
+
+  const openProfileModal = async () => {
+    setShowProfileModal(true)
+    profileModalAnim.setValue(0)
+    Animated.spring(profileModalAnim, { toValue: 1, friction: 7, tension: 80, useNativeDriver: true }).start()
+    await loadProfile()
+  }
+
+  const closeProfileModal = () => {
+    Animated.timing(profileModalAnim, { toValue: 0, duration: 200, useNativeDriver: true }).start(() => {
+      setShowProfileModal(false)
+    })
+  }
+
+  const handleSaveProfile = async () => {
+    setProfileSaving(true)
+
+    const trimmedDisplayName = displayName.trim()
+    const { data, error } = await supabase.auth.updateUser({
+      data: {
+        display_name: trimmedDisplayName,
+        full_name: trimmedDisplayName,
+      },
+    })
+
+    if (error) {
+      setProfileSaving(false)
+      showFeedbackMessage(error.message, 'error')
+      return
+    }
+
+    const { error: profileError } = await supabase
+      .from('profiles')
+      .update({ display_name: trimmedDisplayName || null })
+      .eq('id', profileData?.userId)
+
+    if (profileError && profileError.code !== '42703') {
+      setProfileSaving(false)
+      showFeedbackMessage(profileError.message, 'error')
+      return
+    }
+
+    const metadata = data.user?.user_metadata || {}
+    setDisplayName(metadata.display_name || metadata.full_name || trimmedDisplayName)
+    setProfileData(prev => prev ? { ...prev, displayName: trimmedDisplayName || '' } : prev)
+    setProfileSaving(false)
+    closeProfileModal()
+    showFeedbackMessage(t(language, 'settings.profileSaved'), 'success')
+  }
+
+  const formatProfileDate = (value) => {
+    if (!value) return '-'
+
+    try {
+      return new Date(value).toLocaleDateString(language === 'tr' ? 'tr-TR' : 'en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      })
+    } catch {
+      return value
+    }
   }
 
   const handleCreateChorus = async () => {
@@ -126,6 +230,25 @@ const Settings = ({ onLogout }) => {
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
         <Text style={styles.pageTitle}>{t(language, 'settings.title')}</Text>
+
+        <TouchableOpacity
+          style={styles.profileButton}
+          activeOpacity={0.7}
+          onPress={openProfileModal}
+        >
+          <View style={styles.profileButtonIcon}>
+            <Icon name="person-outline" color={COLORS.accent} size={24} />
+          </View>
+          <View style={styles.profileButtonContent}>
+            <Text style={styles.profileButtonTitle}>{t(language, 'settings.profile')}</Text>
+            <Text style={styles.profileButtonDesc}>
+              {profileLoading
+                ? t(language, 'settings.loadingProfile')
+                : profileData?.email || t(language, 'settings.profileDesc')}
+            </Text>
+          </View>
+          <Icon name="chevron-right" color={COLORS.textDim} size={22} />
+        </TouchableOpacity>
 
         {/* Create Chorus */}
         <TouchableOpacity
@@ -288,6 +411,76 @@ const Settings = ({ onLogout }) => {
           </TouchableOpacity>
         </TouchableOpacity>
       </Modal>
+
+      <Modal visible={showProfileModal} transparent animationType="none" onRequestClose={closeProfileModal}>
+        <TouchableOpacity style={styles.modalOverlay} activeOpacity={1} onPress={closeProfileModal}>
+          <TouchableOpacity activeOpacity={1} style={{ width: '100%' }}>
+            <Animated.View style={[styles.modalCard, {
+              opacity: profileModalAnim,
+              transform: [{ scale: profileModalAnim.interpolate({ inputRange: [0, 1], outputRange: [0.85, 1] }) }],
+            }]}>
+              <View style={styles.modalHeader}>
+                <Text style={styles.modalTitle}>{t(language, 'settings.profile')}</Text>
+                <TouchableOpacity onPress={closeProfileModal} style={styles.modalClose}>
+                  <Icon name="close" color={COLORS.textDim} size={22} />
+                </TouchableOpacity>
+              </View>
+
+              {profileLoading ? (
+                <View style={styles.profileLoadingWrap}>
+                  <ActivityIndicator color={COLORS.accent} size="small" />
+                </View>
+              ) : (
+                <>
+                  <View style={styles.profileInfoCard}>
+                    <View style={styles.profileInfoRow}>
+                      <Text style={styles.profileInfoLabel}>{t(language, 'settings.email')}</Text>
+                      <Text style={styles.profileInfoValue}>{profileData?.email || '-'}</Text>
+                    </View>
+                    <View style={styles.divider} />
+                    <View style={styles.profileInfoRow}>
+                      <Text style={styles.profileInfoLabel}>{t(language, 'settings.memberSince')}</Text>
+                      <Text style={styles.profileInfoValue}>{formatProfileDate(profileData?.createdAt)}</Text>
+                    </View>
+                  </View>
+
+                  <Text style={styles.profileFieldLabel}>{t(language, 'settings.displayName')}</Text>
+                  <View style={styles.modalInput}>
+                    <TextInput
+                      style={styles.modalTextInput}
+                      placeholder={t(language, 'settings.displayNamePlaceholder')}
+                      placeholderTextColor={COLORS.textDim}
+                      value={displayName}
+                      onChangeText={setDisplayName}
+                      autoCapitalize="words"
+                      autoCorrect={false}
+                    />
+                  </View>
+                  <Text style={styles.profileHelperText}>{t(language, 'settings.displayNameHint')}</Text>
+
+                  <View style={styles.modalActions}>
+                    <TouchableOpacity style={styles.cancelButton} activeOpacity={0.7} onPress={closeProfileModal}>
+                      <Text style={styles.cancelText}>{t(language, 'chorus.cancel')}</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={[styles.createButton, profileSaving && { opacity: 0.7 }]}
+                      activeOpacity={0.8}
+                      onPress={handleSaveProfile}
+                      disabled={profileSaving}
+                    >
+                      {profileSaving ? (
+                        <ActivityIndicator color="#fff" size="small" />
+                      ) : (
+                        <Text style={styles.createText}>{t(language, 'bulletin.save')}</Text>
+                      )}
+                    </TouchableOpacity>
+                  </View>
+                </>
+              )}
+            </Animated.View>
+          </TouchableOpacity>
+        </TouchableOpacity>
+      </Modal>
     </View>
   )
 }
@@ -309,6 +502,38 @@ const styles = StyleSheet.create({
     color: COLORS.text,
     marginBottom: 24,
     letterSpacing: 0.5,
+  },
+  profileButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: COLORS.surface,
+    borderRadius: 16,
+    padding: 16,
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+  },
+  profileButtonIcon: {
+    width: 44,
+    height: 44,
+    borderRadius: 12,
+    backgroundColor: COLORS.bg,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 14,
+  },
+  profileButtonContent: {
+    flex: 1,
+  },
+  profileButtonTitle: {
+    fontSize: 16,
+    fontWeight: '800',
+    color: COLORS.text,
+    marginBottom: 2,
+  },
+  profileButtonDesc: {
+    fontSize: 12,
+    color: COLORS.textDim,
   },
   createChorusButton: {
     flexDirection: 'row',
@@ -517,6 +742,44 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: COLORS.text,
     fontWeight: '500',
+  },
+  profileLoadingWrap: {
+    paddingVertical: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  profileInfoCard: {
+    backgroundColor: COLORS.bg,
+    borderRadius: 14,
+    overflow: 'hidden',
+    marginBottom: 16,
+  },
+  profileInfoRow: {
+    paddingVertical: 14,
+    paddingHorizontal: 16,
+    gap: 4,
+  },
+  profileInfoLabel: {
+    fontSize: 13,
+    color: COLORS.textDim,
+    fontWeight: '600',
+  },
+  profileInfoValue: {
+    fontSize: 15,
+    color: COLORS.text,
+    fontWeight: '700',
+  },
+  profileFieldLabel: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: COLORS.text,
+    marginBottom: 8,
+  },
+  profileHelperText: {
+    fontSize: 12,
+    lineHeight: 18,
+    color: COLORS.textDim,
+    marginTop: -2,
   },
   modalActions: {
     flexDirection: 'row',

@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, Animated, Image, TouchableOpacity } from 'react-native'
-import React, { useState, useRef, useEffect } from 'react'
+import React, { memo, useState, useRef } from 'react'
 import { ScrollView } from 'react-native-gesture-handler'
 
 const RhythmCard = ({ rhythmName, rhythmTime, color, imageURI, infoText }) => {
@@ -8,18 +8,6 @@ const RhythmCard = ({ rhythmName, rhythmTime, color, imageURI, infoText }) => {
   const heightAnim = useRef(new Animated.Value(0)).current
   const contentOpacity = useRef(new Animated.Value(0)).current
   const scaleAnim = useRef(new Animated.Value(1)).current
-  // letterSpacingAnim removed
-  const badgeScale = useRef(new Animated.Value(1)).current
-
-  useEffect(() => {
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(badgeScale, { toValue: 1.06, duration: 2000, useNativeDriver: false }),
-        Animated.timing(badgeScale, { toValue: 1, duration: 2000, useNativeDriver: false }),
-      ])
-    ).start()
-  }, [])
-
   function toggleCard() {
     Animated.sequence([
       Animated.timing(scaleAnim, { toValue: 0.96, duration: 80, useNativeDriver: false }),
@@ -64,12 +52,9 @@ const RhythmCard = ({ rhythmName, rhythmTime, color, imageURI, infoText }) => {
       <TouchableOpacity activeOpacity={0.85} onPress={toggleCard}>
         <View style={styles.headerRow}>
           {/* time badge */}
-          <Animated.View style={[
-            styles.badgeOuter,
-            { transform: [{ scale: badgeScale }] }
-          ]}>
+          <View style={styles.badgeOuter}>
             <Text style={styles.timeText}>{rhythmTime}</Text>
-          </Animated.View>
+          </View>
 
           <View style={styles.titleBlock}>
             <Text
@@ -105,7 +90,7 @@ const RhythmCard = ({ rhythmName, rhythmTime, color, imageURI, infoText }) => {
   )
 }
 
-export default RhythmCard
+export default memo(RhythmCard)
 
 const styles = StyleSheet.create({
   card: {

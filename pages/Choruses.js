@@ -11,6 +11,8 @@ import NoteViewer from './NoteViewer'
 import AddMember from './AddMember'
 import CreateBulletin from './CreateBulletin'
 import ChorusInfo from './ChorusInfo'
+import CreateRehearsal from './CreateRehearsal'
+import PickLocation from './PickLocation'
 
 const Stack = createNativeStackNavigator()
 
@@ -483,6 +485,8 @@ const Choruses = () => {
       <Stack.Screen name="CreateNote" component={CreateNote} />
       <Stack.Screen name="NoteViewer" component={NoteViewer} />
       <Stack.Screen name="CreateBulletin" component={CreateBulletin} />
+      <Stack.Screen name="CreateRehearsal" component={CreateRehearsal} />
+      <Stack.Screen name="PickLocation" component={PickLocation} />
       <Stack.Screen name="AddMember" component={AddMember} />
       <Stack.Screen name="ChorusInfo" component={ChorusInfo} />
     </Stack.Navigator>

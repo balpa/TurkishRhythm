@@ -18,6 +18,7 @@ const COLORS = {
 }
 
 const IMAGE_TYPES = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp']
+const MAX_CHORUS_NOTES = 50
 
 const FilePreview = ({ file, onRemove }) => {
   const isImage = IMAGE_TYPES.includes(file.mimeType)
@@ -70,6 +71,34 @@ const CreateNote = ({ route, navigation }) => {
     try {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) return
+
+      const { count, error: countError } = await supabase
+        .from('notes')
+        .select('*', { count: 'exact', head: true })
+        .eq('chorus_id', chorus.id)
+
+      if (countError) {
+        Alert.alert(t(language, 'createNote.errorTitle'), countError.message)
+        setUploading(false)
+        return
+      }
+
+      const remainingSlots = MAX_CHORUS_NOTES - (count || 0)
+
+      if (remainingSlots <= 0) {
+        Alert.alert(t(language, 'createNote.limitTitle'), t(language, 'createNote.limitReached'))
+        setUploading(false)
+        return
+      }
+
+      if (files.length > remainingSlots) {
+        Alert.alert(
+          t(language, 'createNote.limitTitle'),
+          t(language, 'createNote.limitExceeded').replace('{count}', String(remainingSlots))
+        )
+        setUploading(false)
+        return
+      }
 
       for (const file of files) {
         const ext = file.name?.split('.').pop() || 'bin'
@@ -145,6 +174,7 @@ const CreateNote = ({ route, navigation }) => {
 
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <Text style={styles.chorusLabel}>{chorus.name}</Text>
+        <Text style={styles.noteLimitText}>{t(language, 'createNote.limitHint')}</Text>
 
         {files.length > 0 && (
           <View style={styles.previewGrid}>
@@ -219,6 +249,11 @@ const styles = StyleSheet.create({
   chorusLabel: {
     fontSize: 14,
     fontWeight: '600',
+    color: COLORS.textDim,
+    marginBottom: 6,
+  },
+  noteLimitText: {
+    fontSize: 12,
     color: COLORS.textDim,
     marginBottom: 16,
   },

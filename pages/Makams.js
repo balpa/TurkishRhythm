@@ -1,5 +1,5 @@
-import { View, StyleSheet, ScrollView, TextInput, TouchableOpacity } from 'react-native'
-import React, { useEffect, useRef, useState, useMemo } from 'react'
+import { View, StyleSheet, FlatList, TextInput, TouchableOpacity } from 'react-native'
+import React, { useState, useMemo, useCallback } from 'react'
 import { Icon } from 'react-native-elements'
 import MakamCard from '../components/MakamCard'
 import { MAKAMS } from '../data/data'
@@ -45,11 +45,13 @@ const makamList = [
 ]
 
 const Makams = () => {
-  const colors = useRef([...RETRO_PALETTE])
   const [search, setSearch] = useState('')
-
-  useEffect(() => {
-    colors.current = [...RETRO_PALETTE].sort(() => Math.random() - 0.5)
+  const colorsByKey = useMemo(() => {
+    const shuffled = [...RETRO_PALETTE].sort(() => Math.random() - 0.5)
+    return makamList.reduce((acc, item, index) => {
+      acc[item.key] = shuffled[index % shuffled.length]
+      return acc
+    }, {})
   }, [])
 
   const filtered = useMemo(() => {
@@ -59,6 +61,15 @@ const Makams = () => {
       MAKAMS[m.key].makamName.toLowerCase().includes(q)
     )
   }, [search])
+
+  const renderItem = useCallback(({ item }) => (
+    <MakamCard
+      makamName={MAKAMS[item.key].makamName}
+      makamInfo={MAKAMS[item.key].info}
+      imageURI={item.img}
+      color={colorsByKey[item.key]}
+    />
+  ), [colorsByKey])
 
   return (
     <View style={styles.container}>
@@ -78,17 +89,17 @@ const Makams = () => {
           </TouchableOpacity>
         )}
       </View>
-      <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: 20 }}>
-        {filtered.map((m, i) => (
-          <MakamCard
-            key={m.key}
-            makamName={MAKAMS[m.key].makamName}
-            makamInfo={MAKAMS[m.key].info}
-            imageURI={m.img}
-            color={colors.current[i % colors.current.length]}
-          />
-        ))}
-      </ScrollView>
+      <FlatList
+        data={filtered}
+        keyExtractor={(item) => item.key}
+        renderItem={renderItem}
+        contentContainerStyle={styles.listContent}
+        showsVerticalScrollIndicator={false}
+        removeClippedSubviews={true}
+        windowSize={7}
+        initialNumToRender={6}
+        maxToRenderPerBatch={6}
+      />
     </View>
   )
 }
@@ -98,9 +109,11 @@ export default Makams
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#1B1B2F',
-    width: '100%',
-    height: '100%',
+    flex: 1,
     paddingTop: 10,
+  },
+  listContent: {
+    paddingBottom: 20,
   },
   searchContainer: {
     flexDirection: 'row',

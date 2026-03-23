@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, Animated, Image, TouchableOpacity, ScrollView } from 'react-native'
-import React, { useState, useRef, useEffect } from 'react'
+import React, { memo, useState, useRef } from 'react'
 
 const MakamCard = ({ makamName, color, imageURI, makamInfo }) => {
   const [isOpen, setIsOpen] = useState(false)
@@ -7,18 +7,6 @@ const MakamCard = ({ makamName, color, imageURI, makamInfo }) => {
   const heightAnim = useRef(new Animated.Value(0)).current
   const contentOpacity = useRef(new Animated.Value(0)).current
   const scaleAnim = useRef(new Animated.Value(1)).current
-  // letterSpacingAnim removed
-  const glowAnim = useRef(new Animated.Value(0.3)).current
-
-  useEffect(() => {
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(glowAnim, { toValue: 0.7, duration: 2200, useNativeDriver: false }),
-        Animated.timing(glowAnim, { toValue: 0.3, duration: 2200, useNativeDriver: false }),
-      ])
-    ).start()
-  }, [])
-
   function toggleCard() {
     Animated.sequence([
       Animated.timing(scaleAnim, { toValue: 0.96, duration: 80, useNativeDriver: false }),
@@ -76,7 +64,7 @@ const MakamCard = ({ makamName, color, imageURI, makamInfo }) => {
         <View style={styles.headerRow}>
           {/* decorative geometric cluster */}
           <View style={styles.decoWrap}>
-            <Animated.View style={[styles.decoRingOuter, { borderColor: 'rgba(255,255,255,0.25)', opacity: glowAnim }]} />
+            <View style={styles.decoRingOuter} />
             <View style={[styles.decoFill, { backgroundColor: 'rgba(255,255,255,0.2)' }]} />
             <View style={[styles.decoDiamond, { backgroundColor: 'rgba(255,255,255,0.3)' }]} />
             <View style={styles.decoCenter} />
@@ -114,7 +102,7 @@ const MakamCard = ({ makamName, color, imageURI, makamInfo }) => {
   )
 }
 
-export default MakamCard
+export default memo(MakamCard)
 
 const styles = StyleSheet.create({
   card: {
@@ -145,6 +133,8 @@ const styles = StyleSheet.create({
     height: 48,
     borderRadius: 24,
     borderWidth: 2,
+    borderColor: 'rgba(255,255,255,0.25)',
+    opacity: 0.55,
   },
   decoFill: {
     position: 'absolute',

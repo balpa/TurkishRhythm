@@ -1,5 +1,5 @@
-import { View, ScrollView, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
-import React, { useEffect, useRef, useState, useMemo } from 'react'
+import { View, FlatList, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
+import React, { useState, useMemo, useCallback } from 'react'
 import { Icon } from 'react-native-elements'
 import RhythmCard from '../components/RhythmCard'
 import { RHYTHMS } from '../data/data'
@@ -38,11 +38,13 @@ const rhythmList = [
 ]
 
 const Rhythms = () => {
-  const colors = useRef([...RETRO_PALETTE])
   const [search, setSearch] = useState('')
-
-  useEffect(() => {
-    colors.current = [...RETRO_PALETTE].sort(() => Math.random() - 0.5)
+  const colorsByKey = useMemo(() => {
+    const shuffled = [...RETRO_PALETTE].sort(() => Math.random() - 0.5)
+    return rhythmList.reduce((acc, item, index) => {
+      acc[item.key] = shuffled[index % shuffled.length]
+      return acc
+    }, {})
   }, [])
 
   const filtered = useMemo(() => {
@@ -52,6 +54,16 @@ const Rhythms = () => {
       r.name.toLowerCase().includes(q) || r.time.includes(q)
     )
   }, [search])
+
+  const renderItem = useCallback(({ item }) => (
+    <RhythmCard
+      infoText={RHYTHMS[item.key]}
+      rhythmName={item.name}
+      imageURI={item.img}
+      rhythmTime={item.time}
+      color={colorsByKey[item.key]}
+    />
+  ), [colorsByKey])
 
   return (
     <View style={styles.container}>
@@ -71,18 +83,17 @@ const Rhythms = () => {
           </TouchableOpacity>
         )}
       </View>
-      <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: 20 }}>
-        {filtered.map((r, i) => (
-          <RhythmCard
-            key={r.key}
-            infoText={RHYTHMS[r.key]}
-            rhythmName={r.name}
-            imageURI={r.img}
-            rhythmTime={r.time}
-            color={colors.current[i % colors.current.length]}
-          />
-        ))}
-      </ScrollView>
+      <FlatList
+        data={filtered}
+        keyExtractor={(item) => item.key}
+        renderItem={renderItem}
+        contentContainerStyle={styles.listContent}
+        showsVerticalScrollIndicator={false}
+        removeClippedSubviews={true}
+        windowSize={7}
+        initialNumToRender={6}
+        maxToRenderPerBatch={6}
+      />
     </View>
   )
 }
@@ -91,10 +102,12 @@ export default Rhythms
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
-    height: '100%',
+    flex: 1,
     backgroundColor: '#1B1B2F',
     paddingTop: 10,
+  },
+  listContent: {
+    paddingBottom: 20,
   },
   searchContainer: {
     flexDirection: 'row',

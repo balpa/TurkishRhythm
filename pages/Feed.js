@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, FlatList, ActivityIndicator, RefreshControl, Animated, Easing } from 'react-native'
+import { View, Text, StyleSheet, FlatList, ActivityIndicator, RefreshControl, TouchableOpacity } from 'react-native'
 import React, { useState, useEffect, useCallback, useRef, memo } from 'react'
 import { Icon } from 'react-native-elements'
 import { supabase } from '../lib/supabase'
@@ -17,24 +17,61 @@ const COLORS = {
 }
 
 const PAGE_SIZE = 10
+const ATTENDANCE_STATUSES = ['attending', 'maybe', 'absent']
 
-const BulletinCard = memo(({ item, language }) => {
-  const fadeAnim = useRef(new Animated.Value(0)).current
-  const slideAnim = useRef(new Animated.Value(20)).current
+const getUserDisplayName = (profile, fallbackId) => {
+  return profile?.display_name || profile?.email || (fallbackId ? `${fallbackId.substring(0, 8)}...` : '-')
+}
 
-  useEffect(() => {
-    Animated.parallel([
-      Animated.timing(fadeAnim, { toValue: 1, duration: 350, useNativeDriver: true }),
-      Animated.timing(slideAnim, { toValue: 0, duration: 350, easing: Easing.out(Easing.ease), useNativeDriver: true }),
-    ]).start()
-  }, [])
+const applyAttendanceToBulletins = (items, attendanceRows, currentUserId) => {
+  const attendanceMap = {}
 
+  attendanceRows.forEach((row) => {
+    if (!attendanceMap[row.bulletin_id]) {
+      attendanceMap[row.bulletin_id] = {
+        attending: 0,
+        maybe: 0,
+        absent: 0,
+        currentUserStatus: null,
+      }
+    }
+
+    if (ATTENDANCE_STATUSES.includes(row.status)) {
+      attendanceMap[row.bulletin_id][row.status] += 1
+    }
+
+    if (row.user_id === currentUserId) {
+      attendanceMap[row.bulletin_id].currentUserStatus = row.status
+    }
+  })
+
+  return items.map((item) => {
+    const attendance = attendanceMap[item.id] || {
+      attending: 0,
+      maybe: 0,
+      absent: 0,
+      currentUserStatus: null,
+    }
+
+    return {
+      ...item,
+      attendance_summary: {
+        attending: attendance.attending,
+        maybe: attendance.maybe,
+        absent: attendance.absent,
+      },
+      my_attendance_status: attendance.currentUserStatus,
+    }
+  })
+}
+
+const BulletinCard = memo(({ item, language, attendanceEnabled, attendanceSavingId, onAttendanceChange }) => {
   const date = new Date(item.created_at).toLocaleDateString(
     language === 'tr' ? 'tr-TR' : 'en-US',
     { day: 'numeric', month: 'short', year: 'numeric' }
   )
 
-  const authorEmail = item.profiles?.email || item.created_by?.substring(0, 8) + '...'
+  const authorName = getUserDisplayName(item.profiles, item.created_by)
   const chorusName = item.choruses?.name || ''
 
   const eventDateFormatted = item.event_date
@@ -49,9 +86,11 @@ const BulletinCard = memo(({ item, language }) => {
         { hour: '2-digit', minute: '2-digit' }
       )
     : null
+  const isPastEvent = item.is_event && item.event_date && new Date(item.event_date) < new Date()
+  const attendanceSummary = item.attendance_summary || { attending: 0, maybe: 0, absent: 0 }
 
   return (
-    <Animated.View style={[styles.card, { opacity: fadeAnim, transform: [{ translateY: slideAnim }] }]}>
+    <View style={[styles.card, isPastEvent && styles.pastCard]}>
       {/* Chorus name header */}
       <View style={styles.cardSourceRow}>
         <View style={styles.cardSourceIcon}>
@@ -74,6 +113,14 @@ const BulletinCard = memo(({ item, language }) => {
             <Icon name="event" color={COLORS.accent} size={12} />
             <Text style={[styles.badgeText, { color: COLORS.accent }]}>
               {t(language, 'bulletin.concert')}
+            </Text>
+          </View>
+        )}
+        {isPastEvent && (
+          <View style={[styles.badge, { backgroundColor: COLORS.textDim + '20' }]}>
+            <Icon name="event-busy" color={COLORS.textDim} size={12} />
+            <Text style={[styles.badgeText, { color: COLORS.textDim }]}>
+              {t(language, 'bulletin.pastEvent')}
             </Text>
           </View>
         )}
@@ -108,8 +155,58 @@ const BulletinCard = memo(({ item, language }) => {
         </View>
       )}
 
-      <Text style={styles.cardAuthor}>{authorEmail}</Text>
-    </Animated.View>
+      {item.is_event && attendanceEnabled && (
+        <View style={styles.attendanceCard}>
+          <View style={styles.attendanceHeader}>
+            <Text style={styles.attendanceTitle}>{t(language, 'chorusDetail.attendanceTitle')}</Text>
+            <Text style={styles.attendanceStatusText}>
+              {item.my_attendance_status
+                ? t(language, `chorusDetail.attendance_${item.my_attendance_status}`)
+                : t(language, 'chorusDetail.attendance_notResponded')}
+            </Text>
+          </View>
+
+          <View style={styles.attendanceStats}>
+            <View style={styles.attendanceStat}>
+              <Text style={styles.attendanceStatValue}>{attendanceSummary.attending}</Text>
+              <Text style={styles.attendanceStatLabel}>{t(language, 'chorusDetail.attendance_attending')}</Text>
+            </View>
+            <View style={styles.attendanceStat}>
+              <Text style={styles.attendanceStatValue}>{attendanceSummary.maybe}</Text>
+              <Text style={styles.attendanceStatLabel}>{t(language, 'chorusDetail.attendance_maybe')}</Text>
+            </View>
+            <View style={styles.attendanceStat}>
+              <Text style={styles.attendanceStatValue}>{attendanceSummary.absent}</Text>
+              <Text style={styles.attendanceStatLabel}>{t(language, 'chorusDetail.attendance_absent')}</Text>
+            </View>
+          </View>
+
+          {!isPastEvent && (
+            <View style={styles.attendanceActions}>
+              {ATTENDANCE_STATUSES.map((status) => {
+                const isActive = item.my_attendance_status === status
+
+                return (
+                  <TouchableOpacity
+                    key={status}
+                    style={[styles.attendanceButton, isActive && styles.attendanceButtonActive]}
+                    activeOpacity={0.7}
+                    onPress={() => onAttendanceChange(item, status)}
+                    disabled={attendanceSavingId === item.id}
+                  >
+                    <Text style={[styles.attendanceButtonText, isActive && styles.attendanceButtonTextActive]}>
+                      {t(language, `chorusDetail.attendance_${status}`)}
+                    </Text>
+                  </TouchableOpacity>
+                )
+              })}
+            </View>
+          )}
+        </View>
+      )}
+
+      <Text style={styles.cardAuthor}>{authorName}</Text>
+    </View>
   )
 })
 
@@ -120,9 +217,21 @@ const Feed = () => {
   const [refreshing, setRefreshing] = useState(false)
   const [loadingMore, setLoadingMore] = useState(false)
   const [hasMore, setHasMore] = useState(true)
+  const [currentUserId, setCurrentUserId] = useState('')
+  const [attendanceEnabled, setAttendanceEnabled] = useState(true)
+  const [attendanceSavingId, setAttendanceSavingId] = useState(null)
   const cacheRef = useRef({ data: null, timestamp: 0 })
 
   const CACHE_TTL = 60_000 // 1 min
+
+  useEffect(() => {
+    const loadCurrentUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser()
+      setCurrentUserId(user?.id || '')
+    }
+
+    loadCurrentUser()
+  }, [])
 
   const fetchBulletins = useCallback(async (offset = 0, isRefresh = false) => {
     // Use cache for initial load if fresh
@@ -135,7 +244,7 @@ const Feed = () => {
 
     const { data, error } = await supabase
       .from('bulletins')
-      .select('id, title, content, visibility, is_event, event_date, event_location, event_price, created_at, created_by, profiles(email), choruses(name)')
+      .select('id, title, content, visibility, is_event, event_date, event_location, event_price, created_at, created_by, profiles(*), choruses(name)')
       .eq('visibility', 'public')
       .order('created_at', { ascending: false })
       .range(offset, offset + PAGE_SIZE - 1)
@@ -148,7 +257,27 @@ const Feed = () => {
       return
     }
 
-    const newData = data || []
+    let newData = data || []
+    const eventBulletinIds = newData.filter(item => item.is_event).map(item => item.id)
+
+    if (eventBulletinIds.length > 0) {
+      const { data: attendanceRows, error: attendanceError } = await supabase
+        .from('bulletin_attendance')
+        .select('bulletin_id, user_id, status')
+        .in('bulletin_id', eventBulletinIds)
+
+      if (attendanceError) {
+        console.log('Feed attendance error:', attendanceError.message)
+        setAttendanceEnabled(false)
+        newData = applyAttendanceToBulletins(newData, [], currentUserId)
+      } else {
+        setAttendanceEnabled(true)
+        newData = applyAttendanceToBulletins(newData, attendanceRows || [], currentUserId)
+      }
+    } else {
+      setAttendanceEnabled(true)
+      newData = applyAttendanceToBulletins(newData, [], currentUserId)
+    }
 
     if (offset === 0) {
       setBulletins(newData)
@@ -165,7 +294,7 @@ const Feed = () => {
     setLoading(false)
     setRefreshing(false)
     setLoadingMore(false)
-  }, [])
+  }, [currentUserId])
 
   useEffect(() => {
     fetchBulletins(0)
@@ -183,9 +312,55 @@ const Feed = () => {
     fetchBulletins(bulletins.length)
   }, [loadingMore, hasMore, bulletins.length, fetchBulletins])
 
+  const handleAttendanceChange = useCallback(async (bulletin, status) => {
+    if (!currentUserId || !attendanceEnabled) return
+
+    const previousStatus = bulletin.my_attendance_status
+
+    setAttendanceSavingId(bulletin.id)
+    setBulletins(prev => prev.map((item) => {
+      if (item.id !== bulletin.id) return item
+
+      const summary = { ...(item.attendance_summary || { attending: 0, maybe: 0, absent: 0 }) }
+
+      if (previousStatus && ATTENDANCE_STATUSES.includes(previousStatus)) {
+        summary[previousStatus] = Math.max(0, (summary[previousStatus] || 0) - 1)
+      }
+      summary[status] = (summary[status] || 0) + 1
+
+      return {
+        ...item,
+        my_attendance_status: status,
+        attendance_summary: summary,
+      }
+    }))
+
+    const { error } = await supabase
+      .from('bulletin_attendance')
+      .upsert({
+        bulletin_id: bulletin.id,
+        user_id: currentUserId,
+        status,
+        updated_at: new Date().toISOString(),
+      }, { onConflict: 'bulletin_id,user_id' })
+
+    if (error) {
+      console.log('Feed attendance update error:', error.message)
+      fetchBulletins(0, true)
+    }
+
+    setAttendanceSavingId(null)
+  }, [attendanceEnabled, currentUserId, fetchBulletins])
+
   const renderItem = useCallback(({ item }) => (
-    <BulletinCard item={item} language={language} />
-  ), [language])
+    <BulletinCard
+      item={item}
+      language={language}
+      attendanceEnabled={attendanceEnabled}
+      attendanceSavingId={attendanceSavingId}
+      onAttendanceChange={handleAttendanceChange}
+    />
+  ), [language, attendanceEnabled, attendanceSavingId, handleAttendanceChange])
 
   const keyExtractor = useCallback((item) => item.id, [])
 
@@ -284,6 +459,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.border,
   },
+  pastCard: {
+    opacity: 0.5,
+  },
   cardSourceRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -347,6 +525,80 @@ const styles = StyleSheet.create({
     padding: 12,
     marginBottom: 10,
     gap: 8,
+  },
+  attendanceCard: {
+    backgroundColor: COLORS.bg,
+    borderRadius: 10,
+    padding: 12,
+    marginBottom: 10,
+  },
+  attendanceHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 10,
+    gap: 8,
+  },
+  attendanceTitle: {
+    fontSize: 13,
+    fontWeight: '800',
+    color: COLORS.text,
+  },
+  attendanceStatusText: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: COLORS.accent,
+  },
+  attendanceStats: {
+    flexDirection: 'row',
+    gap: 8,
+    marginBottom: 10,
+  },
+  attendanceStat: {
+    flex: 1,
+    backgroundColor: COLORS.surface,
+    borderRadius: 10,
+    paddingVertical: 10,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: COLORS.border,
+  },
+  attendanceStatValue: {
+    fontSize: 16,
+    fontWeight: '800',
+    color: COLORS.text,
+  },
+  attendanceStatLabel: {
+    fontSize: 10,
+    color: COLORS.textDim,
+    fontWeight: '700',
+    marginTop: 2,
+    textTransform: 'uppercase',
+  },
+  attendanceActions: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  attendanceButton: {
+    flex: 1,
+    borderRadius: 10,
+    paddingVertical: 10,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: COLORS.border,
+  },
+  attendanceButtonActive: {
+    backgroundColor: COLORS.accent,
+    borderColor: COLORS.accent,
+  },
+  attendanceButtonText: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: COLORS.textDim,
+    textAlign: 'center',
+  },
+  attendanceButtonTextActive: {
+    color: '#fff',
   },
   eventInfoRow: {
     flexDirection: 'row',

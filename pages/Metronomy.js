@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet, TouchableOpacity, Animated, Dimensions, Easing, Modal } from 'react-native'
 import React, { useState, useEffect, useRef } from 'react'
 import { Icon } from 'react-native-elements'
+import { useIsFocused } from '@react-navigation/native'
 import { useLanguage } from '../i18n/LanguageContext'
 import { t } from '../i18n/translations'
 
@@ -23,6 +24,7 @@ const MAX_HISTORY_DOTS = 8
 
 const Metronomy = () => {
   const { language } = useLanguage()
+  const isFocused = useIsFocused()
 
   const [time, setTime] = useState(null)
   const [timeArray, setTimeArray] = useState([])
@@ -55,6 +57,13 @@ const Metronomy = () => {
       useNativeDriver: true,
       delay: 300,
     }).start()
+  }, [])
+
+  useEffect(() => {
+    if (!isFocused) {
+      pulseAnim.stopAnimation(() => pulseAnim.setValue(1))
+      return
+    }
 
     const pulse = Animated.loop(
       Animated.sequence([
@@ -62,9 +71,10 @@ const Metronomy = () => {
         Animated.timing(pulseAnim, { toValue: 1, duration: 1200, easing: Easing.inOut(Easing.ease), useNativeDriver: true }),
       ])
     )
+
     pulse.start()
     return () => pulse.stop()
-  }, [])
+  }, [isFocused, pulseAnim])
 
   useEffect(() => {
     if (timeArray.length < 2) return

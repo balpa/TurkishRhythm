@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, ScrollView, ActivityIndicator, Animated, Easing, Image, Modal } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator, Animated, Easing, Image, Modal, Alert, Linking, Platform } from 'react-native'
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { Icon } from 'react-native-elements'
 import { Swipeable } from 'react-native-gesture-handler'
@@ -17,7 +17,10 @@ const COLORS = {
   gold: '#C9B458',
 }
 
-const TABS = ['notes', 'bulletin', 'members']
+const TABS = ['notes', 'bulletin', 'rehearsals', 'members']
+const MAX_CHORUS_NOTES = 50
+const ATTENDANCE_STATUSES = ['attending', 'maybe', 'absent']
+const CACHE_TTL = 30_000
 
 const renderDeleteAction = (onDelete) => () => (
   <View style={styles.deleteActionWrapper}>
@@ -27,11 +30,120 @@ const renderDeleteAction = (onDelete) => () => (
   </View>
 )
 
+const getUserDisplayName = (profile, fallbackId) => {
+  return profile?.display_name || profile?.email || (fallbackId ? `${fallbackId.substring(0, 8)}...` : '-')
+}
+
+const applyAttendanceToBulletins = (items, attendanceRows, currentUserId) => {
+  const attendanceMap = {}
+
+  attendanceRows.forEach((row) => {
+    if (!attendanceMap[row.bulletin_id]) {
+      attendanceMap[row.bulletin_id] = {
+        attending: 0,
+        maybe: 0,
+        absent: 0,
+        currentUserStatus: null,
+      }
+    }
+
+    if (ATTENDANCE_STATUSES.includes(row.status)) {
+      attendanceMap[row.bulletin_id][row.status] += 1
+    }
+
+    if (row.user_id === currentUserId) {
+      attendanceMap[row.bulletin_id].currentUserStatus = row.status
+    }
+  })
+
+  return items.map((item) => {
+    const attendance = attendanceMap[item.id] || {
+      attending: 0,
+      maybe: 0,
+      absent: 0,
+      currentUserStatus: null,
+    }
+
+    return {
+      ...item,
+      attendance_summary: {
+        attending: attendance.attending,
+        maybe: attendance.maybe,
+        absent: attendance.absent,
+      },
+      my_attendance_status: attendance.currentUserStatus,
+    }
+  })
+}
+
+const applyAttendanceToRehearsals = (items, attendanceRows, currentUserId) => {
+  const attendanceMap = {}
+
+  attendanceRows.forEach((row) => {
+    if (!attendanceMap[row.rehearsal_id]) {
+      attendanceMap[row.rehearsal_id] = {
+        attending: 0,
+        maybe: 0,
+        absent: 0,
+        currentUserStatus: null,
+      }
+    }
+
+    if (ATTENDANCE_STATUSES.includes(row.status)) {
+      attendanceMap[row.rehearsal_id][row.status] += 1
+    }
+
+    if (row.user_id === currentUserId) {
+      attendanceMap[row.rehearsal_id].currentUserStatus = row.status
+    }
+  })
+
+  return items.map((item) => {
+    const attendance = attendanceMap[item.id] || {
+      attending: 0,
+      maybe: 0,
+      absent: 0,
+      currentUserStatus: null,
+    }
+
+    return {
+      ...item,
+      attendance_summary: {
+        attending: attendance.attending,
+        maybe: attendance.maybe,
+        absent: attendance.absent,
+      },
+      my_attendance_status: attendance.currentUserStatus,
+    }
+  })
+}
+
+const openLocationInMaps = async (location) => {
+  if (!location?.label?.trim() && (location?.latitude == null || location?.longitude == null)) return
+
+  const hasCoordinates = location?.latitude != null && location?.longitude != null
+  const encodedLabel = encodeURIComponent(location?.label?.trim() || '')
+  const coordinateQuery = hasCoordinates ? `${location.latitude},${location.longitude}` : null
+  const primaryUrl = Platform.OS === 'ios'
+    ? hasCoordinates
+      ? `http://maps.apple.com/?ll=${coordinateQuery}&q=${encodedLabel || coordinateQuery}`
+      : `http://maps.apple.com/?q=${encodedLabel}`
+    : hasCoordinates
+      ? `geo:${coordinateQuery}?q=${coordinateQuery}${encodedLabel ? `(${encodedLabel})` : ''}`
+      : `geo:0,0?q=${encodedLabel}`
+  const fallbackUrl = hasCoordinates
+    ? `https://www.google.com/maps/search/?api=1&query=${coordinateQuery}`
+    : `https://www.google.com/maps/search/?api=1&query=${encodedLabel}`
+
+  const targetUrl = await Linking.canOpenURL(primaryUrl) ? primaryUrl : fallbackUrl
+  await Linking.openURL(targetUrl)
+}
+
 const SwipeableNoteCard = ({ note, language, onPress, onDelete, isAdmin }) => {
   const swipeRef = useRef(null)
 
   const isImage = note.file_type?.startsWith('image/')
-  const uploaderEmail = note.profiles?.email || note.uploaded_by?.substring(0, 8) + '...'
+  const uploaderName = getUserDisplayName(note.profiles, note.uploaded_by)
   const date = new Date(note.created_at).toLocaleDateString(
     language === 'tr' ? 'tr-TR' : 'en-US',
     { day: 'numeric', month: 'short', year: 'numeric' }
@@ -53,7 +165,7 @@ const SwipeableNoteCard = ({ note, language, onPress, onDelete, isAdmin }) => {
       )}
       <View style={styles.noteInfo}>
         <Text style={styles.noteFileName} numberOfLines={1}>{note.file_name}</Text>
-        <Text style={styles.noteMeta}>{uploaderEmail} • {date}</Text>
+        <Text style={styles.noteMeta}>{uploaderName} • {date}</Text>
       </View>
     </TouchableOpacity>
   )
@@ -76,11 +188,11 @@ const SwipeableNoteCard = ({ note, language, onPress, onDelete, isAdmin }) => {
   )
 }
 
-const SwipeableBulletinCard = ({ bulletin, language, onDelete, onEdit, isAdmin }) => {
+const SwipeableBulletinCard = ({ bulletin, language, onDelete, onEdit, isAdmin, attendanceEnabled, onAttendanceChange, attendanceSavingId }) => {
   const swipeRef = useRef(null)
 
   const isPublic = bulletin.visibility === 'public'
-  const authorEmail = bulletin.profiles?.email || bulletin.created_by?.substring(0, 8) + '...'
+  const authorName = getUserDisplayName(bulletin.profiles, bulletin.created_by)
   const date = new Date(bulletin.created_at).toLocaleDateString(
     language === 'tr' ? 'tr-TR' : 'en-US',
     { day: 'numeric', month: 'short', year: 'numeric' }
@@ -97,6 +209,8 @@ const SwipeableBulletinCard = ({ bulletin, language, onDelete, onEdit, isAdmin }
         { hour: '2-digit', minute: '2-digit' }
       )
     : null
+  const isPastEvent = bulletin.is_event && bulletin.event_date && new Date(bulletin.event_date) < new Date()
+  const attendanceSummary = bulletin.attendance_summary || { attending: 0, maybe: 0, absent: 0 }
 
   const handleDelete = () => {
     swipeRef.current?.close()
@@ -120,7 +234,7 @@ const SwipeableBulletinCard = ({ bulletin, language, onDelete, onEdit, isAdmin }
   )
 
   const card = (
-    <View style={styles.bulletinCard}>
+    <View style={[styles.bulletinCard, isPastEvent && styles.pastCard]}>
       <View style={styles.bulletinHeader}>
         <View style={styles.bulletinBadges}>
           <View style={[styles.visibilityBadge, { backgroundColor: isPublic ? COLORS.green + '20' : COLORS.gold + '20' }]}>
@@ -134,6 +248,14 @@ const SwipeableBulletinCard = ({ bulletin, language, onDelete, onEdit, isAdmin }
               <Icon name="event" color={COLORS.accent} size={14} />
               <Text style={[styles.visibilityLabel, { color: COLORS.accent }]}>
                 {t(language, 'bulletin.concert')}
+              </Text>
+            </View>
+          )}
+          {isPastEvent && (
+            <View style={[styles.visibilityBadge, { backgroundColor: COLORS.textDim + '20' }]}>
+              <Icon name="event-busy" color={COLORS.textDim} size={14} />
+              <Text style={[styles.visibilityLabel, { color: COLORS.textDim }]}>
+                {t(language, 'bulletin.pastEvent')}
               </Text>
             </View>
           )}
@@ -166,7 +288,56 @@ const SwipeableBulletinCard = ({ bulletin, language, onDelete, onEdit, isAdmin }
           )}
         </View>
       )}
-      <Text style={styles.bulletinAuthor}>{authorEmail}</Text>
+      {bulletin.is_event && attendanceEnabled && (
+        <View style={styles.attendanceCard}>
+          <View style={styles.attendanceHeader}>
+            <Text style={styles.attendanceTitle}>{t(language, 'chorusDetail.attendanceTitle')}</Text>
+            <Text style={styles.attendanceStatusText}>
+              {bulletin.my_attendance_status
+                ? t(language, `chorusDetail.attendance_${bulletin.my_attendance_status}`)
+                : t(language, 'chorusDetail.attendance_notResponded')}
+            </Text>
+          </View>
+
+          <View style={styles.attendanceStats}>
+            <View style={styles.attendanceStat}>
+              <Text style={styles.attendanceStatValue}>{attendanceSummary.attending}</Text>
+              <Text style={styles.attendanceStatLabel}>{t(language, 'chorusDetail.attendance_attending')}</Text>
+            </View>
+            <View style={styles.attendanceStat}>
+              <Text style={styles.attendanceStatValue}>{attendanceSummary.maybe}</Text>
+              <Text style={styles.attendanceStatLabel}>{t(language, 'chorusDetail.attendance_maybe')}</Text>
+            </View>
+            <View style={styles.attendanceStat}>
+              <Text style={styles.attendanceStatValue}>{attendanceSummary.absent}</Text>
+              <Text style={styles.attendanceStatLabel}>{t(language, 'chorusDetail.attendance_absent')}</Text>
+            </View>
+          </View>
+
+          {!isPastEvent && (
+            <View style={styles.attendanceActions}>
+              {ATTENDANCE_STATUSES.map((status) => {
+                const isActive = bulletin.my_attendance_status === status
+
+                return (
+                  <TouchableOpacity
+                    key={status}
+                    style={[styles.attendanceButton, isActive && styles.attendanceButtonActive]}
+                    activeOpacity={0.7}
+                    onPress={() => onAttendanceChange(bulletin, status)}
+                    disabled={attendanceSavingId === bulletin.id}
+                  >
+                    <Text style={[styles.attendanceButtonText, isActive && styles.attendanceButtonTextActive]}>
+                      {t(language, `chorusDetail.attendance_${status}`)}
+                    </Text>
+                  </TouchableOpacity>
+                )
+              })}
+            </View>
+          )}
+        </View>
+      )}
+      <Text style={styles.bulletinAuthor}>{authorName}</Text>
     </View>
   )
 
@@ -202,7 +373,8 @@ const SwipeableMemberItem = ({ member, index, language, onDelete, isAdmin }) => 
   }, [])
 
   const roleColor = member.role === 'admin' ? COLORS.gold : COLORS.green
-  const initial = (member.email || '?')[0].toUpperCase()
+  const displayName = member.display_name || member.email
+  const initial = (displayName || '?')[0].toUpperCase()
   const canDelete = isAdmin && member.role !== 'admin'
 
   const handleDelete = () => {
@@ -217,7 +389,7 @@ const SwipeableMemberItem = ({ member, index, language, onDelete, isAdmin }) => 
           <Text style={styles.avatarText}>{initial}</Text>
         </View>
         <View style={styles.memberInfo}>
-          <Text style={styles.memberEmail} numberOfLines={1}>{member.email}</Text>
+          <Text style={styles.memberEmail} numberOfLines={1}>{displayName}</Text>
           <Text style={[styles.memberRole, { color: roleColor }]}>
             {member.role === 'admin' ? t(language, 'chorusDetail.roleAdmin') : t(language, 'chorusDetail.roleMember')}
           </Text>
@@ -232,7 +404,7 @@ const SwipeableMemberItem = ({ member, index, language, onDelete, isAdmin }) => 
         <Text style={styles.avatarText}>{initial}</Text>
       </View>
       <View style={styles.memberInfo}>
-        <Text style={styles.memberEmail} numberOfLines={1}>{member.email}</Text>
+        <Text style={styles.memberEmail} numberOfLines={1}>{displayName}</Text>
         <Text style={[styles.memberRole, { color: roleColor }]}>
           {member.role === 'admin' ? t(language, 'chorusDetail.roleAdmin') : t(language, 'chorusDetail.roleMember')}
         </Text>
@@ -254,10 +426,158 @@ const SwipeableMemberItem = ({ member, index, language, onDelete, isAdmin }) => 
   )
 }
 
+const SwipeableRehearsalCard = ({ rehearsal, language, onDelete, onEdit, isAdmin, onAttendanceChange, attendanceSavingId }) => {
+  const swipeRef = useRef(null)
+  const scheduledDate = new Date(rehearsal.scheduled_at)
+  const isPast = scheduledDate < new Date()
+  const summary = rehearsal.attendance_summary || { attending: 0, maybe: 0, absent: 0 }
+  const formattedDate = scheduledDate.toLocaleDateString(
+    language === 'tr' ? 'tr-TR' : 'en-US',
+    { day: 'numeric', month: 'long', year: 'numeric' }
+  )
+  const formattedTime = scheduledDate.toLocaleTimeString(
+    language === 'tr' ? 'tr-TR' : 'en-US',
+    { hour: '2-digit', minute: '2-digit' }
+  )
+
+  const handleDelete = () => {
+    swipeRef.current?.close()
+    onDelete(rehearsal)
+  }
+
+  const handleEdit = () => {
+    swipeRef.current?.close()
+    onEdit(rehearsal)
+  }
+
+  const renderActions = () => (
+    <View style={styles.swipeActions}>
+      <TouchableOpacity style={styles.editAction} activeOpacity={0.7} onPress={handleEdit}>
+        <Icon name="edit" color="#fff" size={20} />
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.deleteActionBtn} activeOpacity={0.7} onPress={handleDelete}>
+        <Icon name="delete" color="#fff" size={20} />
+      </TouchableOpacity>
+    </View>
+  )
+
+  const card = (
+    <View style={[styles.rehearsalCard, isPast && styles.pastCard]}>
+      <View style={styles.rehearsalHeader}>
+        <View style={styles.rehearsalTitleWrap}>
+          <Text style={styles.rehearsalTitle}>{rehearsal.title}</Text>
+          <View style={[styles.visibilityBadge, { backgroundColor: (isPast ? COLORS.textDim : COLORS.accent) + '20' }]}>
+            <Icon name={isPast ? 'history' : 'schedule'} color={isPast ? COLORS.textDim : COLORS.accent} size={14} />
+            <Text style={[styles.visibilityLabel, { color: isPast ? COLORS.textDim : COLORS.accent }]}>
+              {isPast ? t(language, 'rehearsal.past') : t(language, 'rehearsal.upcoming')}
+            </Text>
+          </View>
+        </View>
+      </View>
+
+      <View style={styles.eventInfo}>
+        <View style={styles.eventInfoRow}>
+          <Icon name="calendar-today" color={COLORS.accent} size={15} />
+          <Text style={styles.eventInfoText}>{formattedDate} — {formattedTime}</Text>
+        </View>
+        <View style={styles.eventInfoRow}>
+          <Icon name="location-on" color={COLORS.accent} size={15} />
+          <TouchableOpacity
+            activeOpacity={0.7}
+            onPress={() => openLocationInMaps({
+              label: rehearsal.location,
+              latitude: rehearsal.location_lat,
+              longitude: rehearsal.location_lng,
+            })}
+          >
+            <Text style={[styles.eventInfoText, styles.linkText]}>{rehearsal.location}</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+
+      {rehearsal.agenda ? (
+        <Text style={styles.rehearsalAgenda}>{rehearsal.agenda}</Text>
+      ) : null}
+
+      <View style={styles.attendanceCard}>
+        <View style={styles.attendanceHeader}>
+          <Text style={styles.attendanceTitle}>{t(language, 'chorusDetail.attendanceTitle')}</Text>
+          <Text style={styles.attendanceStatusText}>
+            {rehearsal.my_attendance_status
+              ? t(language, `chorusDetail.attendance_${rehearsal.my_attendance_status}`)
+              : t(language, 'chorusDetail.attendance_notResponded')}
+          </Text>
+        </View>
+
+        <View style={styles.attendanceStats}>
+          <View style={styles.attendanceStat}>
+            <Text style={styles.attendanceStatValue}>{summary.attending}</Text>
+            <Text style={styles.attendanceStatLabel}>{t(language, 'chorusDetail.attendance_attending')}</Text>
+          </View>
+          <View style={styles.attendanceStat}>
+            <Text style={styles.attendanceStatValue}>{summary.maybe}</Text>
+            <Text style={styles.attendanceStatLabel}>{t(language, 'chorusDetail.attendance_maybe')}</Text>
+          </View>
+          <View style={styles.attendanceStat}>
+            <Text style={styles.attendanceStatValue}>{summary.absent}</Text>
+            <Text style={styles.attendanceStatLabel}>{t(language, 'chorusDetail.attendance_absent')}</Text>
+          </View>
+        </View>
+
+        {!isPast && (
+          <View style={styles.attendanceActions}>
+            {ATTENDANCE_STATUSES.map((status) => {
+              const isActive = rehearsal.my_attendance_status === status
+
+              return (
+                <TouchableOpacity
+                  key={status}
+                  style={[styles.attendanceButton, isActive && styles.attendanceButtonActive]}
+                  activeOpacity={0.7}
+                  onPress={() => onAttendanceChange(rehearsal, status)}
+                  disabled={attendanceSavingId === rehearsal.id}
+                >
+                  <Text style={[styles.attendanceButtonText, isActive && styles.attendanceButtonTextActive]}>
+                    {t(language, `chorusDetail.attendance_${status}`)}
+                  </Text>
+                </TouchableOpacity>
+              )
+            })}
+          </View>
+        )}
+      </View>
+    </View>
+  )
+
+  if (!isAdmin) {
+    return <View style={styles.swipeContainer}>{card}</View>
+  }
+
+  return (
+    <View style={styles.swipeContainer}>
+      <Swipeable
+        ref={swipeRef}
+        renderRightActions={renderActions}
+        overshootRight={false}
+        rightThreshold={40}
+      >
+        {card}
+      </Swipeable>
+    </View>
+  )
+}
+
 const ChorusDetail = ({ route, navigation }) => {
   const { language } = useLanguage()
   const { chorus } = route.params
   const isAdmin = chorus.role === 'admin'
+  const [currentUserId, setCurrentUserId] = useState('')
+  const [currentUserName, setCurrentUserName] = useState('')
+  const [attendanceEnabled, setAttendanceEnabled] = useState(true)
+  const [attendanceSavingId, setAttendanceSavingId] = useState(null)
+  const [rehearsals, setRehearsals] = useState([])
+  const [rehearsalsLoading, setRehearsalsLoading] = useState(true)
+  const [rehearsalAttendanceSavingId, setRehearsalAttendanceSavingId] = useState(null)
   const [members, setMembers] = useState([])
   const [notes, setNotes] = useState([])
   const [bulletins, setBulletins] = useState([])
@@ -265,13 +585,28 @@ const ChorusDetail = ({ route, navigation }) => {
   const [notesLoading, setNotesLoading] = useState(true)
   const [bulletinsLoading, setBulletinsLoading] = useState(true)
   const [activeTab, setActiveTab] = useState('notes')
-  const [tabBarWidth, setTabBarWidth] = useState(0)
 
   const headerAnim = useRef(new Animated.Value(0)).current
-  const tabIndicatorAnim = useRef(new Animated.Value(0)).current
+  const cacheRef = useRef({
+    members: { data: null, timestamp: 0 },
+    notes: { data: null, timestamp: 0 },
+    bulletins: { data: null, timestamp: 0 },
+    rehearsals: { data: null, timestamp: 0 },
+  })
 
   // deleteModal: { type: 'note'|'bulletin'|'member', item: ... }
   const [deleteModal, setDeleteModal] = useState(null)
+
+  useEffect(() => {
+    const loadCurrentUserName = async () => {
+      const { data: { user } } = await supabase.auth.getUser()
+      const metadata = user?.user_metadata || {}
+      setCurrentUserId(user?.id || '')
+      setCurrentUserName(metadata.display_name || metadata.full_name || '')
+    }
+
+    loadCurrentUserName()
+  }, [])
 
   useEffect(() => {
     Animated.timing(headerAnim, {
@@ -282,20 +617,41 @@ const ChorusDetail = ({ route, navigation }) => {
     }).start()
   }, [])
 
-  useEffect(() => {
-    const index = TABS.indexOf(activeTab)
-    Animated.spring(tabIndicatorAnim, {
-      toValue: index,
-      friction: 7,
-      tension: 80,
-      useNativeDriver: true,
-    }).start()
-  }, [activeTab])
+  const getCachedValue = (key, force = false) => {
+    const entry = cacheRef.current[key]
 
-  const fetchMembers = useCallback(async () => {
+    if (force || !entry?.data) {
+      return null
+    }
+
+    return Date.now() - entry.timestamp < CACHE_TTL ? entry.data : null
+  }
+
+  const setCachedValue = (key, data) => {
+    cacheRef.current[key] = {
+      data,
+      timestamp: Date.now(),
+    }
+  }
+
+  const invalidateCache = (...keys) => {
+    keys.forEach((key) => {
+      cacheRef.current[key] = { data: null, timestamp: 0 }
+    })
+  }
+
+  const fetchMembers = useCallback(async (force = false) => {
+    const cached = getCachedValue('members', force)
+    if (cached) {
+      setMembers(cached)
+      setLoading(false)
+      return
+    }
+
+    setLoading(true)
     const { data, error } = await supabase
       .from('chorus_members')
-      .select('role, user_id, joined_at, profiles(email)')
+      .select('role, user_id, joined_at, profiles(*)')
       .eq('chorus_id', chorus.id)
       .order('joined_at', { ascending: true })
 
@@ -303,21 +659,32 @@ const ChorusDetail = ({ route, navigation }) => {
       console.log('Fetch members error:', error.message)
     }
     if (!error && data) {
-      setMembers(data.map(m => ({
+      const nextMembers = data.map(m => ({
         id: m.user_id,
         role: m.role,
+        display_name: m.user_id === currentUserId ? currentUserName || m.profiles?.display_name || '' : m.profiles?.display_name || '',
         email: m.profiles?.email || m.user_id.substring(0, 8) + '...',
         joined_at: m.joined_at,
-      })))
+      }))
+
+      setMembers(nextMembers)
+      setCachedValue('members', nextMembers)
     }
     setLoading(false)
-  }, [chorus.id])
+  }, [chorus.id, currentUserId, currentUserName])
 
-  const fetchNotes = useCallback(async () => {
+  const fetchNotes = useCallback(async (force = false) => {
+    const cached = getCachedValue('notes', force)
+    if (cached) {
+      setNotes(cached)
+      setNotesLoading(false)
+      return
+    }
+
     setNotesLoading(true)
     const { data, error } = await supabase
       .from('notes')
-      .select('id, file_url, file_name, file_type, created_at, uploaded_by, profiles(email)')
+      .select('id, file_url, file_name, file_type, created_at, uploaded_by, profiles(*)')
       .eq('chorus_id', chorus.id)
       .order('created_at', { ascending: false })
 
@@ -326,15 +693,24 @@ const ChorusDetail = ({ route, navigation }) => {
     }
     if (!error && data) {
       setNotes(data)
+      setCachedValue('notes', data)
     }
     setNotesLoading(false)
   }, [chorus.id])
 
-  const fetchBulletins = useCallback(async () => {
+  const fetchBulletins = useCallback(async (force = false) => {
+    const cached = getCachedValue('bulletins', force)
+    if (cached) {
+      setAttendanceEnabled(cached.attendanceEnabled)
+      setBulletins(cached.items)
+      setBulletinsLoading(false)
+      return
+    }
+
     setBulletinsLoading(true)
     const { data, error } = await supabase
       .from('bulletins')
-      .select('id, title, content, visibility, is_event, event_date, event_location, event_price, created_at, created_by, profiles(email)')
+      .select('id, title, content, visibility, is_event, event_date, event_location, event_price, created_at, created_by, profiles(*)')
       .eq('chorus_id', chorus.id)
       .order('created_at', { ascending: false })
 
@@ -342,25 +718,211 @@ const ChorusDetail = ({ route, navigation }) => {
       console.log('Fetch bulletins error:', error.message)
     }
     if (!error && data) {
-      setBulletins(data)
+      const eventBulletinIds = data.filter(item => item.is_event).map(item => item.id)
+
+      if (eventBulletinIds.length === 0) {
+        setAttendanceEnabled(true)
+        const nextBulletins = applyAttendanceToBulletins(data, [], currentUserId)
+        setBulletins(nextBulletins)
+        setCachedValue('bulletins', { items: nextBulletins, attendanceEnabled: true })
+      } else {
+        const { data: attendanceRows, error: attendanceError } = await supabase
+          .from('bulletin_attendance')
+          .select('bulletin_id, user_id, status')
+          .in('bulletin_id', eventBulletinIds)
+
+        if (attendanceError) {
+          if (attendanceError.code === '42P01') {
+            setAttendanceEnabled(false)
+            const nextBulletins = applyAttendanceToBulletins(data, [], currentUserId)
+            setBulletins(nextBulletins)
+            setCachedValue('bulletins', { items: nextBulletins, attendanceEnabled: false })
+          } else {
+            console.log('Fetch attendance error:', attendanceError.message)
+            setAttendanceEnabled(false)
+            const nextBulletins = applyAttendanceToBulletins(data, [], currentUserId)
+            setBulletins(nextBulletins)
+            setCachedValue('bulletins', { items: nextBulletins, attendanceEnabled: false })
+          }
+        } else {
+          setAttendanceEnabled(true)
+          const nextBulletins = applyAttendanceToBulletins(data, attendanceRows || [], currentUserId)
+          setBulletins(nextBulletins)
+          setCachedValue('bulletins', { items: nextBulletins, attendanceEnabled: true })
+        }
+      }
     }
     setBulletinsLoading(false)
-  }, [chorus.id])
+  }, [chorus.id, currentUserId])
+
+  const fetchRehearsals = useCallback(async (force = false) => {
+    const cached = getCachedValue('rehearsals', force)
+    if (cached) {
+      setRehearsals(cached)
+      setRehearsalsLoading(false)
+      return
+    }
+
+    setRehearsalsLoading(true)
+    const { data, error } = await supabase
+      .from('rehearsals')
+      .select('id, title, agenda, location, location_lat, location_lng, scheduled_at, created_at')
+      .eq('chorus_id', chorus.id)
+      .order('scheduled_at', { ascending: true })
+
+    if (error) {
+      console.log('Fetch rehearsals error:', error.message)
+      setRehearsals([])
+      setCachedValue('rehearsals', [])
+      setRehearsalsLoading(false)
+      return
+    }
+
+    const rehearsalIds = (data || []).map(item => item.id)
+    if (rehearsalIds.length === 0) {
+      setRehearsals([])
+      setCachedValue('rehearsals', [])
+      setRehearsalsLoading(false)
+      return
+    }
+
+    const { data: attendanceRows, error: attendanceError } = await supabase
+      .from('rehearsal_attendance')
+      .select('rehearsal_id, user_id, status')
+      .in('rehearsal_id', rehearsalIds)
+
+    if (attendanceError) {
+      console.log('Fetch rehearsal attendance error:', attendanceError.message)
+      const nextRehearsals = applyAttendanceToRehearsals(data || [], [], currentUserId)
+      setRehearsals(nextRehearsals)
+      setCachedValue('rehearsals', nextRehearsals)
+    } else {
+      const nextRehearsals = applyAttendanceToRehearsals(data || [], attendanceRows || [], currentUserId)
+      setRehearsals(nextRehearsals)
+      setCachedValue('rehearsals', nextRehearsals)
+    }
+
+    setRehearsalsLoading(false)
+  }, [chorus.id, currentUserId])
+
+  const loadTabData = useCallback((tab, force = false) => {
+    if (tab === 'members') return fetchMembers(force)
+    if (tab === 'bulletin') return fetchBulletins(force)
+    if (tab === 'rehearsals') return fetchRehearsals(force)
+    return fetchNotes(force)
+  }, [fetchBulletins, fetchMembers, fetchNotes, fetchRehearsals])
 
   useEffect(() => {
-    fetchMembers()
-    fetchNotes()
-    fetchBulletins()
-  }, [fetchMembers, fetchNotes, fetchBulletins])
+    fetchMembers(true)
+  }, [fetchMembers])
+
+  useEffect(() => {
+    loadTabData(activeTab)
+  }, [activeTab, loadTabData])
+
+  useEffect(() => {
+    if (!currentUserId) return
+
+    invalidateCache('members', 'bulletins', 'rehearsals')
+    fetchMembers(true)
+
+    if (activeTab !== 'notes') {
+      loadTabData(activeTab, true)
+    }
+  }, [activeTab, currentUserId, fetchMembers, loadTabData])
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      fetchNotes()
-      fetchMembers()
-      fetchBulletins()
+      fetchMembers(true)
+      loadTabData(activeTab, true)
     })
     return unsubscribe
-  }, [navigation, fetchNotes, fetchMembers, fetchBulletins])
+  }, [activeTab, navigation, fetchMembers, loadTabData])
+
+  const handleAttendanceChange = async (bulletin, status) => {
+    if (!currentUserId || !attendanceEnabled) return
+
+    const previousStatus = bulletin.my_attendance_status
+    const nextStatus = previousStatus === status ? status : status
+
+    setAttendanceSavingId(bulletin.id)
+    setBulletins(prev => prev.map((item) => {
+      if (item.id !== bulletin.id) return item
+
+      const summary = { ...(item.attendance_summary || { attending: 0, maybe: 0, absent: 0 }) }
+
+      if (previousStatus && ATTENDANCE_STATUSES.includes(previousStatus)) {
+        summary[previousStatus] = Math.max(0, (summary[previousStatus] || 0) - 1)
+      }
+      summary[nextStatus] = (summary[nextStatus] || 0) + 1
+
+      return {
+        ...item,
+        my_attendance_status: nextStatus,
+        attendance_summary: summary,
+      }
+    }))
+    invalidateCache('bulletins')
+
+    const { error } = await supabase
+      .from('bulletin_attendance')
+      .upsert({
+        bulletin_id: bulletin.id,
+        user_id: currentUserId,
+        status: nextStatus,
+        updated_at: new Date().toISOString(),
+      }, { onConflict: 'bulletin_id,user_id' })
+
+    if (error) {
+      if (error.code === '42P01') {
+        setAttendanceEnabled(false)
+      } else {
+        console.log('Attendance update error:', error.message)
+      }
+      fetchBulletins(true)
+    }
+
+    setAttendanceSavingId(null)
+  }
+
+  const handleRehearsalAttendanceChange = async (rehearsal, status) => {
+    if (!currentUserId) return
+
+    const previousStatus = rehearsal.my_attendance_status
+    setRehearsalAttendanceSavingId(rehearsal.id)
+    setRehearsals(prev => prev.map((item) => {
+      if (item.id !== rehearsal.id) return item
+
+      const summary = { ...(item.attendance_summary || { attending: 0, maybe: 0, absent: 0 }) }
+      if (previousStatus && ATTENDANCE_STATUSES.includes(previousStatus)) {
+        summary[previousStatus] = Math.max(0, (summary[previousStatus] || 0) - 1)
+      }
+      summary[status] = (summary[status] || 0) + 1
+
+      return {
+        ...item,
+        my_attendance_status: status,
+        attendance_summary: summary,
+      }
+    }))
+    invalidateCache('rehearsals')
+
+    const { error } = await supabase
+      .from('rehearsal_attendance')
+      .upsert({
+        rehearsal_id: rehearsal.id,
+        user_id: currentUserId,
+        status,
+        updated_at: new Date().toISOString(),
+      }, { onConflict: 'rehearsal_id,user_id' })
+
+    if (error) {
+      console.log('Rehearsal attendance update error:', error.message)
+      fetchRehearsals(true)
+    }
+
+    setRehearsalAttendanceSavingId(null)
+  }
 
   const confirmDelete = async () => {
     if (!deleteModal) return
@@ -373,12 +935,20 @@ const ChorusDetail = ({ route, navigation }) => {
       const { error: dbError } = await supabase.from('notes').delete().eq('id', item.id)
       if (dbError) console.log('DB delete error:', dbError.message)
       setDeleteModal(null)
-      fetchNotes()
+      invalidateCache('notes')
+      fetchNotes(true)
     } else if (type === 'bulletin') {
       const { error } = await supabase.from('bulletins').delete().eq('id', item.id)
       if (error) console.log('Bulletin delete error:', error.message)
       setDeleteModal(null)
-      fetchBulletins()
+      invalidateCache('bulletins')
+      fetchBulletins(true)
+    } else if (type === 'rehearsal') {
+      const { error } = await supabase.from('rehearsals').delete().eq('id', item.id)
+      if (error) console.log('Rehearsal delete error:', error.message)
+      setDeleteModal(null)
+      invalidateCache('rehearsals')
+      fetchRehearsals(true)
     } else if (type === 'member') {
       const { error } = await supabase
         .from('chorus_members')
@@ -387,7 +957,8 @@ const ChorusDetail = ({ route, navigation }) => {
         .eq('user_id', item.id)
       if (error) console.log('Member delete error:', error.message)
       setDeleteModal(null)
-      fetchMembers()
+      invalidateCache('members')
+      fetchMembers(true)
     }
   }
 
@@ -395,6 +966,7 @@ const ChorusDetail = ({ route, navigation }) => {
     if (!deleteModal) return ''
     if (deleteModal.type === 'note') return t(language, 'chorusDetail.deleteNoteTitle')
     if (deleteModal.type === 'bulletin') return t(language, 'chorusDetail.deleteBulletinTitle')
+    if (deleteModal.type === 'rehearsal') return t(language, 'chorusDetail.deleteRehearsalTitle')
     return t(language, 'chorusDetail.deleteMemberTitle')
   }
 
@@ -402,6 +974,7 @@ const ChorusDetail = ({ route, navigation }) => {
     if (!deleteModal) return ''
     if (deleteModal.type === 'note') return deleteModal.item.file_name
     if (deleteModal.type === 'bulletin') return deleteModal.item.title
+    if (deleteModal.type === 'rehearsal') return deleteModal.item.title
     return deleteModal.item.email
   }
 
@@ -414,6 +987,7 @@ const ChorusDetail = ({ route, navigation }) => {
   const getTabIcon = (tab) => {
     if (tab === 'notes') return 'description'
     if (tab === 'bulletin') return 'campaign'
+    if (tab === 'rehearsals') return 'event-note'
     return 'people'
   }
 
@@ -494,8 +1068,42 @@ const ChorusDetail = ({ route, navigation }) => {
           bulletin={bulletin}
           language={language}
           isAdmin={isAdmin}
+          attendanceEnabled={attendanceEnabled}
+          attendanceSavingId={attendanceSavingId}
+          onAttendanceChange={handleAttendanceChange}
           onDelete={(b) => setDeleteModal({ type: 'bulletin', item: b })}
           onEdit={(b) => navigation.navigate('CreateBulletin', { chorus, bulletin: b })}
+        />
+      ))
+    }
+
+    if (activeTab === 'rehearsals') {
+      if (rehearsalsLoading) {
+        return (
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="small" color={COLORS.accent} />
+          </View>
+        )
+      }
+      if (rehearsals.length === 0) {
+        return (
+          <View style={styles.emptyTabState}>
+            <Icon name="event-note" color={COLORS.border} size={48} />
+            <Text style={styles.emptyTabTitle}>{t(language, 'chorusDetail.rehearsalsEmpty')}</Text>
+            <Text style={styles.emptyTabDesc}>{t(language, 'chorusDetail.rehearsalsEmptyDesc')}</Text>
+          </View>
+        )
+      }
+      return rehearsals.map((rehearsal) => (
+        <SwipeableRehearsalCard
+          key={rehearsal.id}
+          rehearsal={rehearsal}
+          language={language}
+          isAdmin={isAdmin}
+          attendanceSavingId={rehearsalAttendanceSavingId}
+          onAttendanceChange={handleRehearsalAttendanceChange}
+          onDelete={(r) => setDeleteModal({ type: 'rehearsal', item: r })}
+          onEdit={(r) => navigation.navigate('CreateRehearsal', { chorus, rehearsal: r })}
         />
       ))
     }
@@ -545,26 +1153,11 @@ const ChorusDetail = ({ route, navigation }) => {
         </Animated.View>
 
         {/* Tabs */}
-        <View
-          style={styles.tabBar}
-          onLayout={(e) => setTabBarWidth(e.nativeEvent.layout.width)}
-        >
-          {tabBarWidth > 0 && (
-            <Animated.View style={[styles.tabIndicator, {
-              width: (tabBarWidth - 8) / 3,
-              transform: [{
-                translateX: tabIndicatorAnim.interpolate({
-                  inputRange: [0, 1, 2],
-                  outputRange: [0, (tabBarWidth - 8) / 3, ((tabBarWidth - 8) / 3) * 2],
-                }),
-              }],
-            }]} />
-          )}
-
+        <View style={styles.tabBar}>
           {TABS.map((tab) => (
             <TouchableOpacity
               key={tab}
-              style={styles.tab}
+              style={[styles.tab, activeTab === tab && styles.tabActive]}
               activeOpacity={0.7}
               onPress={() => setActiveTab(tab)}
             >
@@ -586,13 +1179,17 @@ const ChorusDetail = ({ route, navigation }) => {
         </View>
       </ScrollView>
 
-      {/* Floating + button (admin only for members, everyone for notes/bulletin) */}
-      {(isAdmin || activeTab !== 'members') && (
+      {/* Floating + button */}
+      {((activeTab === 'notes' || activeTab === 'bulletin') || (isAdmin && (activeTab === 'members' || activeTab === 'rehearsals'))) && (
         <TouchableOpacity
           style={styles.fab}
           activeOpacity={0.8}
           onPress={() => {
-            const screens = { notes: 'CreateNote', bulletin: 'CreateBulletin', members: 'AddMember' }
+            if (activeTab === 'notes' && notes.length >= MAX_CHORUS_NOTES) {
+              Alert.alert(t(language, 'createNote.limitTitle'), t(language, 'createNote.limitReached'))
+              return
+            }
+            const screens = { notes: 'CreateNote', bulletin: 'CreateBulletin', rehearsals: 'CreateRehearsal', members: 'AddMember' }
             navigation.navigate(screens[activeTab], { chorus })
           }}
         >
@@ -732,31 +1329,27 @@ const styles = StyleSheet.create({
   // Tabs
   tabBar: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
     marginHorizontal: 16,
     marginTop: 20,
     backgroundColor: COLORS.surface,
     borderRadius: 14,
     padding: 4,
-    position: 'relative',
     borderWidth: 1,
     borderColor: COLORS.border,
   },
-  tabIndicator: {
-    position: 'absolute',
-    top: 4,
-    bottom: 4,
-    left: 4,
-    backgroundColor: COLORS.bg,
-    borderRadius: 11,
-  },
   tab: {
-    flex: 1,
+    width: '50%',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 10,
+    minHeight: 52,
     gap: 6,
-    zIndex: 1,
+    borderRadius: 11,
+  },
+  tabActive: {
+    backgroundColor: COLORS.bg,
   },
   tabLabel: {
     fontSize: 13,
@@ -883,6 +1476,37 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.border,
   },
+  rehearsalCard: {
+    backgroundColor: COLORS.surface,
+    borderRadius: 14,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+  },
+  rehearsalHeader: {
+    marginBottom: 10,
+  },
+  rehearsalTitleWrap: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 10,
+  },
+  rehearsalTitle: {
+    flex: 1,
+    fontSize: 16,
+    fontWeight: '800',
+    color: COLORS.text,
+  },
+  rehearsalAgenda: {
+    fontSize: 14,
+    color: COLORS.textDim,
+    lineHeight: 20,
+    marginBottom: 10,
+  },
+  pastCard: {
+    opacity: 0.5,
+  },
   bulletinHeader: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -931,6 +1555,80 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     gap: 8,
   },
+  attendanceCard: {
+    backgroundColor: COLORS.bg,
+    borderRadius: 10,
+    padding: 12,
+    marginBottom: 10,
+  },
+  attendanceHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 10,
+    gap: 8,
+  },
+  attendanceTitle: {
+    fontSize: 13,
+    fontWeight: '800',
+    color: COLORS.text,
+  },
+  attendanceStatusText: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: COLORS.accent,
+  },
+  attendanceStats: {
+    flexDirection: 'row',
+    gap: 8,
+    marginBottom: 10,
+  },
+  attendanceStat: {
+    flex: 1,
+    backgroundColor: COLORS.surface,
+    borderRadius: 10,
+    paddingVertical: 10,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: COLORS.border,
+  },
+  attendanceStatValue: {
+    fontSize: 16,
+    fontWeight: '800',
+    color: COLORS.text,
+  },
+  attendanceStatLabel: {
+    fontSize: 10,
+    color: COLORS.textDim,
+    fontWeight: '700',
+    marginTop: 2,
+    textTransform: 'uppercase',
+  },
+  attendanceActions: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  attendanceButton: {
+    flex: 1,
+    borderRadius: 10,
+    paddingVertical: 10,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: COLORS.border,
+  },
+  attendanceButtonActive: {
+    backgroundColor: COLORS.accent,
+    borderColor: COLORS.accent,
+  },
+  attendanceButtonText: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: COLORS.textDim,
+    textAlign: 'center',
+  },
+  attendanceButtonTextActive: {
+    color: '#fff',
+  },
   eventInfoRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -940,6 +1638,9 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: COLORS.text,
     fontWeight: '600',
+  },
+  linkText: {
+    color: COLORS.accent,
   },
   bulletinAuthor: {
     fontSize: 11,

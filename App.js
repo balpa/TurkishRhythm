@@ -145,6 +145,8 @@ const App = () => {
     setSession(null)
   }
 
+  const renderSettingsScreen = () => <Settings onLogout={handleLogout} />
+
   if (authLoading) {
     return (
       <LanguageProvider>
@@ -176,16 +178,18 @@ const App = () => {
           tabBarPosition="bottom"
           tabBar={props => <FluidTabBar {...props} />}
           screenOptions={{
+            lazy: true,
+            lazyPreloadDistance: 0,
             swipeEnabled: true,
             animationEnabled: true,
           }}
         >
-          <Tab.Screen name="Feed" children={() => <Feed />} />
-          <Tab.Screen name="Makams" children={() => <Makams />} />
-          <Tab.Screen name="Rhythms" children={() => <Rhythms />} />
-          <Tab.Screen name="Choruses" children={() => <Choruses />} />
-          <Tab.Screen name="Metronomy" children={() => <Metronomy />} />
-          <Tab.Screen name="Settings" children={() => <Settings onLogout={handleLogout} />} />
+          <Tab.Screen name="Feed" component={Feed} />
+          <Tab.Screen name="Makams" component={Makams} />
+          <Tab.Screen name="Rhythms" component={Rhythms} />
+          <Tab.Screen name="Choruses" component={Choruses} />
+          <Tab.Screen name="Metronomy" component={Metronomy} />
+          <Tab.Screen name="Settings" children={renderSettingsScreen} />
         </Tab.Navigator>
       </NavigationContainer>
       </View>
