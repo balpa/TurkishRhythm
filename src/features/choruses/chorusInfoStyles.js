@@ -1,0 +1,42 @@
+import { StyleSheet } from 'react-native'
+import { COLORS } from '../../shared/theme/colors'
+
+const styles = StyleSheet.create({
+  container: { flex: 1, backgroundColor: COLORS.bg },
+  centered: { flex: 1, backgroundColor: COLORS.bg, justifyContent: 'center', alignItems: 'center' },
+  errorText: { color: COLORS.textDim, fontSize: 16 },
+  header: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, paddingTop: 16, paddingBottom: 12 },
+  backBtn: { width: 40, height: 40, borderRadius: 12, backgroundColor: COLORS.surface, justifyContent: 'center', alignItems: 'center' },
+  headerTitle: { flex: 1, fontSize: 20, fontWeight: '800', color: COLORS.text, marginLeft: 12 },
+  editBtn: { width: 40, height: 40, borderRadius: 12, backgroundColor: COLORS.surface, justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderColor: COLORS.border },
+  headerActions: { flexDirection: 'row', gap: 8 },
+  cancelBtn: { paddingHorizontal: 14, paddingVertical: 8, borderRadius: 10, backgroundColor: COLORS.surface, borderWidth: 1, borderColor: COLORS.border },
+  cancelBtnText: { color: COLORS.textDim, fontSize: 13, fontWeight: '700' },
+  saveBtn: { paddingHorizontal: 16, paddingVertical: 8, borderRadius: 10, backgroundColor: COLORS.accent },
+  saveBtnText: { color: COLORS.white, fontSize: 13, fontWeight: '700' },
+  scrollContent: { flex: 1 },
+  heroSection: { alignItems: 'center', paddingVertical: 24, paddingHorizontal: 20 },
+  heroIcon: { width: 80, height: 80, borderRadius: 24, backgroundColor: COLORS.surface, justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderColor: COLORS.border, marginBottom: 14 },
+  heroName: { fontSize: 24, fontWeight: '900', color: COLORS.text, textAlign: 'center', marginBottom: 6 },
+  heroDate: { fontSize: 13, color: COLORS.textDim, fontWeight: '600' },
+  infoSection: { paddingHorizontal: 16 },
+  descriptionBlock: { backgroundColor: COLORS.surface, borderRadius: 14, padding: 16, marginBottom: 20, borderWidth: 1, borderColor: COLORS.border },
+  descriptionText: { fontSize: 15, color: COLORS.text, lineHeight: 22 },
+  sectionTitle: { fontSize: 14, fontWeight: '700', color: COLORS.textDim, textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 10, marginLeft: 4 },
+  infoCard: { backgroundColor: COLORS.surface, borderRadius: 14, borderWidth: 1, borderColor: COLORS.border, marginBottom: 20, overflow: 'hidden' },
+  infoRow: { flexDirection: 'row', alignItems: 'center', padding: 14, borderBottomWidth: 1, borderBottomColor: COLORS.border },
+  infoIcon: { width: 36, height: 36, borderRadius: 10, backgroundColor: COLORS.bg, justifyContent: 'center', alignItems: 'center', marginRight: 12 },
+  infoContent: { flex: 1 },
+  infoLabel: { fontSize: 11, color: COLORS.textDim, fontWeight: '600', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 2 },
+  infoValue: { fontSize: 15, color: COLORS.text, fontWeight: '600' },
+  editSection: { paddingHorizontal: 16, gap: 14 },
+  editField: { backgroundColor: COLORS.surface, borderRadius: 14, padding: 14, borderWidth: 1, borderColor: COLORS.border },
+  editFieldHeader: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 10 },
+  editFieldLabel: { fontSize: 13, color: COLORS.textDim, fontWeight: '700' },
+  editInput: { fontSize: 15, color: COLORS.text, backgroundColor: COLORS.bg, borderRadius: 10, padding: 12, borderWidth: 1, borderColor: COLORS.border },
+  editInputMultiline: { minHeight: 80, textAlignVertical: 'top' },
+  emptyHint: { flexDirection: 'row', alignItems: 'center', gap: 10, backgroundColor: COLORS.surface, borderRadius: 14, padding: 16, borderWidth: 1, borderColor: COLORS.border, borderStyle: 'dashed' },
+  emptyHintText: { flex: 1, fontSize: 13, color: COLORS.textDim, lineHeight: 18 },
+})
+
+export default styles

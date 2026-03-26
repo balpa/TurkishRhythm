@@ -1,8 +1,11 @@
 import { View, Text, StyleSheet, Animated, ActivityIndicator } from 'react-native'
 import React, { useEffect, useRef } from 'react'
 import { Icon } from 'react-native-elements'
+import { useLanguage } from '../i18n/LanguageContext'
+import { t } from '../i18n/translations'
 
 const Intro = ({ setShowIntroPage }) => {
+  const { language } = useLanguage()
   const scaleAnim = useRef(new Animated.Value(1)).current
   const fadeAnim = useRef(new Animated.Value(0)).current
   const titleSlide = useRef(new Animated.Value(20)).current
@@ -43,7 +46,7 @@ const Intro = ({ setShowIntroPage }) => {
           <Icon name="music-note" color="#fff" size={40} />
         </View>
         <Text style={styles.title}>Koma</Text>
-        <Text style={styles.subtitle}>Turkish Music Education</Text>
+        <Text style={styles.subtitle}>{t(language, 'intro.subtitle')}</Text>
       </Animated.View>
       <View style={styles.activityIndicator}>
         <ActivityIndicator size='large' color='#E45A84' />

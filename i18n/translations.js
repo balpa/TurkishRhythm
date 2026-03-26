@@ -9,6 +9,10 @@ const translations = {
       settings: 'Ayarlar',
     },
 
+    intro: {
+      subtitle: 'Makam, usul, nota ve koro çalışmaları için Türk müziği uygulaması',
+    },
+
     // Feed page
     feed: {
       title: 'Akış',
@@ -234,6 +238,27 @@ const translations = {
       version: 'Versiyon',
       developer: 'Geliştirici',
       appDescription: 'Türk müziği eğitimi için tasarlanmış bir uygulama. Makamlar, usuller ve ritim çalışması.',
+      adminAccess: 'Koro Yöneticiliği Başvurusu',
+      adminAccessDesc: 'Koro oluşturabilmek için başvuru gönderin.',
+      adminRequestTitle: 'Yönetici Başvurusu',
+      adminRequestDesc: 'Gerçek bir koro yöneticisiyseniz kısa bir başvuru gönderin. Onaylandığında koro oluşturabilirsiniz.',
+      adminRequestChorusName: 'Koro adı',
+      adminRequestReason: 'Kısa açıklama',
+      adminRequestFillName: 'Lütfen koro adını girin',
+      adminRequestSent: 'Başvurunuz gönderildi',
+      adminRequestPending: 'Başvurunuz inceleniyor',
+      adminRequestRejectedDesc: 'Önceki başvuru reddedildi. Yeni bir başvuru gönderebilirsiniz.',
+      adminRequests: 'Yönetici Başvuruları',
+      adminRequestsDesc: 'Bekleyen başvuruları onaylayın veya reddedin.',
+      noAdminRequests: 'Henüz başvuru yok',
+      sendRequest: 'Gönder',
+      approve: 'Onayla',
+      reject: 'Reddet',
+      adminRequestApproved: 'Başvuru onaylandı',
+      adminRequestRejected: 'Başvuru reddedildi',
+      requestStatus_pending: 'Bekliyor',
+      requestStatus_approved: 'Onaylandı',
+      requestStatus_rejected: 'Reddedildi',
     },
   },
 
@@ -244,6 +269,10 @@ const translations = {
       notes: 'Notes',
       metronome: 'Metronome',
       settings: 'Settings',
+    },
+
+    intro: {
+      subtitle: 'Turkish music app for makams, rhythms, notes, and chorus practice',
     },
 
     feed: {
@@ -460,6 +489,27 @@ const translations = {
       version: 'Version',
       developer: 'Developer',
       appDescription: 'An app designed for Turkish music education. Makams, rhythms, and rhythm training.',
+      adminAccess: 'Admin Access Request',
+      adminAccessDesc: 'Send a request before creating a chorus.',
+      adminRequestTitle: 'Admin Request',
+      adminRequestDesc: 'If you are a real chorus admin, send a short request. Once approved, you can create choruses.',
+      adminRequestChorusName: 'Chorus name',
+      adminRequestReason: 'Short note',
+      adminRequestFillName: 'Please enter the chorus name',
+      adminRequestSent: 'Your request has been sent',
+      adminRequestPending: 'Your request is pending review',
+      adminRequestRejectedDesc: 'Your previous request was rejected. You can send a new one.',
+      adminRequests: 'Admin Requests',
+      adminRequestsDesc: 'Approve or reject pending requests.',
+      noAdminRequests: 'No requests yet',
+      sendRequest: 'Send',
+      approve: 'Approve',
+      reject: 'Reject',
+      adminRequestApproved: 'Request approved',
+      adminRequestRejected: 'Request rejected',
+      requestStatus_pending: 'Pending',
+      requestStatus_approved: 'Approved',
+      requestStatus_rejected: 'Rejected',
     },
   },
 }

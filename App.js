@@ -17,6 +17,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Svg, { Path } from 'react-native-svg';
 import { LanguageProvider } from './i18n/LanguageContext';
 import { supabase } from './lib/supabase';
+import { COLORS } from './src/shared/theme/colors';
 
 const Tab = createMaterialTopTabNavigator()
 const { width: SCREEN_WIDTH } = Dimensions.get('window')
@@ -29,12 +30,6 @@ const CURVE_WIDTH = TAB_WIDTH * 2
 const CURVE_HEIGHT = 30
 const CIRCLE_SIZE = 46
 const ICON_RISE = 10
-
-const COLORS = {
-  bg: '#1B1B2F',
-  accent: '#E45A84',
-  tabBar: '#111126',
-}
 
 const TAB_ICONS = [
   { name: 'dynamic-feed', type: 'material' },
@@ -109,7 +104,7 @@ const FluidTabBar = ({ state, navigation, position }) => {
                   opacity: circleScale,
                 }]} />
                 <Animated.View style={[styles.iconInner, { opacity: iconOpacity }]}>
-                  <Icon name={icon.name} type={icon.type} color="#fff" size={22} />
+                  <Icon name={icon.name} type={icon.type} color={COLORS.white} size={22} />
                 </Animated.View>
               </Animated.View>
             </TouchableOpacity>
