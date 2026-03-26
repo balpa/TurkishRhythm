@@ -2,7 +2,7 @@ import { View, FlatList, StyleSheet, TextInput, TouchableOpacity } from 'react-n
 import React, { useState, useMemo, useCallback } from 'react'
 import { Icon } from 'react-native-elements'
 import RhythmCard from '../components/RhythmCard'
-import { RHYTHMS } from '../data/data'
+import { RHYTHMS, RHYTHM_LIBRARY } from '../data/data'
 
 const RETRO_PALETTE = [
   '#B5364E', '#2D8B84', '#CC7A3A', '#6B4C8A', '#3A7D6E',
@@ -12,30 +12,7 @@ const RETRO_PALETTE = [
   '#8A4B6A', '#4A6B8E',
 ]
 
-const rhythmList = [
-  { key: 'nimsofyan', name: 'Nim Sofyan', time: '2/4', img: require("../assets/nimsofyan.png") },
-  { key: 'semai', name: 'Semai', time: '3/4', img: require("../assets/semai.png") },
-  { key: 'sofyan', name: 'Sofyan', time: '4/4', img: require("../assets/sofyan.png") },
-  { key: 'turkaksagi', name: 'Türk Aksağı', time: '5/4', img: require("../assets/turkaksagi.png") },
-  { key: 'fer', name: 'Fer', time: '5/8', img: null },
-  { key: 'yuruksemai', name: 'Yürük Semai', time: '6/8', img: require("../assets/yuruksemai.png") },
-  { key: 'senginsemai', name: 'Sengin Semai', time: '6/4', img: null },
-  { key: 'devrihindi', name: 'Devr-i Hindi', time: '7/8', img: require("../assets/devrihindi.png") },
-  { key: 'duyek', name: 'Düyek', time: '8/8', img: require("../assets/duyek.png") },
-  { key: 'musemmen', name: 'Müsemmen', time: '8/8', img: require("../assets/musemmen.png") },
-  { key: 'agirduyek', name: 'Ağır Düyek', time: '8/4', img: null },
-  { key: 'aksak', name: 'Aksak', time: '9/4', img: require("../assets/aksak.png") },
-  { key: 'raksaksagi', name: 'Raks Aksağı', time: '9/8', img: require("../assets/raksaksagi.png") },
-  { key: 'evfer', name: 'Evfer', time: '9/4', img: null },
-  { key: 'agiraksak', name: 'Ağır Aksak', time: '9/2', img: null },
-  { key: 'curcuna', name: 'Curcuna', time: '10/8', img: require("../assets/curcuna.png") },
-  { key: 'agiraksaksemaisi', name: 'Ağır Aksak Semai', time: '10/2', img: null },
-  { key: 'frenkcin', name: 'Frenkçin', time: '14/8', img: null },
-  { key: 'cifteduyek', name: 'Çifte Düyek', time: '16/8', img: null },
-  { key: 'berefsan', name: 'Berefşan', time: '16/4', img: null },
-  { key: 'cenber', name: 'Çenber', time: '24/4', img: null },
-  { key: 'devrikebir', name: 'Devr-i Kebir', time: '28/4', img: null },
-]
+const rhythmList = RHYTHM_LIBRARY
 
 const Rhythms = () => {
   const [search, setSearch] = useState('')
@@ -59,7 +36,7 @@ const Rhythms = () => {
     <RhythmCard
       infoText={RHYTHMS[item.key]}
       rhythmName={item.name}
-      imageURI={item.img}
+      imageURI={item.image}
       rhythmTime={item.time}
       color={colorsByKey[item.key]}
     />

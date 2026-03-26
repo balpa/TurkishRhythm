@@ -783,3 +783,69 @@ export const RHYTHMS = {
 *Frenkçin usulü, nispeten az kullanılmış bir usuldür. Bazı peşrevlerde ve saz eserlerinde görülür.
     `
 }
+
+const RHYTHM_IMAGES = {
+    nimsofyan: require('../assets/nimsofyan.png'),
+    semai: require('../assets/semai.png'),
+    sofyan: require('../assets/sofyan.png'),
+    turkaksagi: require('../assets/turkaksagi.png'),
+    yuruksemai: require('../assets/yuruksemai.png'),
+    devrihindi: require('../assets/devrihindi.png'),
+    duyek: require('../assets/duyek.png'),
+    musemmen: require('../assets/musemmen.png'),
+    aksak: require('../assets/aksak.png'),
+    raksaksagi: require('../assets/raksaksagi.png'),
+    curcuna: require('../assets/curcuna.png'),
+}
+
+const beat = (type, units, label = type === 'dum' ? 'Düm' : 'Tek') => ({
+    type,
+    units,
+    label,
+})
+
+const rhythmDefinitionList = [
+    { key: 'nimsofyan', name: 'Nim Sofyan', time: '2/4', beats: [beat('dum', 1), beat('tek', 1)] },
+    { key: 'semai', name: 'Semai', time: '3/4', beats: [beat('dum', 1), beat('tek', 1), beat('tek', 1)] },
+    { key: 'sofyan', name: 'Sofyan', time: '4/4', beats: [beat('dum', 2, 'Dü-üm'), beat('tek', 1, 'Te'), beat('tek', 1, 'Ke')] },
+    { key: 'turkaksagi', name: 'Türk Aksağı', time: '5/4', beats: [beat('dum', 2, 'Dü-üm'), beat('tek', 2, 'Te-ek'), beat('tek', 1)] },
+    { key: 'fer', name: 'Fer', time: '5/8', beats: [beat('dum', 2, 'Dü-üm'), beat('tek', 3, 'Te-e-ek')] },
+    { key: 'yuruksemai', name: 'Yürük Semai', time: '6/8', beats: [beat('dum', 1), beat('tek', 1), beat('tek', 1), beat('dum', 1), beat('tek', 2, 'Te-ek')] },
+    { key: 'senginsemai', name: 'Sengin Semai', time: '6/4', beats: [beat('dum', 1), beat('tek', 1), beat('tek', 1), beat('dum', 1), beat('tek', 2, 'Te-ek')] },
+    { key: 'devrihindi', name: 'Devr-i Hindi', time: '7/8', beats: [beat('dum', 2), beat('tek', 1), beat('tek', 1), beat('dum', 2, 'Dü-üm'), beat('tek', 2, 'Te-ek')] },
+    { key: 'duyek', name: 'Düyek', time: '8/8', beats: [beat('dum', 1), beat('tek', 2, 'Te-ek'), beat('tek', 1), beat('dum', 2, 'Dü-üm'), beat('tek', 2, 'Te-ek')] },
+    { key: 'musemmen', name: 'Müsemmen', time: '8/8', beats: [beat('dum', 3, 'Dü-ü-üm'), beat('tek', 2, 'Te-ek'), beat('tek', 3, 'Te-e-ek')] },
+    { key: 'agirduyek', name: 'Ağır Düyek', time: '8/4', beats: [beat('dum', 1), beat('tek', 2, 'Te-ek'), beat('tek', 1), beat('dum', 2, 'Dü-üm'), beat('tek', 2, 'Te-ek')] },
+    { key: 'aksak', name: 'Aksak', time: '9/4', beats: [beat('dum', 2, 'Dü-üm'), beat('tek', 1, 'Te'), beat('tek', 1, 'Ke'), beat('dum', 2, 'Dü-üm'), beat('tek', 2, 'Te-ek'), beat('tek', 1)] },
+    { key: 'raksaksagi', name: 'Raks Aksağı', time: '9/8', beats: [beat('dum', 2, 'Dü-üm'), beat('tek', 3, 'Te-e-ek'), beat('dum', 2, 'Dü-üm'), beat('tek', 2, 'Te-ek')] },
+    { key: 'evfer', name: 'Evfer', time: '9/4', beats: [beat('dum', 3, 'Dü-ü-üm'), beat('tek', 1, 'Te'), beat('tek', 1, 'Ke'), beat('dum', 2, 'Dü-üm'), beat('tek', 2, 'Te-ek')] },
+    { key: 'agiraksak', name: 'Ağır Aksak', time: '9/2', beats: [beat('dum', 2, 'Dü-üm'), beat('tek', 1, 'Te'), beat('tek', 1, 'Ke'), beat('dum', 2, 'Dü-üm'), beat('tek', 2, 'Te-ek'), beat('tek', 1)] },
+    { key: 'curcuna', name: 'Curcuna', time: '10/8', beats: [beat('dum', 2, 'Dü-üm'), beat('tek', 1, 'Te'), beat('tek', 2, 'Ka-a'), beat('dum', 2, 'Dü-üm'), beat('tek', 2, 'Te-ek'), beat('tek', 1)] },
+    { key: 'agiraksaksemaisi', name: 'Ağır Aksak Semai', time: '10/2', beats: [beat('dum', 2, 'Dü-üm'), beat('tek', 1, 'Te'), beat('tek', 2, 'Ka-a'), beat('dum', 2, 'Dü-üm'), beat('tek', 2, 'Te-ek'), beat('tek', 1)] },
+    { key: 'frenkcin', name: 'Frenkçin', time: '14/8', beats: [beat('dum', 2), beat('tek', 1), beat('tek', 1), beat('dum', 2, 'Dü-üm'), beat('tek', 2, 'Te-ek'), beat('dum', 2), beat('tek', 1, 'Te'), beat('tek', 1, 'Ke'), beat('tek', 2, 'Te-ek')] },
+    { key: 'cifteduyek', name: 'Çifte Düyek', time: '16/8', beats: [beat('dum', 1), beat('tek', 2, 'Te-ek'), beat('tek', 1), beat('dum', 2, 'Dü-üm'), beat('tek', 2, 'Te-ek'), beat('dum', 1), beat('tek', 2, 'Te-ek'), beat('tek', 1), beat('dum', 2, 'Dü-üm'), beat('tek', 2, 'Te-ek')] },
+    { key: 'berefsan', name: 'Berefşan', time: '16/4', beats: [beat('dum', 1), beat('tek', 2, 'Te-ek'), beat('tek', 1), beat('dum', 2, 'Dü-üm'), beat('tek', 1, 'Te'), beat('tek', 1, 'Ke'), beat('dum', 1), beat('tek', 2, 'Te-ek'), beat('tek', 1), beat('dum', 2, 'Dü-üm'), beat('tek', 2, 'Te-ek')] },
+    { key: 'cenber', name: 'Çenber', time: '24/4', beats: [beat('dum', 1), beat('tek', 2, 'Te-ek'), beat('dum', 1), beat('tek', 1), beat('tek', 2, 'Te-ek'), beat('tek', 1), beat('dum', 2, 'Dü-üm'), beat('tek', 2, 'Te-ek'), beat('dum', 1), beat('tek', 1), beat('tek', 2, 'Te-ek'), beat('dum', 2, 'Dü-üm'), beat('tek', 2, 'Te-ek'), beat('tek', 1), beat('dum', 2, 'Dü-üm')] },
+    { key: 'devrikebir', name: 'Devr-i Kebir', time: '28/4', beats: [beat('dum', 1), beat('tek', 2, 'Te-ek'), beat('dum', 1), beat('tek', 1), beat('dum', 2, 'Dü-üm'), beat('tek', 2, 'Te-ek'), beat('tek', 1), beat('dum', 1), beat('tek', 2, 'Te-ek'), beat('dum', 1), beat('tek', 2, 'Te-ek'), beat('dum', 2, 'Dü-üm'), beat('tek', 1), beat('tek', 2, 'Te-ek'), beat('dum', 1), beat('tek', 1), beat('dum', 2, 'Dü-üm'), beat('tek', 2, 'Te-ek')] },
+]
+
+export const RHYTHM_LIBRARY = rhythmDefinitionList.map((item) => ({
+    ...item,
+    image: RHYTHM_IMAGES[item.key] || null,
+    beatCount: item.beats.length,
+    totalUnits: item.beats.reduce((sum, currentBeat) => sum + currentBeat.units, 0),
+    practiceUnits: item.beats.flatMap((currentBeat, beatIndex) => Array.from({ length: currentBeat.units }, (_, unitIndex) => ({
+        type: currentBeat.type,
+        label: currentBeat.type === 'dum' ? 'Düm' : 'Tek',
+        beatLabel: currentBeat.label,
+        beatIndex,
+        unitIndex,
+    }))),
+    practicePattern: item.beats.map((currentBeat) => currentBeat.type),
+    practicePatternLabel: item.beats.map((currentBeat) => currentBeat.type === 'dum' ? 'Düm' : 'Tek').join(' - '),
+}))
+
+export const RHYTHM_LIBRARY_BY_KEY = RHYTHM_LIBRARY.reduce((accumulator, item) => {
+    accumulator[item.key] = item
+    return accumulator
+}, {})
