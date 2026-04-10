@@ -9,9 +9,29 @@ const translations = {
       settings: 'Ayarlar',
     },
 
+    search: {
+      makams: 'Makam ara...',
+      rhythms: 'Usul ara...',
+    },
+
     intro: {
       subtitle: 'Makam, usul, nota ve koro çalışmaları için Türk müziği uygulaması',
     },
+
+    onboarding: {
+      skip: 'Atla',
+      next: 'İleri',
+      start: 'Başla',
+      welcome_title: 'Koma\'ya Hoş Geldiniz',
+      welcome_desc: 'Türk klasik müziği eğitimi için tasarlanmış kapsamlı bir uygulama. Makamları, usulleri öğrenin ve ritim pratiği yapın.',
+      makams_title: 'Makamlar',
+      makams_desc: 'Türk müziğinin melodik yapı taşları olan makamları keşfedin. Her makamın durağı, güçlüsü, seyri ve dizisi hakkında detaylı bilgi edinin.',
+      rhythms_title: 'Usuller',
+      rhythms_desc: 'Nim Sofyan\'dan Devr-i Kebir\'e kadar Türk ritmik kalıplarını tanıyın. Her usulün Düm-Tek yapısını ve zaman ölçüsünü öğrenin.',
+      practice_title: 'Pratik Yapın',
+      practice_desc: 'Metronom ile ritim duyunuzu geliştirin. Usul çalışma modunda Düm ve Tek vuruşlarını zamanlama ile pratik yapın ve ilerlemenizi takip edin.',
+    },
+
 
     // Feed page
     feed: {
@@ -22,8 +42,12 @@ const translations = {
 
     // Notes page
     notes: {
-      title: 'Notalar',
-      subtitle: 'Yakında burada notalarınızı görüntüleyebileceksiniz',
+      title: 'Favorilerim',
+      subtitle: 'Yıldızladığınız makam ve usuller burada görünür',
+      makams: 'Makamlar',
+      rhythms: 'Usuller',
+      emptyFavorites: 'Henüz favori yok',
+      emptyFavoritesDesc: 'Makam veya usul kartlarındaki yıldız simgesine dokunarak favorilerinize ekleyin',
     },
 
     // Metronome page
@@ -117,6 +141,7 @@ const translations = {
       tab_notes: 'Notalar',
       tab_bulletin: 'Duyurular',
       tab_rehearsals: 'Provalar',
+      tab_leaderboard: 'Skor',
       tab_members: 'Üyeler',
       notesEmpty: 'Henüz nota yok',
       notesEmptyDesc: 'Koroya eklenen notalar burada görünecek',
@@ -245,6 +270,77 @@ const translations = {
       notFound: 'Koro bulunamadı',
     },
 
+    // Tuner
+    tuner: {
+      title: 'Akort Cihazı',
+      subtitle: 'Türk müziği perdeleri ile akort',
+      start: 'Başla',
+      stop: 'Durdur',
+      listening: 'Dinleniyor...',
+      tapToStart: 'Başlamak için dokunun',
+      reference: 'Türk Müziği Perdeleri',
+      tunerButton: 'Akort Cihazı',
+      tunerDesc: 'Mikrofon ile perde algılama',
+    },
+
+    // Leaderboard
+    leaderboard: {
+      empty: 'Henüz skor yok',
+      emptyDesc: 'Usul pratiği yaparak skor tablosuna katılın',
+      member: 'Üye',
+      rhythm: 'Usul',
+      accuracy: 'Doğruluk',
+      anonymous: 'Anonim',
+      tab: 'Skor',
+    },
+
+    // Gamification
+    gamification: {
+      title: 'İlerleme',
+      streak: 'Pratik Serisi',
+      streakDesc: 'Her gün pratik yaparak serinizi sürdürün',
+      currentStreak: 'Mevcut',
+      bestStreak: 'En İyi',
+      totalDays: 'Toplam Gün',
+      achievements: 'Rozetler',
+      flashcards: 'Bilgi Kartları',
+      tapToReveal: 'Cevabı görmek için dokunun',
+      forgot: 'Unuttum',
+      hard: 'Zor',
+      good: 'İyi',
+      easy: 'Kolay',
+      cardsRemaining: 'kart kaldı',
+      allReviewed: 'Tüm kartlar tamamlandı! Yarın tekrar gelin.',
+      deck_duragi: 'Durağı',
+      deck_guclusu: 'Güçlüsü',
+      deck_seyri: 'Seyri',
+      deck_yedeni: 'Yedeni',
+      deckQuestion_duragi: 'Durağı nedir?',
+      deckQuestion_guclusu: 'Güçlüsü nedir?',
+      deckQuestion_seyri: 'Seyri nedir?',
+      deckQuestion_yedeni: 'Yedeni nedir?',
+      seyri_cikici: 'Çıkıcı',
+      seyri_inici: 'İnici',
+      seyri_inici_cikici: 'İnici-Çıkıcı',
+      badge_first_practice: 'İlk Adım',
+      badge_sessions_10: '10 Pratik',
+      badge_sessions_50: '50 Pratik',
+      badge_sessions_100: '100 Pratik',
+      badge_streak_3: '3 Gün Seri',
+      badge_streak_7: '7 Gün Seri',
+      badge_streak_30: '30 Gün Seri',
+      badge_cycles_100: '100 Tur',
+      badge_cycles_500: '500 Tur',
+      badge_perfect_accuracy: 'Kusursuz',
+      badge_five_rhythms: '5 Usul',
+      badge_ten_rhythms: '10 Usul',
+      badge_all_rhythms: 'Tüm Usuller',
+      badge_speed_120: 'Hız 120',
+      badge_speed_160: 'Hız 160',
+      progressButton: 'İlerleme',
+      progressDesc: 'Seri, rozetler ve bilgi kartları',
+    },
+
     // Settings page
     settings: {
       title: 'Ayarlar',
@@ -299,9 +395,29 @@ const translations = {
       settings: 'Settings',
     },
 
+    search: {
+      makams: 'Search makams...',
+      rhythms: 'Search rhythms...',
+    },
+
     intro: {
       subtitle: 'Turkish music app for makams, rhythms, notes, and chorus practice',
     },
+
+    onboarding: {
+      skip: 'Skip',
+      next: 'Next',
+      start: 'Get Started',
+      welcome_title: 'Welcome to Koma',
+      welcome_desc: 'A comprehensive app designed for Turkish classical music education. Learn makams, rhythms, and practice your timing.',
+      makams_title: 'Makams',
+      makams_desc: 'Discover the melodic building blocks of Turkish music. Learn about each makam\'s finalis, dominant, direction, and scale structure.',
+      rhythms_title: 'Rhythms (Usul)',
+      rhythms_desc: 'Explore Turkish rhythmic patterns from Nim Sofyan to Devr-i Kebir. Learn the Düm-Tek structure and time signature of each usul.',
+      practice_title: 'Practice',
+      practice_desc: 'Improve your rhythm sense with the metronome. Practice Düm and Tek strokes with timing in rhythm practice mode and track your progress.',
+    },
+
 
     feed: {
       title: 'Feed',
@@ -310,8 +426,12 @@ const translations = {
     },
 
     notes: {
-      title: 'Notes',
-      subtitle: 'You will be able to view your notes here soon',
+      title: 'My Favorites',
+      subtitle: 'Your starred makams and rhythms appear here',
+      makams: 'Makams',
+      rhythms: 'Rhythms',
+      emptyFavorites: 'No favorites yet',
+      emptyFavoritesDesc: 'Tap the star icon on makam or rhythm cards to add them to your favorites',
     },
 
     metronome: {
@@ -401,6 +521,7 @@ const translations = {
       tab_notes: 'Notes',
       tab_bulletin: 'Bulletin',
       tab_rehearsals: 'Rehearsals',
+      tab_leaderboard: 'Scores',
       tab_members: 'Members',
       notesEmpty: 'No notes yet',
       notesEmptyDesc: 'Notes added to the chorus will appear here',
@@ -523,6 +644,74 @@ const translations = {
       emptyHint: 'Tap the edit button in the top right to add chorus information',
       error: 'Error',
       notFound: 'Chorus not found',
+    },
+
+    tuner: {
+      title: 'Tuner',
+      subtitle: 'Tune with Turkish music pitches',
+      start: 'Start',
+      stop: 'Stop',
+      listening: 'Listening...',
+      tapToStart: 'Tap to start',
+      reference: 'Turkish Music Pitches',
+      tunerButton: 'Tuner',
+      tunerDesc: 'Pitch detection via microphone',
+    },
+
+    leaderboard: {
+      empty: 'No scores yet',
+      emptyDesc: 'Practice rhythms to join the leaderboard',
+      member: 'Member',
+      rhythm: 'Rhythm',
+      accuracy: 'Acc.',
+      anonymous: 'Anonymous',
+      tab: 'Scores',
+    },
+
+    gamification: {
+      title: 'Progress',
+      streak: 'Practice Streak',
+      streakDesc: 'Keep your streak alive by practicing daily',
+      currentStreak: 'Current',
+      bestStreak: 'Best',
+      totalDays: 'Total Days',
+      achievements: 'Achievements',
+      flashcards: 'Flashcards',
+      tapToReveal: 'Tap to reveal answer',
+      forgot: 'Forgot',
+      hard: 'Hard',
+      good: 'Good',
+      easy: 'Easy',
+      cardsRemaining: 'cards remaining',
+      allReviewed: 'All cards reviewed! Come back tomorrow.',
+      deck_duragi: 'Finalis',
+      deck_guclusu: 'Dominant',
+      deck_seyri: 'Direction',
+      deck_yedeni: 'Leading',
+      deckQuestion_duragi: 'What is the finalis?',
+      deckQuestion_guclusu: 'What is the dominant?',
+      deckQuestion_seyri: 'What is the melodic direction?',
+      deckQuestion_yedeni: 'What is the leading tone?',
+      seyri_cikici: 'Ascending',
+      seyri_inici: 'Descending',
+      seyri_inici_cikici: 'Descending-Ascending',
+      badge_first_practice: 'First Step',
+      badge_sessions_10: '10 Sessions',
+      badge_sessions_50: '50 Sessions',
+      badge_sessions_100: '100 Sessions',
+      badge_streak_3: '3 Day Streak',
+      badge_streak_7: '7 Day Streak',
+      badge_streak_30: '30 Day Streak',
+      badge_cycles_100: '100 Cycles',
+      badge_cycles_500: '500 Cycles',
+      badge_perfect_accuracy: 'Perfect',
+      badge_five_rhythms: '5 Rhythms',
+      badge_ten_rhythms: '10 Rhythms',
+      badge_all_rhythms: 'All Rhythms',
+      badge_speed_120: 'Speed 120',
+      badge_speed_160: 'Speed 160',
+      progressButton: 'Progress',
+      progressDesc: 'Streaks, badges, and flashcards',
     },
 
     settings: {

@@ -6,6 +6,7 @@ import Metronomy from './pages/Metronomy';
 import Rhythms from './pages/Rhythms';
 import Makams from './pages/Makams';
 import Intro from './pages/Intro'
+import Notes from './pages/Notes';
 import Choruses from './pages/Choruses';
 import Feed from './pages/Feed';
 import Settings from './pages/Settings';
@@ -18,11 +19,14 @@ import Svg, { Path } from 'react-native-svg';
 import { LanguageProvider } from './i18n/LanguageContext';
 import { supabase } from './lib/supabase';
 import { COLORS } from './src/shared/theme/colors';
+import ErrorBoundary from './src/shared/ErrorBoundary';
+import OfflineBanner from './src/shared/OfflineBanner';
+import OnboardingScreen, { hasSeenOnboarding } from './src/features/onboarding/OnboardingScreen';
 
 const Tab = createMaterialTopTabNavigator()
 const { width: SCREEN_WIDTH } = Dimensions.get('window')
 
-const TAB_COUNT = 6
+const TAB_COUNT = 7
 const TAB_WIDTH = SCREEN_WIDTH / TAB_COUNT
 const BAR_HEIGHT = 40
 const SAFE_BOTTOM = Platform.OS === 'ios' ? 28 : 12
@@ -35,6 +39,7 @@ const TAB_ICONS = [
   { name: 'dynamic-feed', type: 'material' },
   { name: 'queue-music', type: 'material' },
   { name: 'graphic-eq', type: 'material' },
+  { name: 'star', type: 'material' },
   { name: 'groups', type: 'material' },
   { name: 'timer', type: 'material' },
   { name: 'settings', type: 'material' },
@@ -95,7 +100,7 @@ const FluidTabBar = ({ state, navigation, position }) => {
           }
 
           return (
-            <TouchableOpacity key={route.key} onPress={onPress} activeOpacity={0.6} style={styles.tab}>
+            <TouchableOpacity key={route.key} onPress={onPress} activeOpacity={0.6} style={styles.tab} accessibilityLabel={route.name} accessibilityRole="tab">
               <Animated.View style={[styles.iconContainer, {
                 transform: [{ translateY: iconTranslateY }, { scale: iconScale }],
               }]}>
@@ -119,6 +124,7 @@ const FluidTabBar = ({ state, navigation, position }) => {
 
 const App = () => {
   const [showIntroPage, setShowIntroPage] = useState(true)
+  const [showOnboarding, setShowOnboarding] = useState(false)
   const [session, setSession] = useState(null)
   const [authLoading, setAuthLoading] = useState(true)
 
@@ -126,6 +132,11 @@ const App = () => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session)
       setAuthLoading(false)
+      if (session) {
+        hasSeenOnboarding().then(seen => {
+          if (!seen) setShowOnboarding(true)
+        })
+      }
     })
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -164,9 +175,11 @@ const App = () => {
   }
 
   return (
+    <ErrorBoundary>
     <LanguageProvider>
     <GestureHandlerRootView style={{ flex: 1, backgroundColor: COLORS.bg }}>
       <View style={{ flex: 1, paddingTop: Constants.statusBarHeight, backgroundColor: COLORS.bg }}>
+      <OfflineBanner />
       <NavigationContainer>
         <StatusBar style='light' backgroundColor={COLORS.bg} />
         <Tab.Navigator
@@ -182,6 +195,7 @@ const App = () => {
           <Tab.Screen name="Feed" component={Feed} />
           <Tab.Screen name="Makams" component={Makams} />
           <Tab.Screen name="Rhythms" component={Rhythms} />
+          <Tab.Screen name="Favorites" component={Notes} />
           <Tab.Screen name="Choruses" component={Choruses} />
           <Tab.Screen name="Metronomy" component={Metronomy} />
           <Tab.Screen name="Settings" children={renderSettingsScreen} />
@@ -189,8 +203,10 @@ const App = () => {
       </NavigationContainer>
       </View>
       {showIntroPage && <Intro setShowIntroPage={setShowIntroPage} />}
+      {showOnboarding && <OnboardingScreen onComplete={() => setShowOnboarding(false)} />}
     </GestureHandlerRootView>
     </LanguageProvider>
+    </ErrorBoundary>
   )
 }
 

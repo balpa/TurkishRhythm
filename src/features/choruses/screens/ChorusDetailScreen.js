@@ -15,6 +15,7 @@ import {
   SwipeableNoteCard,
   SwipeableRehearsalCard,
 } from '../components/ChorusDetailCards'
+import LeaderboardSection from '../components/LeaderboardSection'
 import useChorusDetailData from '../hooks/useChorusDetailData'
 
 const ChorusDetailScreen = ({ route, navigation }) => {
@@ -85,10 +86,15 @@ const ChorusDetailScreen = ({ route, navigation }) => {
     if (tab === 'notes') return 'description'
     if (tab === 'bulletin') return 'campaign'
     if (tab === 'rehearsals') return 'event-note'
+    if (tab === 'leaderboard') return 'leaderboard'
     return 'people'
   }
 
   const renderTabContent = () => {
+    if (activeTab === 'leaderboard') {
+      return <LeaderboardSection chorusId={chorus.id} />
+    }
+
     if (activeTab === 'members') {
       if (loading) {
         return <View style={styles.loadingContainer}><ActivityIndicator size="small" color={COLORS.accent} /></View>

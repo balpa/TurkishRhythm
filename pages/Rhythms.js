@@ -1,8 +1,12 @@
 import { View, FlatList, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
-import React, { useState, useMemo, useCallback } from 'react'
+import React, { useState, useMemo, useCallback, useEffect } from 'react'
 import { Icon } from 'react-native-elements'
 import RhythmCard from '../components/RhythmCard'
 import { RHYTHMS, RHYTHM_LIBRARY } from '../data/data'
+import { getRhythmFavorites, toggleRhythmFavorite } from '../src/shared/favoritesStorage'
+import { useLanguage } from '../i18n/LanguageContext'
+import { t } from '../i18n/translations'
+import { COLORS } from '../src/shared/theme/colors'
 
 const RETRO_PALETTE = [
   '#B5364E', '#2D8B84', '#CC7A3A', '#6B4C8A', '#3A7D6E',
@@ -15,7 +19,15 @@ const RETRO_PALETTE = [
 const rhythmList = RHYTHM_LIBRARY
 
 const Rhythms = () => {
+  const { language } = useLanguage()
   const [search, setSearch] = useState('')
+  const [showFavoritesOnly, setShowFavoritesOnly] = useState(false)
+  const [favorites, setFavorites] = useState([])
+
+  useEffect(() => {
+    getRhythmFavorites().then(setFavorites)
+  }, [])
+
   const colorsByKey = useMemo(() => {
     const shuffled = [...RETRO_PALETTE].sort(() => Math.random() - 0.5)
     return rhythmList.reduce((acc, item, index) => {
@@ -25,12 +37,21 @@ const Rhythms = () => {
   }, [])
 
   const filtered = useMemo(() => {
-    if (!search.trim()) return rhythmList
+    let list = rhythmList
+    if (showFavoritesOnly) {
+      list = list.filter(r => favorites.includes(r.key))
+    }
+    if (!search.trim()) return list
     const q = search.toLowerCase()
-    return rhythmList.filter(r =>
+    return list.filter(r =>
       r.name.toLowerCase().includes(q) || r.time.includes(q)
     )
-  }, [search])
+  }, [search, showFavoritesOnly, favorites])
+
+  const handleToggleFavorite = useCallback(async (key) => {
+    const updated = await toggleRhythmFavorite(key)
+    setFavorites(updated)
+  }, [])
 
   const renderItem = useCallback(({ item }) => (
     <RhythmCard
@@ -39,31 +60,41 @@ const Rhythms = () => {
       imageURI={item.image}
       rhythmTime={item.time}
       color={colorsByKey[item.key]}
+      isFavorite={favorites.includes(item.key)}
+      onToggleFavorite={() => handleToggleFavorite(item.key)}
     />
-  ), [colorsByKey])
+  ), [colorsByKey, favorites, handleToggleFavorite])
 
   return (
     <View style={styles.container}>
       <View style={styles.searchContainer}>
-        <Icon name="search" color="#9090B0" size={20} />
+        <Icon name="search" color={COLORS.textDim} size={20} />
         <TextInput
           style={styles.searchInput}
-          placeholder="Usul ara..."
-          placeholderTextColor="#9090B0"
+          placeholder={t(language, 'search.rhythms')}
+          placeholderTextColor={COLORS.textDim}
           value={search}
           onChangeText={setSearch}
           autoCorrect={false}
         />
         {search.length > 0 && (
-          <TouchableOpacity onPress={() => setSearch('')}>
-            <Icon name="close" color="#9090B0" size={20} />
+          <TouchableOpacity onPress={() => setSearch('')} accessibilityLabel="Clear search" accessibilityRole="button">
+            <Icon name="close" color={COLORS.textDim} size={20} />
           </TouchableOpacity>
         )}
+        <TouchableOpacity onPress={() => setShowFavoritesOnly(v => !v)} style={styles.favFilterButton} accessibilityLabel="Filter favorites" accessibilityRole="button">
+          <Icon
+            name={showFavoritesOnly ? 'star' : 'star-border'}
+            color={showFavoritesOnly ? '#FFD700' : COLORS.textDim}
+            size={22}
+          />
+        </TouchableOpacity>
       </View>
       <FlatList
         data={filtered}
         keyExtractor={(item) => item.key}
         renderItem={renderItem}
+        extraData={favorites}
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
         removeClippedSubviews={true}
@@ -80,7 +111,7 @@ export default Rhythms
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1B1B2F',
+    backgroundColor: COLORS.bg,
     paddingTop: 10,
   },
   listContent: {
@@ -89,19 +120,23 @@ const styles = StyleSheet.create({
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#262640',
+    backgroundColor: COLORS.surface,
     borderRadius: 14,
     marginHorizontal: 16,
     marginBottom: 10,
     paddingHorizontal: 14,
     borderWidth: 1,
-    borderColor: '#3A3A5C',
+    borderColor: COLORS.border,
   },
   searchInput: {
     flex: 1,
     fontSize: 15,
-    color: '#F0E6D3',
+    color: COLORS.text,
     paddingVertical: 12,
     marginLeft: 10,
+  },
+  favFilterButton: {
+    marginLeft: 10,
+    padding: 4,
   },
 })

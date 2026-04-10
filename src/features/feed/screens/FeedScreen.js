@@ -6,6 +6,7 @@ import { useLanguage } from '../../../../i18n/LanguageContext'
 import { t } from '../../../../i18n/translations'
 import BulletinFeedCard from '../components/BulletinFeedCard'
 import { applyAttendanceToBulletins, ATTENDANCE_STATUSES, COLORS, PAGE_SIZE } from '../feedShared'
+import { cachedQuery } from '../../../shared/offlineCache'
 import styles from '../feedStyles'
 
 const FeedScreen = () => {
@@ -39,12 +40,18 @@ const FeedScreen = () => {
       return
     }
 
-    const { data, error } = await supabase
+    const cacheKey = `feed_bulletins_${offset}`
+    const queryFn = () => supabase
       .from('bulletins')
       .select('id, title, content, visibility, is_event, event_date, event_location, event_price, created_at, created_by, profiles(*), choruses(name)')
       .eq('visibility', 'public')
       .order('created_at', { ascending: false })
       .range(offset, offset + PAGE_SIZE - 1)
+
+    const { data, error, fromCache } = await cachedQuery(cacheKey, queryFn, {
+      ttl: CACHE_TTL,
+      forceRefresh: isRefresh,
+    })
 
     if (error) {
       console.log('Feed fetch error:', error.message)

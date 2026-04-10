@@ -11,9 +11,13 @@ import ProfileSettingsModal from '../components/ProfileSettingsModal'
 import { AboutSection, FeedbackBanner, LanguageSection } from '../components/SettingsSections'
 import AdminAccessModal from '../components/AdminAccessModal'
 import AdminRequestReviewModal from '../components/AdminRequestReviewModal'
+import ProgressScreen from '../../gamification/screens/ProgressScreen'
+import TunerScreen from '../../tuner/TunerScreen'
 
 const SettingsScreen = ({ onLogout }) => {
   const { language, changeLanguage } = useLanguage()
+  const [showProgress, setShowProgress] = useState(false)
+  const [showTuner, setShowTuner] = useState(false)
   const [canCreateChorus, setCanCreateChorus] = useState(false)
   const [showCreateModal, setShowCreateModal] = useState(false)
   const [showProfileModal, setShowProfileModal] = useState(false)
@@ -345,15 +349,70 @@ const SettingsScreen = ({ onLogout }) => {
     setTimeout(() => setMessage(''), 3000)
   }
 
+  if (showProgress) {
+    return <ProgressScreen onBack={() => setShowProgress(false)} />
+  }
+
+  if (showTuner) {
+    return (
+      <View style={styles.container}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 20, paddingTop: 16, paddingBottom: 8 }}>
+          <TouchableOpacity style={{ width: 36, height: 36, borderRadius: 18, backgroundColor: COLORS.surface, alignItems: 'center', justifyContent: 'center', marginRight: 12 }} onPress={() => setShowTuner(false)} activeOpacity={0.7} accessibilityLabel="Back" accessibilityRole="button">
+            <Icon name="arrow-back" color={COLORS.text} size={20} />
+          </TouchableOpacity>
+        </View>
+        <TunerScreen />
+      </View>
+    )
+  }
+
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
         <Text style={styles.pageTitle}>{t(language, 'settings.title')}</Text>
 
+        {/* Progress / Gamification */}
+        <TouchableOpacity
+          style={styles.profileButton}
+          activeOpacity={0.7}
+          onPress={() => setShowProgress(true)}
+          accessibilityLabel="Progress"
+          accessibilityRole="button"
+        >
+          <View style={styles.profileButtonIcon}>
+            <Icon name="emoji-events" color={COLORS.accent} size={24} />
+          </View>
+          <View style={styles.profileButtonContent}>
+            <Text style={styles.profileButtonTitle}>{t(language, 'gamification.progressButton')}</Text>
+            <Text style={styles.profileButtonDesc}>{t(language, 'gamification.progressDesc')}</Text>
+          </View>
+          <Icon name="chevron-right" color={COLORS.textDim} size={22} />
+        </TouchableOpacity>
+
+        {/* Tuner */}
+        <TouchableOpacity
+          style={styles.profileButton}
+          activeOpacity={0.7}
+          onPress={() => setShowTuner(true)}
+          accessibilityLabel="Tuner"
+          accessibilityRole="button"
+        >
+          <View style={styles.profileButtonIcon}>
+            <Icon name="music-note" color={COLORS.accent} size={24} />
+          </View>
+          <View style={styles.profileButtonContent}>
+            <Text style={styles.profileButtonTitle}>{t(language, 'tuner.tunerButton')}</Text>
+            <Text style={styles.profileButtonDesc}>{t(language, 'tuner.tunerDesc')}</Text>
+          </View>
+          <Icon name="chevron-right" color={COLORS.textDim} size={22} />
+        </TouchableOpacity>
+
         <TouchableOpacity
           style={styles.profileButton}
           activeOpacity={0.7}
           onPress={openProfileModal}
+          accessibilityLabel="Profile settings"
+          accessibilityRole="button"
         >
           <View style={styles.profileButtonIcon}>
             <Icon name="person-outline" color={COLORS.accent} size={24} />
@@ -374,6 +433,8 @@ const SettingsScreen = ({ onLogout }) => {
           style={[styles.createChorusButton, !canCreateChorus && styles.createChorusDisabled]}
           activeOpacity={0.7}
           onPress={openCreateModal}
+          accessibilityLabel="Create chorus"
+          accessibilityRole="button"
         >
           <View style={styles.createChorusIcon}>
             <Icon name="add-circle-outline" color={canCreateChorus ? COLORS.accent : COLORS.textDim} size={24} />
@@ -401,6 +462,8 @@ const SettingsScreen = ({ onLogout }) => {
             ]}
             activeOpacity={latestAdminRequest?.status === 'pending' ? 1 : 0.7}
             onPress={latestAdminRequest?.status === 'pending' ? undefined : openAdminRequestModal}
+            accessibilityLabel="Admin request"
+            accessibilityRole="button"
           >
             <View style={styles.accessRequestIcon}>
               <Icon
@@ -428,7 +491,7 @@ const SettingsScreen = ({ onLogout }) => {
         )}
 
         {canReviewAdminRequests && (
-          <TouchableOpacity style={styles.accessRequestButton} activeOpacity={0.7} onPress={openAdminReviewModal}>
+          <TouchableOpacity style={styles.accessRequestButton} activeOpacity={0.7} onPress={openAdminReviewModal} accessibilityLabel="Admin review" accessibilityRole="button">
             <View style={styles.accessRequestIcon}>
               <Icon name="manage-accounts" color={COLORS.accent} size={24} />
             </View>
@@ -447,7 +510,7 @@ const SettingsScreen = ({ onLogout }) => {
         <AboutSection language={language} />
 
         {/* Logout */}
-        <TouchableOpacity style={styles.logoutButton} activeOpacity={0.7} onPress={onLogout}>
+        <TouchableOpacity style={styles.logoutButton} activeOpacity={0.7} onPress={onLogout} accessibilityLabel="Sign out" accessibilityRole="button">
           <Icon name="logout" color={COLORS.accent} size={20} style={{ marginRight: 8 }} />
           <Text style={styles.logoutText}>{t(language, 'login.logout')}</Text>
         </TouchableOpacity>

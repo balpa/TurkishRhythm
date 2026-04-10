@@ -214,6 +214,10 @@ const ChorusListScreen = ({ navigation }) => {
             showsVerticalScrollIndicator={false}
             refreshing={refreshing}
             onRefresh={onRefresh}
+            removeClippedSubviews={true}
+            windowSize={7}
+            initialNumToRender={6}
+            maxToRenderPerBatch={6}
           />
         )
       ) : (
@@ -262,6 +266,10 @@ const ChorusListScreen = ({ navigation }) => {
               showsVerticalScrollIndicator={false}
               refreshing={refreshing}
               onRefresh={onRefresh}
+              removeClippedSubviews={true}
+              windowSize={7}
+              initialNumToRender={6}
+              maxToRenderPerBatch={6}
             />
           )}
         </>

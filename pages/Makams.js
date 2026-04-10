@@ -1,8 +1,12 @@
 import { View, StyleSheet, FlatList, TextInput, TouchableOpacity } from 'react-native'
-import React, { useState, useMemo, useCallback } from 'react'
+import React, { useState, useMemo, useCallback, useEffect } from 'react'
 import { Icon } from 'react-native-elements'
 import MakamCard from '../components/MakamCard'
 import { MAKAMS } from '../data/data'
+import { getMakamFavorites, toggleMakamFavorite } from '../src/shared/favoritesStorage'
+import { useLanguage } from '../i18n/LanguageContext'
+import { t } from '../i18n/translations'
+import { COLORS } from '../src/shared/theme/colors'
 
 const RETRO_PALETTE = [
   '#B5364E', '#2D8B84', '#CC7A3A', '#8B5E3C', '#C4566A',
@@ -45,7 +49,15 @@ const makamList = [
 ]
 
 const Makams = () => {
+  const { language } = useLanguage()
   const [search, setSearch] = useState('')
+  const [showFavoritesOnly, setShowFavoritesOnly] = useState(false)
+  const [favorites, setFavorites] = useState([])
+
+  useEffect(() => {
+    getMakamFavorites().then(setFavorites)
+  }, [])
+
   const colorsByKey = useMemo(() => {
     const shuffled = [...RETRO_PALETTE].sort(() => Math.random() - 0.5)
     return makamList.reduce((acc, item, index) => {
@@ -55,12 +67,21 @@ const Makams = () => {
   }, [])
 
   const filtered = useMemo(() => {
-    if (!search.trim()) return makamList
+    let list = makamList
+    if (showFavoritesOnly) {
+      list = list.filter(m => favorites.includes(m.key))
+    }
+    if (!search.trim()) return list
     const q = search.toLowerCase()
-    return makamList.filter(m =>
+    return list.filter(m =>
       MAKAMS[m.key].makamName.toLowerCase().includes(q)
     )
-  }, [search])
+  }, [search, showFavoritesOnly, favorites])
+
+  const handleToggleFavorite = useCallback(async (key) => {
+    const updated = await toggleMakamFavorite(key)
+    setFavorites(updated)
+  }, [])
 
   const renderItem = useCallback(({ item }) => (
     <MakamCard
@@ -68,31 +89,41 @@ const Makams = () => {
       makamInfo={MAKAMS[item.key].info}
       imageURI={item.img}
       color={colorsByKey[item.key]}
+      isFavorite={favorites.includes(item.key)}
+      onToggleFavorite={() => handleToggleFavorite(item.key)}
     />
-  ), [colorsByKey])
+  ), [colorsByKey, favorites, handleToggleFavorite])
 
   return (
     <View style={styles.container}>
       <View style={styles.searchContainer}>
-        <Icon name="search" color="#9090B0" size={20} />
+        <Icon name="search" color={COLORS.textDim} size={20} />
         <TextInput
           style={styles.searchInput}
-          placeholder="Makam ara..."
-          placeholderTextColor="#9090B0"
+          placeholder={t(language, 'search.makams')}
+          placeholderTextColor={COLORS.textDim}
           value={search}
           onChangeText={setSearch}
           autoCorrect={false}
         />
         {search.length > 0 && (
-          <TouchableOpacity onPress={() => setSearch('')}>
-            <Icon name="close" color="#9090B0" size={20} />
+          <TouchableOpacity onPress={() => setSearch('')} accessibilityLabel="Clear search" accessibilityRole="button">
+            <Icon name="close" color={COLORS.textDim} size={20} />
           </TouchableOpacity>
         )}
+        <TouchableOpacity onPress={() => setShowFavoritesOnly(v => !v)} style={styles.favFilterButton} accessibilityLabel="Filter favorites" accessibilityRole="button">
+          <Icon
+            name={showFavoritesOnly ? 'star' : 'star-border'}
+            color={showFavoritesOnly ? '#FFD700' : COLORS.textDim}
+            size={22}
+          />
+        </TouchableOpacity>
       </View>
       <FlatList
         data={filtered}
         keyExtractor={(item) => item.key}
         renderItem={renderItem}
+        extraData={favorites}
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
         removeClippedSubviews={true}
@@ -108,7 +139,7 @@ export default Makams
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#1B1B2F',
+    backgroundColor: COLORS.bg,
     flex: 1,
     paddingTop: 10,
   },
@@ -118,19 +149,23 @@ const styles = StyleSheet.create({
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#262640',
+    backgroundColor: COLORS.surface,
     borderRadius: 14,
     marginHorizontal: 16,
     marginBottom: 10,
     paddingHorizontal: 14,
     borderWidth: 1,
-    borderColor: '#3A3A5C',
+    borderColor: COLORS.border,
   },
   searchInput: {
     flex: 1,
     fontSize: 15,
-    color: '#F0E6D3',
+    color: COLORS.text,
     paddingVertical: 12,
     marginLeft: 10,
+  },
+  favFilterButton: {
+    marginLeft: 10,
+    padding: 4,
   },
 })

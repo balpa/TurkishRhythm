@@ -2,12 +2,15 @@ import { View, Text, TouchableOpacity, Animated, Easing, ScrollView } from 'reac
 import React, { useState, useEffect, useRef, useMemo } from 'react'
 import { Icon } from 'react-native-elements'
 import { useIsFocused } from '@react-navigation/native'
+import * as Haptics from 'expo-haptics'
 import { useLanguage } from '../../../../i18n/LanguageContext'
 import { t } from '../../../../i18n/translations'
 import { RHYTHM_LIBRARY } from '../../../../data/data'
 import styles from '../metronomeStyles'
 import { COLORS, DEFAULT_PRACTICE_RHYTHM_KEY, MAX_HISTORY_DOTS, getPracticeRhythm } from '../metronomeShared'
 import MetronomeInfoModal from '../components/MetronomeInfoModal'
+import { recordPracticeSession, checkAndUnlockAchievements } from '../../gamification/gamificationStorage'
+import { uploadPracticeScore } from '../../gamification/leaderboardService'
 
 const PRACTICE_DEFAULT_BPM = 84
 const PRACTICE_MIN_BPM = 40
@@ -50,6 +53,11 @@ const MetronomeScreen = () => {
   const practiceFeedbackTimeout = useRef(null)
   const practiceIntervalRef = useRef(null)
   const currentTickRef = useRef({ index: -1, startedAt: 0, matched: false })
+  const practiceStateRef = useRef({ hits: 0, mistakes: 0, cycles: 0, rhythmKey: DEFAULT_PRACTICE_RHYTHM_KEY, bpm: PRACTICE_DEFAULT_BPM })
+
+  useEffect(() => {
+    practiceStateRef.current = { hits: practiceHits, mistakes: practiceMistakes, cycles: practiceCycles, rhythmKey: selectedRhythmKey, bpm: practiceBpm }
+  }, [practiceHits, practiceMistakes, practiceCycles, selectedRhythmKey, practiceBpm])
 
   const selectedRhythm = getPracticeRhythm(selectedRhythmKey)
   const practiceUnits = selectedRhythm.practiceUnits || []
@@ -210,11 +218,22 @@ const MetronomeScreen = () => {
     if (practiceFeedbackTimeout.current) clearTimeout(practiceFeedbackTimeout.current)
   }
 
+  const savePracticeSession = async () => {
+    const { hits, mistakes, cycles, rhythmKey, bpm } = practiceStateRef.current
+    if (cycles > 0) {
+      const accuracy = hits + mistakes === 0 ? 0 : Math.round((hits / (hits + mistakes)) * 100)
+      await recordPracticeSession(rhythmKey, bpm, accuracy, cycles)
+      checkAndUnlockAchievements()
+      uploadPracticeScore(rhythmKey, bpm, accuracy, cycles)
+    }
+  }
+
   const stopPractice = () => {
     if (practiceIntervalRef.current) {
       clearInterval(practiceIntervalRef.current)
       practiceIntervalRef.current = null
     }
+    savePracticeSession()
     setIsPracticeRunning(false)
   }
 
@@ -228,6 +247,7 @@ const MetronomeScreen = () => {
   }
 
   const advanceToNextPulse = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
     setPracticeUnitIndex((current) => {
       const previousTick = currentTickRef.current
       if (previousTick.index >= 0 && !previousTick.matched) {
@@ -284,6 +304,7 @@ const MetronomeScreen = () => {
   }
 
   const calculateTimeDifference = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
     Animated.sequence([
       Animated.timing(tapScale, { toValue: 0.9, duration: 60, useNativeDriver: true }),
       Animated.spring(tapScale, { toValue: 1, friction: 3, tension: 100, useNativeDriver: true }),
@@ -357,6 +378,7 @@ const MetronomeScreen = () => {
     }
 
     if (expectedType !== tappedType) {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
       setPracticeFeedback({ result: 'wrong', tappedType, delta: distanceToPulse })
       setPracticeMistakes((value) => value + 1)
       return
@@ -365,6 +387,7 @@ const MetronomeScreen = () => {
     currentTickRef.current = { ...tick, matched: true }
     markPulseStatus(tick.index, 'done')
     setPracticeHits((value) => value + 1)
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
     setPracticeFeedback({ result: 'correct', tappedType, delta: distanceToPulse })
   }
 
@@ -438,15 +461,15 @@ const MetronomeScreen = () => {
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
-        <TouchableOpacity onPress={openInfo} style={styles.infoButton} activeOpacity={0.7}>
+        <TouchableOpacity onPress={openInfo} style={styles.infoButton} activeOpacity={0.7} accessibilityRole="button" accessibilityLabel="Bilgi (Info)">
           <Icon name="info-outline" color={COLORS.textDim} size={20} />
         </TouchableOpacity>
 
         <View style={styles.modeSwitch}>
-          <TouchableOpacity activeOpacity={0.85} onPress={() => setMode('tap')} style={[styles.modeButton, mode === 'tap' && styles.modeButtonActive]}>
+          <TouchableOpacity activeOpacity={0.85} onPress={() => setMode('tap')} style={[styles.modeButton, mode === 'tap' && styles.modeButtonActive]} accessibilityRole="button" accessibilityLabel="Vuruş modu (Tap mode)">
             <Text style={[styles.modeButtonText, mode === 'tap' && styles.modeButtonTextActive]}>{t(language, 'metronome.modeTap')}</Text>
           </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.85} onPress={() => setMode('practice')} style={[styles.modeButton, mode === 'practice' && styles.modeButtonActive]}>
+          <TouchableOpacity activeOpacity={0.85} onPress={() => setMode('practice')} style={[styles.modeButton, mode === 'practice' && styles.modeButtonActive]} accessibilityRole="button" accessibilityLabel="Alıştırma modu (Practice mode)">
             <Text style={[styles.modeButtonText, mode === 'practice' && styles.modeButtonTextActive]}>{t(language, 'metronome.modePractice')}</Text>
           </TouchableOpacity>
         </View>
@@ -486,7 +509,7 @@ const MetronomeScreen = () => {
               <Animated.View style={[styles.ripple, { transform: [{ scale: rippleScale }], opacity: rippleOpacity, borderColor: msColor }]} />
               <Animated.View style={[styles.ripple, { transform: [{ scale: ripple2Scale }], opacity: ripple2Opacity, borderColor: msColor }]} />
               <Animated.View style={[styles.tapButtonOuter, { transform: [{ scale: Animated.multiply(tapScale, time === null ? pulseAnim : new Animated.Value(1)) }] }]}>
-                <TouchableOpacity style={styles.tapButton} activeOpacity={0.8} onPress={calculateTimeDifference}>
+                <TouchableOpacity style={styles.tapButton} activeOpacity={0.8} onPress={calculateTimeDifference} accessibilityRole="button" accessibilityLabel="Vuruş butonu (Tap button)">
                   <View style={styles.tapButtonInner}><Icon name="touch-app" color={COLORS.white} size={40} /><Text style={styles.tapText}>{t(language, 'metronome.tap')}</Text></View>
                 </TouchableOpacity>
               </Animated.View>
@@ -508,7 +531,7 @@ const MetronomeScreen = () => {
               {RHYTHM_LIBRARY.map((rhythm) => {
                 const active = rhythm.key === selectedRhythm.key
                 return (
-                  <TouchableOpacity key={rhythm.key} activeOpacity={0.85} style={[styles.rhythmChip, active && styles.rhythmChipActive]} onPress={() => handleSelectRhythm(rhythm.key)}>
+                  <TouchableOpacity key={rhythm.key} activeOpacity={0.85} style={[styles.rhythmChip, active && styles.rhythmChipActive]} onPress={() => handleSelectRhythm(rhythm.key)} accessibilityRole="button" accessibilityLabel={`${rhythm.name} usulü seç (Select ${rhythm.name} rhythm)`}>
                     <Text style={[styles.rhythmChipName, active && styles.rhythmChipNameActive]}>{rhythm.name}</Text>
                     <Text style={[styles.rhythmChipTime, active && styles.rhythmChipTimeActive]}>{rhythm.time}</Text>
                   </TouchableOpacity>
@@ -520,14 +543,14 @@ const MetronomeScreen = () => {
               <View style={styles.practiceControlCard}>
                 <Text style={styles.sectionLabel}>{t(language, 'metronome.practiceBpm')}</Text>
                 <View style={styles.bpmAdjustRow}>
-                  <TouchableOpacity style={styles.bpmAdjustButton} activeOpacity={0.8} onPress={() => setPracticeBpm((value) => Math.max(PRACTICE_MIN_BPM, value - 4))}>
+                  <TouchableOpacity style={styles.bpmAdjustButton} activeOpacity={0.8} onPress={() => setPracticeBpm((value) => Math.max(PRACTICE_MIN_BPM, value - 4))} accessibilityRole="button" accessibilityLabel="BPM azalt (Decrease BPM)">
                     <Icon name="remove" color={COLORS.text} size={18} />
                   </TouchableOpacity>
                   <View style={{ alignItems: 'center' }}>
                     <Text style={styles.practiceStatValue}>{practiceBpm}</Text>
                     <Text style={styles.practiceStatLabel}>BPM</Text>
                   </View>
-                  <TouchableOpacity style={styles.bpmAdjustButton} activeOpacity={0.8} onPress={() => setPracticeBpm((value) => Math.min(PRACTICE_MAX_BPM, value + 4))}>
+                  <TouchableOpacity style={styles.bpmAdjustButton} activeOpacity={0.8} onPress={() => setPracticeBpm((value) => Math.min(PRACTICE_MAX_BPM, value + 4))} accessibilityRole="button" accessibilityLabel="BPM artır (Increase BPM)">
                     <Icon name="add" color={COLORS.text} size={18} />
                   </TouchableOpacity>
                 </View>
@@ -581,6 +604,8 @@ const MetronomeScreen = () => {
                     lastPadType === 'tek' && lastPracticeResult && lastPracticeResult !== 'correct' && styles.practicePadWrong,
                   ]}
                   onPress={() => handlePracticeTap('tek')}
+                  accessibilityRole="button"
+                  accessibilityLabel="Tek vuruş (High beat)"
                 >
                   <Text style={styles.practicePadTitle}>{t(language, 'metronome.tek')}</Text>
                   <Text style={styles.practicePadSubtitle}>{t(language, 'metronome.highBeat')}</Text>
@@ -596,6 +621,8 @@ const MetronomeScreen = () => {
                     lastPadType === 'dum' && lastPracticeResult && lastPracticeResult !== 'correct' && styles.practicePadWrong,
                   ]}
                   onPress={() => handlePracticeTap('dum')}
+                  accessibilityRole="button"
+                  accessibilityLabel="Düm vuruş (Low beat)"
                 >
                   <Text style={styles.practicePadTitle}>{t(language, 'metronome.dum')}</Text>
                   <Text style={styles.practicePadSubtitle}>{t(language, 'metronome.lowBeat')}</Text>
@@ -606,7 +633,7 @@ const MetronomeScreen = () => {
         )}
 
         <Animated.View style={[styles.resetContainer, { opacity: entryAnim, transform: [{ translateY: entryAnim.interpolate({ inputRange: [0, 1], outputRange: [40, 0] }) }] }]}>
-          <TouchableOpacity style={styles.resetButton} activeOpacity={0.7} onPress={resetCurrentMode}><Icon name="refresh" color={COLORS.textDim} size={18} style={{ marginRight: 6 }} /><Text style={styles.resetText}>{t(language, 'metronome.reset')}</Text></TouchableOpacity>
+          <TouchableOpacity style={styles.resetButton} activeOpacity={0.7} onPress={resetCurrentMode} accessibilityRole="button" accessibilityLabel="Sıfırla (Reset)"><Icon name="refresh" color={COLORS.textDim} size={18} style={{ marginRight: 6 }} /><Text style={styles.resetText}>{t(language, 'metronome.reset')}</Text></TouchableOpacity>
         </Animated.View>
       </ScrollView>
 

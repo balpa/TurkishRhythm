@@ -3,7 +3,7 @@ import { COLORS } from '../../shared/theme/colors'
 
 export { COLORS }
 
-export const TABS = ['notes', 'bulletin', 'rehearsals', 'members']
+export const TABS = ['notes', 'bulletin', 'rehearsals', 'leaderboard', 'members']
 export const MAX_CHORUS_NOTES = 50
 export const ATTENDANCE_STATUSES = ['attending', 'maybe', 'absent']
 export const CACHE_TTL = 30_000

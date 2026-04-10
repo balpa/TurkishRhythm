@@ -3,7 +3,7 @@ import { COLORS, PRACTICE_PAD_SIZE, TAP_BUTTON_SIZE } from './metronomeShared'
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: COLORS.bg },
-  scrollContent: { paddingTop: 12, paddingBottom: 90, alignItems: 'center' },
+  scrollContent: { paddingTop: 12, paddingBottom: 160, alignItems: 'center' },
   infoButton: { alignSelf: 'flex-end', marginRight: 16, width: 36, height: 36, justifyContent: 'center', alignItems: 'center', borderRadius: 18, backgroundColor: COLORS.surface },
   modeSwitch: { width: '88%', marginTop: 12, flexDirection: 'row', backgroundColor: COLORS.surface, borderWidth: 1, borderColor: COLORS.border, borderRadius: 18, padding: 6, gap: 8 },
   modeButton: { flex: 1, borderRadius: 14, paddingVertical: 12, alignItems: 'center', justifyContent: 'center' },
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
   scoreNumber: { fontSize: 14, fontWeight: '600', color: COLORS.textDim },
   scoreBarBg: { width: '100%', height: 5, borderRadius: 3, backgroundColor: COLORS.border, overflow: 'hidden' },
   scoreBarFill: { height: '100%', borderRadius: 3 },
-  tapArea: { justifyContent: 'center', alignItems: 'center', width: '100%', minHeight: 360, marginTop: 8 },
+  tapArea: { justifyContent: 'center', alignItems: 'center', width: '100%', minHeight: 280, marginTop: 8 },
   ripple: { position: 'absolute', width: TAP_BUTTON_SIZE, height: TAP_BUTTON_SIZE, borderRadius: TAP_BUTTON_SIZE / 2, borderWidth: 2 },
   tapButtonOuter: { width: TAP_BUTTON_SIZE, height: TAP_BUTTON_SIZE, borderRadius: TAP_BUTTON_SIZE / 2, shadowColor: COLORS.accent, shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 20, elevation: 12 },
   tapButton: { width: '100%', height: '100%', borderRadius: TAP_BUTTON_SIZE / 2, backgroundColor: COLORS.accent, justifyContent: 'center', alignItems: 'center', overflow: 'hidden' },
